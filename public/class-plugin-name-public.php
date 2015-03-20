@@ -106,9 +106,18 @@ class Plugin_Name_Public {
 	}
 
 	public function greenhouse_shortcode_function( $atts ){
+		$api_key = $atts['api_key'];
+		$url_token = $atts['url_token'];
 		
+		$options  = '<div class="greenhouse-plugin">';
+		$options .= '<p>Greenhouse shortcode detected</p>';
+		$options .= '<p>API Key = ' . $api_key . '.</p>';
+		$options .= '<p>URL Token = ' . $url_token . '.</p>';
+		$options .= '<div class="all_jobs"><div class="jobs"></div></div>';
+		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $url_token . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
+		$options .= '</div>';
 		
-		return "Greenhouse shortcode content here. API Key = " . $atts['api_key'];
+		return $options;
 
 		
 	}
