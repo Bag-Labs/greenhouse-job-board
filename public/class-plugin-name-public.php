@@ -99,5 +99,18 @@ class Plugin_Name_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+	
+	public function register_shortcodes() {
+		add_shortcode( 'greenhouse', array( $this, 'greenhouse_shortcode_function') );
+		// add_shortcode( 'anothershortcode', array( $this, 'another_shortcode_function') );
+	}
+
+	public function greenhouse_shortcode_function( $atts ){
+		
+		
+		return "Greenhouse shortcode content here. API Key = " . $atts['api_key'];
+
+		
+	}
 
 }
