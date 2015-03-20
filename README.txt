@@ -12,7 +12,7 @@ Plugin to pull a job board from greenhouse.io via their API.
 
 == Description ==
 
-Plugin to pull a job board from greenhouse.io via their API.
+Plugin to pull a job board from greenhouse.io via their API and display it on your WordPress site. Use a shortcode with your URL Token to pull the data. Find your URL token on this page https://app.greenhouse.io/configure/dev_center/config when you are logged into your greenhouse account. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 Requirements:
 
@@ -29,25 +29,7 @@ e.g.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
-== Frequently Asked Questions ==
-
-= Why No Questions? =
-
-None have been asked yet.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
 == Changelog ==
 
 = 1.0 =
 * Initial release
-
-== Upgrade Notice ==
-
-= 1.0 =
