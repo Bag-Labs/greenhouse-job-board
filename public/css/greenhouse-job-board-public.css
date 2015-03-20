@@ -2,4 +2,11 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
- 
+
+.job_read_full {
+	cursor: pointer;
+}
+.job_description{
+	display:none;	
+}
+	

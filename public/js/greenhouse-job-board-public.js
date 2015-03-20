@@ -29,7 +29,9 @@ jQuery(document).ready(function($) {
 	 * be doing this, we should try to minimize doing that in our own work.
 	 */
 	 
-	 
+	 $('.jobs').on('click', '.job_read_full', function(e){
+	 	$(this).next('.job_description').toggle();
+	 });
 
 });
 
@@ -37,7 +39,7 @@ jQuery(document).ready(function($) {
 var jobs = [];
 
 function greenhouse_jobs(json){
- 	console.log(json);
+ 	// console.log(json);
  	
  	// var jobshtml = '<a href="#" class="apply">Apply Now</a>';
  	// jQuery('.all_jobs').append(jobshtml);
@@ -52,8 +54,8 @@ function greenhouse_jobs(json){
  	    	jobshtml += '	<h2 class="job_title">' + json.jobs[i].title + '</h2>';
  	    	jobshtml += '	<div class="job_read_full">Read full description</div>';
  	    	// jobshtml += '	<div class="job_description">' + get_role_from_content( json.jobs[i].content ) + '</div>';
- 	    	jobshtml += '	<div class="job_description">' + decodeHtml( json.jobs[i].content ) + '</div>';
- 	    	
+ 	    	jobshtml += '	<div class="job_description job_description_' + json.jobs[i].id + '">' + decodeHtml( json.jobs[i].content ) + '</div>';
+ 	    	jobshtml += '	<div class="job_apply_' + json.jobs[i].id + '></div>';
  	    	//load each job to greenhouse_jobs_job
  	    	jobshtml += '	<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/brownbagmarketing/embed/job?id=';
  	    	jobshtml += json.jobs[i].id;
@@ -76,7 +78,7 @@ function greenhouse_jobs_job(json){
 	console.log(json);
 	
 	var jobhtml = '';
-	jobhtml += '<div class="job cycle-slide" ';
+	jobhtml += '<div class="job" ';
 	jobhtml += ' data-id="' + json.id + '" ';
 	jobhtml += ' data-cycle-hash="' + json.title + '"><div class="job_single">';
 	jobhtml += '	<a href="#" class="return">All Positions</a>';
@@ -88,6 +90,7 @@ function greenhouse_jobs_job(json){
 	jobhtml += '</div></div>';
 	
 	// add_slide( jobhtml, json.id, json.title );
+	jQuery('.job_apply_' + json.id ).append(jobhtml);
 }
 
 function decodeHtml(html){

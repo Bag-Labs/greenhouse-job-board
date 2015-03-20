@@ -8,20 +8,20 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://example.com
+ * @link              https://www.brownbagmarketing.com
  * @since             1.0.0
- * @package           Plugin_Name
+ * @package           Greenhouse_Job_Board
  *
  * @wordpress-plugin
- * Plugin Name:       Greenhouse WordPress Plugin
+ * Plugin Name:       Greenhouse Job Board
  * Plugin URI:        https://www.brownbagmarketing.com/
- * Description:       Plugin to pull jobs from greenhouse.io via their API.
+ * Description:       Pull a job board from greenhouse.io via API calls.
  * Version:           1.0.0
  * Author:            Brown Bag Marketing
  * Author URI:        https://www.brownbagmarketing.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       greenhouse-wordpress-plugin
+ * Text Domain:       greenhouse-job-board
  * Domain Path:       /languages
  */
 
@@ -32,30 +32,30 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-plugin-name-activator.php
+ * This action is documented in includes/class-greenhouse-job-board-activator.php
  */
-function activate_plugin_name() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-plugin-name-activator.php';
-	Plugin_Name_Activator::activate();
+function activate_greenhouse_job_board() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-greenhouse-job-board-activator.php';
+	Greenhouse_Job_Board_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-plugin-name-deactivator.php
+ * This action is documented in includes/class-greenhouse-job-board-deactivator.php
  */
-function deactivate_plugin_name() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-plugin-name-deactivator.php';
-	Plugin_Name_Deactivator::deactivate();
+function deactivate_greenhouse_job_board() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-greenhouse-job-board-deactivator.php';
+	Greenhouse_Job_Board_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_plugin_name' );
-register_deactivation_hook( __FILE__, 'deactivate_plugin_name' );
+register_activation_hook( __FILE__, 'activate_greenhouse_job_board' );
+register_deactivation_hook( __FILE__, 'deactivate_greenhouse_job_board' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-plugin-name.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-greenhouse-job-board.php';
 
 /**
  * Begins execution of the plugin.
@@ -66,10 +66,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-plugin-name.php';
  *
  * @since    1.0.0
  */
-function run_plugin_name() {
+function run_greenhouse_job_board() {
 
-	$plugin = new Plugin_Name();
+	$plugin = new Greenhouse_Job_Board();
 	$plugin->run();
 
 }
-run_plugin_name();
+run_greenhouse_job_board();
