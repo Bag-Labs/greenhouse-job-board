@@ -114,8 +114,10 @@ class Greenhouse_Job_Board_Public {
 		// $options .= '<p>API Key = ' . $api_key . '.</p>';
 		// $options .= '<p>URL Token = ' . $url_token . '.</p>';
 		$options .= '<div class="all_jobs"><div class="jobs"></div></div>';
+					//api call to get jobs with callback
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $url_token . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
 		$options .= '<div id="grnhse_app"></div>';
+					//script for loading iframe
 		$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $url_token . '"></script>';
 		$options .= '</div>';
 		
