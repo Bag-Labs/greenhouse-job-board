@@ -6,6 +6,9 @@
 .job_read_full {
 	cursor: pointer;
 }
+.job_apply {
+	cursor: pointer;
+}
 .job_description{
 	display:none;	
 }

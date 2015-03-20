@@ -109,12 +109,14 @@ class Greenhouse_Job_Board_Public {
 		$api_key = $atts['api_key'];
 		$url_token = $atts['url_token'];
 		
-		$options  = '<div class="greenhouse-plugin">';
-		$options .= '<p>Greenhouse shortcode detected</p>';
-		$options .= '<p>API Key = ' . $api_key . '.</p>';
-		$options .= '<p>URL Token = ' . $url_token . '.</p>';
+		$options  = '<div class="greenhouse-job-board">';
+		// $options .= '<p>Greenhouse shortcode detected</p>';
+		// $options .= '<p>API Key = ' . $api_key . '.</p>';
+		// $options .= '<p>URL Token = ' . $url_token . '.</p>';
 		$options .= '<div class="all_jobs"><div class="jobs"></div></div>';
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $url_token . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
+		$options .= '<div id="grnhse_app"></div>';
+		$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $url_token . '"></script>';
 		$options .= '</div>';
 		
 		return $options;
