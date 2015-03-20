@@ -13,15 +13,15 @@
  * @package           Plugin_Name
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
- * Plugin URI:        http://example.com/plugin-name-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin Name:       Greenhouse WordPress Plugin
+ * Plugin URI:        https://www.brownbagmarketing.com/
+ * Description:       Plugin to pull jobs from greenhouse.io via their API.
  * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Author:            Brown Bag Marketing
+ * Author URI:        https://www.brownbagmarketing.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       plugin-name
+ * Text Domain:       greenhouse-wordpress-plugin
  * Domain Path:       /languages
  */
 
