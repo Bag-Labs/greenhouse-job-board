@@ -105,25 +105,67 @@ class Greenhouse_Job_Board_Public {
 		// add_shortcode( 'anothershortcode', array( $this, 'another_shortcode_function') );
 	}
 
-	public function greenhouse_shortcode_function( $atts ){
-		$api_key = $atts['api_key'];
-		$url_token = $atts['url_token'];
+	public function greenhouse_shortcode_function( $atts, $content = null ) {
+		$options = get_option( 'greenhouse_job_board_settings' );
+		
+	    $atts = shortcode_atts( array(
+	        'url_token' => $options['greenhouse_job_board_url_token'],
+	        'api_key' => $options['greenhouse_job_board_api_key'],
+	        // ...etc
+	    ), $atts );
+	    
+		// $api_key = $atts['api_key'];
 		
 		$options  = '<div class="greenhouse-job-board">';
 		// $options .= '<p>Greenhouse shortcode detected</p>';
 		// $options .= '<p>API Key = ' . $api_key . '.</p>';
-		// $options .= '<p>URL Token = ' . $url_token . '.</p>';
+		// $options .= '<p>URL Token = ' . $atts['url_token'] . '.</p>';
 		$options .= '<div class="all_jobs"><div class="jobs"></div></div>';
 					//api call to get jobs with callback
-		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $url_token . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
+		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
 		$options .= '<div id="grnhse_app"></div>';
 					//script for loading iframe
-		$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $url_token . '"></script>';
+		$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
 		$options .= '</div>';
 		
 		return $options;
 
 		
 	}
+	
+	
+	//http://wpsettingsapi.jeroensormani.com/settings-generator
+	function greenhouse_job_board_add_admin_menu(  ) { 
+		add_options_page( 'Greenhouse Job Board Settings', 'Greenhouse Job Board Settings', 'manage_options', 'greenhouse_job_board', 'greenhouse_job_board_options_page' );
+	}
+	
+	function greenhouse_job_board_settings_init(  ) { 
+		register_setting( 'greenhouse_settings', 'greenhouse_job_board_settings' );
+
+		add_settings_section(
+			'greenhouse_job_board_greenhouse_settings_section', 
+			__( 'Greenhouse Account', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_settings_section_callback', 
+			'greenhouse_settings'
+		);
+		
+		//url_token
+		add_settings_field( 
+			'greenhouse_job_board_url_token', 
+			__( 'URL Token', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_url_token_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_api_key', 
+			__( 'API key', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_api_key_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+	}
+
 
 }
