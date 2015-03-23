@@ -1,7 +1,7 @@
 === Plugin Name ===
-Contributors: brownbagmarketing, circlecube
+Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
-Tags: greenhouse, job board, api
+Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
 Tested up to: 3.4
 Stable tag: 1.0.0
@@ -33,3 +33,17 @@ e.g.
 
 = 1.0 =
 * Initial release
+
+== Screenshots ==
+
+1. Shortcode in action.
+2. View the job board list.
+3. Click to view description of each job.
+4. Click to apply for each job.
+
+
+== Frequently Asked Questions ==
+
+= Why no FAQ? =
+
+No answers for no questions...
