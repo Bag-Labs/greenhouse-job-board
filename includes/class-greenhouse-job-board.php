@@ -76,10 +76,6 @@ class Greenhouse_Job_Board {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
-		/**
-		 * Add ACF
-		 */
-		 include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/advanced-custom-fields/acf.php';
 	}
 
 	/**
