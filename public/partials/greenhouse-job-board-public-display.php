@@ -12,9 +12,18 @@
  * @subpackage Greenhouse_Job_Board/public/partials
  */
 ?>
-
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <?php
+
+/*TODO
+
+* Add select field that pulls office location via API and allows user to select default
+* Add select field that pulls departments via API and allows user to select default
+* Add textarea for custom CSS
+
+*/
+
+
 //options page fields
 function greenhouse_job_board_url_token_render(  ) { 
 
