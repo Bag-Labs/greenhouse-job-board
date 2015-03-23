@@ -4,7 +4,7 @@
  * The public-facing functionality of the plugin.
  *
  * @link       http://example.com
- * @since      1.0.0
+ * @since      1.1.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public

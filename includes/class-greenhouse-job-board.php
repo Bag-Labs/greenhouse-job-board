@@ -7,7 +7,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       http://example.com
- * @since      1.0.0
+ * @since      1.1.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/includes
@@ -22,7 +22,7 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @since      1.1.0
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/includes
  * @author     Your Name <email@example.com>
@@ -91,7 +91,7 @@ class Greenhouse_Job_Board {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
@@ -162,7 +162,7 @@ class Greenhouse_Job_Board {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 * @access   private
 	 */
 	private function define_public_hooks() {
