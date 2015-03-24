@@ -109,18 +109,25 @@ class Greenhouse_Job_Board_Public {
 		$options = get_option( 'greenhouse_job_board_settings' );
 		
 	    $atts = shortcode_atts( array(
-	        'url_token' => $options['greenhouse_job_board_url_token'],
-	        'api_key' => $options['greenhouse_job_board_api_key'],
+	        'url_token' 		=> $options['greenhouse_job_board_url_token'],
+	        'api_key' 			=> $options['greenhouse_job_board_api_key'],
+	        'department_filter'	=> ''
 	        // ...etc
 	    ), $atts );
 	    
 		// $api_key = $atts['api_key'];
 		
+		$department_filter = $atts['department_filter'];
+		
 		$options  = '<div class="greenhouse-job-board">';
-		// $options .= '<p>Greenhouse shortcode detected</p>';
+		$options .= '<p>Greenhouse shortcode detected';
+		if ($department_filter) {
+			$options .= ', with department_filter: ' . $department_filter;
+		}
+		$options .= '</p>';
 		// $options .= '<p>API Key = ' . $api_key . '.</p>';
 		// $options .= '<p>URL Token = ' . $atts['url_token'] . '.</p>';
-		$options .= '<div class="all_jobs"><div class="jobs"></div></div>';
+		$options .= '<div class="all_jobs"><div class="jobs" data-department_filter="' . $department_filter . '"></div></div>';
 					//api call to get jobs with callback
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
 		$options .= '<div id="grnhse_app"></div>';

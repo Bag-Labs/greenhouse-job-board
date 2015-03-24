@@ -62,7 +62,7 @@ jQuery(document).ready(function($) {
 // var jobs = [];
 
 function greenhouse_jobs(json){
- 	// console.log(json);
+ 	console.log(json);
  	
  	// var jobshtml = '<a href="#" class="apply">Apply Now</a>';
  	// jQuery('.all_jobs').append(jobshtml);
@@ -72,21 +72,33 @@ function greenhouse_jobs(json){
  	//list all jobs
      for (var i = 0; i < json.jobs.length; i++){
      	// console.log( json.jobs[i].id);
- 		var jobshtml = '';
- 	    	jobshtml += '<div class="job" data-id="' + json.jobs[i].id + '" data-index="' + (i+2) + '">';
- 	    	jobshtml += '	<h2 class="job_title">' + json.jobs[i].title + '</h2>';
- 	    	jobshtml += '	<div class="job_read_full">Read full description</div>';
- 	    	// jobshtml += '	<div class="job_description">' + get_role_from_content( json.jobs[i].content ) + '</div>';
- 	    	jobshtml += '	<div class="job_description job_description_' + json.jobs[i].id + '">' + decodeHtml( json.jobs[i].content ) + '</div>';
- 	    	//load each job to greenhouse_jobs_job
- 	    	jobshtml += '	<div class="job_apply job_apply_' + json.jobs[i].id + '">Apply Now</div>';
- 	    	// jobshtml += '	<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/brownbagmarketing/embed/job?id=';
- 	    	// jobshtml += json.jobs[i].id;
- 	    	// jobshtml += '&questions=true&callback=greenhouse_jobs_job"></s';
- 	    	// jobshtml += 'cript>'
- 	    	jobshtml += '</div>';
      	
-     	jQuery('.all_jobs .jobs').append(jobshtml);
+     	
+     	var department_filter = jQuery('.jobs').attr('data-department_filter');
+     	// For some browsers, `attr` is undefined; for others, `attr` is false.  Check for both.
+     	if (typeof department_filter === typeof undefined && 
+     		department_filter === false ||
+     		jQuery('.jobs').data('department_filter') === json.jobs[i].departments[0].name ) {
+     	    
+	 		var jobshtml = '';
+	 	    	jobshtml += '<div class="job" '
+	 	    	jobshtml += ' data-id="' + json.jobs[i].id + '" data-index="' + (i+2) + '" ';
+	 	    	jobshtml += ' data-departments="' + json.jobs[i].departments[0].name + '" ';
+	 	    	jobshtml += ' >';
+	 	    	jobshtml += '	<h2 class="job_title">' + json.jobs[i].title + '</h2>';
+	 	    	jobshtml += '	<div class="job_read_full">Read full description</div>';
+	 	    	// jobshtml += '	<div class="job_description">' + get_role_from_content( json.jobs[i].content ) + '</div>';
+	 	    	jobshtml += '	<div class="job_description job_description_' + json.jobs[i].id + '">' + decodeHtml( json.jobs[i].content ) + '</div>';
+	 	    	//load each job to greenhouse_jobs_job
+	 	    	jobshtml += '	<div class="job_apply job_apply_' + json.jobs[i].id + '">Apply Now</div>';
+	 	    	// jobshtml += '	<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/brownbagmarketing/embed/job?id=';
+	 	    	// jobshtml += json.jobs[i].id;
+	 	    	// jobshtml += '&questions=true&callback=greenhouse_jobs_job"></s';
+	 	    	// jobshtml += 'cript>'
+	 	    	jobshtml += '</div>';
+	     	
+	     	jQuery('.all_jobs .jobs').append(jobshtml);
+	    }
  		// add_position( json.jobs[i].id, json.jobs[i].title );
      }
      
