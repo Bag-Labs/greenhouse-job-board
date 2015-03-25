@@ -75,29 +75,51 @@ function greenhouse_jobs(json){
      for (var i = 0; i < json.jobs.length; i++){
      	// console.log( json.jobs[i].id);
      	
+     	//filter pass values
+     	var department_filter_pass = true;
+     	var department_filter_exclude = false;
      	
-     	var department_filter = jQuery('.jobs').attr('data-department_filter');
-     	// For some browsers, `attr` is undefined; for others, `attr` is false.  Check for both.
-     	if (typeof department_filter === typeof undefined && 
-     		department_filter === false ||
-     		jQuery('.jobs').data('department_filter') === json.jobs[i].departments[0].name ) {
-     	    
-	 		var jobshtml = '';
-	 	    	jobshtml += '<div class="job" '
-	 	    	jobshtml += ' data-id="' + json.jobs[i].id + '" data-index="' + (i+2) + '" ';
-	 	    	jobshtml += ' data-departments="' + json.jobs[i].departments[0].name + '" ';
-	 	    	jobshtml += ' >';
-	 	    	jobshtml += '	<h2 class="job_title">' + json.jobs[i].title + '</h2>';
-	 	    	jobshtml += '	<div class="job_read_full">Read full description</div>';
-	 	    	// jobshtml += '	<div class="job_description">' + get_role_from_content( json.jobs[i].content ) + '</div>';
-	 	    	jobshtml += '	<div class="job_description job_description_' + json.jobs[i].id + '">' + decodeHtml( json.jobs[i].content ) + '</div>';
-	 	    	//load each job to greenhouse_jobs_job
-	 	    	jobshtml += '	<div class="job_apply job_apply_' + json.jobs[i].id + '">Apply Now</div>';
-	 	    	// jobshtml += '	<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/brownbagmarketing/embed/job?id=';
-	 	    	// jobshtml += json.jobs[i].id;
-	 	    	// jobshtml += '&questions=true&callback=greenhouse_jobs_job"></s';
-	 	    	// jobshtml += 'cript>'
-	 	    	jobshtml += '</div>';
+     	//Department Filter
+     	var department_filter = false;
+     	if ( jQuery('.jobs').attr('data-department_filter') ) {
+     		department_filter = jQuery('.jobs').attr('data-department_filter').split('|');
+     		if ( department_filter.length == 1 &&
+     			 department_filter[0].charAt(0) == '-' ) {
+     			// condition met for exclude flag, set dept filter to look for excludes
+     			department_filter_exclude = true;
+     		}
+     		department_filter_pass = false;
+     	}
+     	//read job department(s) and test against filter
+     	var departments = [];
+     	for( var j = 0; j < json.jobs[j].departments.length; j++ ) {
+     		//add to array of departments
+     		departments.push( json.jobs[i].departments[j].name );
+     		//if not excluding check if department matches any department filter
+     		if ( 	!department_filter_exclude &&
+     				jQuery.inArray( json.jobs[i].departments[j].name, department_filter ) >= 0 ) {
+     			department_filter_pass = true;
+     		}
+     		//if excluding check to see if not department match
+     		else if ( 	department_filter_exclude &&
+     					jQuery.inArray( '-'+json.jobs[i].departments[j].name, department_filter ) == -1 ) {
+     			department_filter_pass = true;
+     		}
+     	}
+     	
+     	console.log('department filter:', department_filter, departments, department_filter_pass);
+     	
+     	
+     	// if dept filter empty
+     	if ( department_filter_pass ){
+     	
+     		var jobshtml = job_html_template({
+	 			index: i,
+	 			id: json.jobs[i].id,
+	 			title: json.jobs[i].title,
+	 			content: decodeHtml( json.jobs[i].content ),
+	 			departments: departments.join('|')
+	 		});
 	     	
 	     	jQuery('.all_jobs .jobs').append(jobshtml);
 	    }
