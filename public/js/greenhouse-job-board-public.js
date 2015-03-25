@@ -58,14 +58,16 @@ jQuery(document).ready(function($) {
 	});
 });
 
-
-// var jobs = [];
+	
 
 function greenhouse_jobs(json){
  	console.log(json);
  	
- 	// var jobshtml = '<a href="#" class="apply">Apply Now</a>';
- 	// jQuery('.all_jobs').append(jobshtml);
+ 	
+ 	//setup handlebars
+ 	var job_html = jQuery("#job-template").html();
+ 	// console.log( job_html );
+ 	var job_html_template = Handlebars.compile(job_html);
  	
  	//sort
  	

@@ -95,14 +95,13 @@ class Greenhouse_Job_Board_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		wp_enqueue_script( $this->greenhouse_job_board + 'handlebars', plugin_dir_url( __FILE__ ) . 'js/handlebars-v3.0.0.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 	
 	public function register_shortcodes() {
 		add_shortcode( 'greenhouse', array( $this, 'greenhouse_shortcode_function') );
-		// add_shortcode( 'anothershortcode', array( $this, 'another_shortcode_function') );
 	}
 
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
@@ -125,15 +124,31 @@ class Greenhouse_Job_Board_Public {
 			$options .= ', with department_filter: ' . $department_filter;
 		}
 		$options .= '</p>';
-		// $options .= '<p>API Key = ' . $api_key . '.</p>';
-		// $options .= '<p>URL Token = ' . $atts['url_token'] . '.</p>';
+		
+		// handlebars template for returned job
+		$options .= '<script id="job-template" type="text/x-handlebars-template">
+		<div class="job" 
+			data-id="{{id}}" 
+			data-departments="{{departments}}">
+	 	    	<h2 class="job_title">{{title}}</h2>
+	 	    	<div class="job_read_full">Read full description</div>
+	 	    	<div class="job_description job_description_{{id}}">{{{content}}}</div>
+	 	    	<div class="job_apply job_apply_{{id}}">Apply Now</div>
+	 	</div>
+</script>';
+
+		// html container
 		$options .= '<div class="all_jobs"><div class="jobs" data-department_filter="' . $department_filter . '"></div></div>';
-					//api call to get jobs with callback
+		// api call to get jobs with callback
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
+		// iframe container
 		$options .= '<div id="grnhse_app"></div>';
-					//script for loading iframe
+		// script for loading iframe
 		$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
+		// close all_jobs
 		$options .= '</div>';
+		
+		
 		
 		return $options;
 
