@@ -111,8 +111,19 @@ class Greenhouse_Job_Board_Public {
 	        'url_token' 		=> $options['greenhouse_job_board_url_token'],
 	        'api_key' 			=> $options['greenhouse_job_board_api_key'],
 	        'department_filter'	=> '',
-	        'hideforms'		=> 'false'
+	        'hideforms'			=> 'false',
+	        'formtype'			=> 'iframe'
 	    ), $atts );
+	    
+	    //sanitize values
+	    //if hideforms is anything other than true, set it to false
+	    if ( $atts['hideforms'] !== 'true' ) {
+	    	$atts['hideforms'] = 'false';
+	    }
+	    //reset formtype until set up for more types
+	    if ( $atts['formtype'] !== 'iframe' ) {
+	    	$atts['formtype'] = 'iframe';
+	    }
 	    
 		// $api_key = $atts['api_key'];
 				
@@ -140,13 +151,15 @@ class Greenhouse_Job_Board_Public {
 			<div class="jobs" 
 				data-department_filter="' . $atts['department_filter'] . '"
 				data-hideforms="' . $atts['hideforms'] . '"
+				data-formtype="' . $atts['formtype'] . '"
 				>
 			</div>
 		</div>';
 		// api call to get jobs with callback
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
 		// iframe container
-		if ( $atts['hideforms'] !== 'false' ) {
+		if ( $atts['hideforms'] !== 'true' &&
+			 $atts['formtype'] === 'iframe' ) {
 			$options .= '<div id="grnhse_app"></div>';
 		}
 		// script for loading iframe
