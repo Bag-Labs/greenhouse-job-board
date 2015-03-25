@@ -75,6 +75,9 @@ function greenhouse_jobs(json){
      for (var i = 0; i < json.jobs.length; i++){
      	// console.log( json.jobs[i].id);
      	
+     	//hideforms val
+     	var hideforms = jQuery('.jobs').attr('data-hideforms');
+     	
      	//filter pass values
      	var department_filter_pass = true;
      	var department_filter_exclude = false;
@@ -118,7 +121,8 @@ function greenhouse_jobs(json){
 	 			id: json.jobs[i].id,
 	 			title: json.jobs[i].title,
 	 			content: decodeHtml( json.jobs[i].content ),
-	 			departments: departments.join('|')
+	 			departments: departments.join('|'),
+	 			hideforms: hideforms
 	 		});
 	     	
 	     	jQuery('.all_jobs .jobs').append(jobshtml);
@@ -155,3 +159,7 @@ function decodeHtml(html){
     text = text.replace(/\u00a0/g, ' ');
     return text;
 }
+
+Handlebars.registerHelper('ifeq', function (a, b, options) {
+	if (a == b) { return options.fn(this); }
+});

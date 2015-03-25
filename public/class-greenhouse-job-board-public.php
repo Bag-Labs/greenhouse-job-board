@@ -110,18 +110,16 @@ class Greenhouse_Job_Board_Public {
 	    $atts = shortcode_atts( array(
 	        'url_token' 		=> $options['greenhouse_job_board_url_token'],
 	        'api_key' 			=> $options['greenhouse_job_board_api_key'],
-	        'department_filter'	=> ''
-	        // ...etc
+	        'department_filter'	=> '',
+	        'hideforms'		=> 'false'
 	    ), $atts );
 	    
 		// $api_key = $atts['api_key'];
-		
-		$department_filter = $atts['department_filter'];
-		
+				
 		$options  = '<div class="greenhouse-job-board">';
 		$options .= '<p>Greenhouse shortcode detected';
-		if ($department_filter) {
-			$options .= ', with department_filter: ' . $department_filter;
+		if ($atts['department_filter']) {
+			$options .= ', with department_filter: ' . $atts['department_filter'];
 		}
 		$options .= '</p>';
 		
@@ -133,16 +131,24 @@ class Greenhouse_Job_Board_Public {
 	 	    	<h2 class="job_title">{{title}}</h2>
 	 	    	<div class="job_read_full">Read full description</div>
 	 	    	<div class="job_description job_description_{{id}}">{{{content}}}</div>
-	 	    	<div class="job_apply job_apply_{{id}}">Apply Now</div>
+	 	    	{{#ifeq hideforms "false"}}<div class="job_apply job_apply_{{id}}">Apply Now</div>{{/ifeq}}
 	 	</div>
 </script>';
 
 		// html container
-		$options .= '<div class="all_jobs"><div class="jobs" data-department_filter="' . $department_filter . '"></div></div>';
+		$options .= '<div class="all_jobs">
+			<div class="jobs" 
+				data-department_filter="' . $atts['department_filter'] . '"
+				data-hideforms="' . $atts['hideforms'] . '"
+				>
+			</div>
+		</div>';
 		// api call to get jobs with callback
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
 		// iframe container
-		$options .= '<div id="grnhse_app"></div>';
+		if ( $atts['hideforms'] !== 'false' ) {
+			$options .= '<div id="grnhse_app"></div>';
+		}
 		// script for loading iframe
 		$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
 		// close all_jobs
