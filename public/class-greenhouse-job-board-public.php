@@ -4,7 +4,7 @@
  * The public-facing functionality of the plugin.
  *
  * @link       http://example.com
- * @since      1.1.0
+ * @since      1.2.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public
@@ -80,7 +80,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since    1.2.0
 	 */
 	public function enqueue_scripts() {
 
@@ -100,10 +100,20 @@ class Greenhouse_Job_Board_Public {
 
 	}
 	
+	/**
+	 * Register the shortcodes.
+	 *
+	 * @since    1.0.0
+	 */
 	public function register_shortcodes() {
 		add_shortcode( 'greenhouse', array( $this, 'greenhouse_shortcode_function') );
 	}
-
+	
+	/**
+	 * Handle the main [greenhouse] shortcode.
+	 *
+	 * @since    1.2.0
+	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		$options = get_option( 'greenhouse_job_board_settings' );
 		
@@ -128,11 +138,11 @@ class Greenhouse_Job_Board_Public {
 		// $api_key = $atts['api_key'];
 				
 		$options  = '<div class="greenhouse-job-board">';
-		$options .= '<p>Greenhouse shortcode detected';
-		if ($atts['department_filter']) {
-			$options .= ', with department_filter: ' . $atts['department_filter'];
-		}
-		$options .= '</p>';
+		// $options .= '<p>Greenhouse shortcode detected';
+		// if ($atts['department_filter']) {
+			// $options .= ', with department_filter: ' . $atts['department_filter'];
+		// }
+		// $options .= '</p>';
 		
 		// handlebars template for returned job
 		$options .= '<script id="job-template" type="text/x-handlebars-template">
@@ -175,6 +185,11 @@ class Greenhouse_Job_Board_Public {
 	}
 	
 	
+	/**
+	 * Register the settings page.
+	 *
+	 * @since    1.1.0
+	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
 		add_options_page( 'Greenhouse Job Board Settings', 'Greenhouse Job Board Settings', 'manage_options', 'greenhouse_job_board', 'greenhouse_job_board_options_page' );

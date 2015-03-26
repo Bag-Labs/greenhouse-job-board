@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
 	
 
 function greenhouse_jobs(json){
- 	console.log(json);
+ 	// console.log(json);
  	
  	
  	//setup handlebars
@@ -110,7 +110,7 @@ function greenhouse_jobs(json){
      		}
      	}
      	
-     	console.log('department filter:', department_filter, departments, department_filter_pass);
+     	// console.log('department filter:', department_filter, departments, department_filter_pass);
      	
      	
      	// if dept filter empty
