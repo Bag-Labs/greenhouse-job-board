@@ -16,11 +16,6 @@ Plugin to pull a job board from greenhouse.io via their API and display it on yo
 
 Requirements:
 
-*   Must have a greenhouse account.
-*	Use a shortcode with your URL Token to pull the data. Find your URL token on this page https://app.greenhouse.io/configure/dev_center/config when you are logged into your greenhouse account.
-
-Requirements:
-
 *	Must have a greenhouse account.
 *	Know your URL Token
 
