@@ -112,7 +112,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.2.0
+	 * @since    1.3.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		$options = get_option( 'greenhouse_job_board_settings' );
@@ -120,19 +120,25 @@ class Greenhouse_Job_Board_Public {
 	    $atts = shortcode_atts( array(
 	        'url_token' 		=> $options['greenhouse_job_board_url_token'],
 	        'api_key' 			=> $options['greenhouse_job_board_api_key'],
+	        'apply_now'			=> $options['greenhouse_job_board_apply_now'] ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
+	        'read_full_desc'	=> $options['greenhouse_job_board_read_full_desc'] ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
+	        'hide_full_desc'	=> $options['greenhouse_job_board_hide_full_desc'] ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
+	        'hide_forms'		=> 'false',
+	        'form_type'			=> 'iframe',
 	        'department_filter'	=> '',
-	        'hideforms'			=> 'false',
-	        'formtype'			=> 'iframe'
+	        'job_filter'		=> '',
+	        'office_filter'		=> '',
+	        'location_filter'	=> '',
 	    ), $atts );
 	    
 	    //sanitize values
-	    //if hideforms is anything other than true, set it to false
-	    if ( $atts['hideforms'] !== 'true' ) {
-	    	$atts['hideforms'] = 'false';
+	    //if hide_forms is anything other than true, set it to false
+	    if ( $atts['hide_forms'] !== 'true' ) {
+	    	$atts['hide_forms'] = 'false';
 	    }
-	    //reset formtype until set up for more types
-	    if ( $atts['formtype'] !== 'iframe' ) {
-	    	$atts['formtype'] = 'iframe';
+	    //reset form_type until set up for more types
+	    if ( $atts['form_type'] !== 'iframe' ) {
+	    	$atts['form_type'] = 'iframe';
 	    }
 	    
 		// $api_key = $atts['api_key'];
@@ -150,9 +156,9 @@ class Greenhouse_Job_Board_Public {
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
 	 	    	<h2 class="job_title">{{title}}</h2>
-	 	    	<div class="job_read_full">Read full description</div>
+	 	    	<div class="job_read_full" data-toggle-text="' . $atts['hide_full_desc'] . '">' . $atts['read_full_desc'] . '</div>
 	 	    	<div class="job_description job_description_{{id}}">{{{content}}}</div>
-	 	    	{{#ifeq hideforms "false"}}<div class="job_apply job_apply_{{id}}">Apply Now</div>{{/ifeq}}
+	 	    	{{#ifeq hide_forms "false"}}<div class="job_apply job_apply_{{id}}">' . $atts['apply_now'] . '</div>{{/ifeq}}
 	 	</div>
 </script>';
 
@@ -160,16 +166,19 @@ class Greenhouse_Job_Board_Public {
 		$options .= '<div class="all_jobs">
 			<div class="jobs" 
 				data-department_filter="' . $atts['department_filter'] . '"
-				data-hideforms="' . $atts['hideforms'] . '"
-				data-formtype="' . $atts['formtype'] . '"
+				data-job_filter="' . $atts['job_filter'] . '"
+				data-office_filter="' . $atts['office_filter'] . '"
+				data-location_filter="' . $atts['location_filter'] . '"
+				data-hide_forms="' . $atts['hide_forms'] . '"
+				data-form_type="' . $atts['form_type'] . '"
 				>
 			</div>
 		</div>';
 		// api call to get jobs with callback
 		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
 		// iframe container
-		if ( $atts['hideforms'] !== 'true' &&
-			 $atts['formtype'] === 'iframe' ) {
+		if ( $atts['hide_forms'] !== 'true' &&
+			 $atts['form_type'] === 'iframe' ) {
 			$options .= '<div id="grnhse_app"></div>';
 		}
 		// script for loading iframe
@@ -188,7 +197,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the settings page.
 	 *
-	 * @since    1.1.0
+	 * @since    1.3.0
 	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
@@ -218,6 +227,30 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_api_key', 
 			__( 'API key', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_api_key_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_apply_now', 
+			__( 'Apply Now Text', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_apply_now_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_read_full_desc', 
+			__( 'Read Full Description Text', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_read_full_desc_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_hide_full_desc', 
+			__( 'Hide Full Description Text', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_hide_full_desc_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);

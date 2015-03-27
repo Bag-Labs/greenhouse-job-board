@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       http://example.com
- * @since      1.1.0
+ * @since      1.3.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public/partials
@@ -44,6 +44,60 @@ function greenhouse_job_board_api_key_render(  ) {
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_api_key]' value='<?php echo $options['greenhouse_job_board_api_key']; ?>'>
 	<div class="helper">Find your Greenhouse API Key when you are logged into Greenhouse <a href="https://app.greenhouse.io/configure/dev_center/credentials" target="_blank">here</a> <br />
 	Configure > Dev Center > API Credentials &amp; labeled 'Job Board API'</div>
+	<?php
+
+}
+
+
+function greenhouse_job_board_apply_now_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_apply_now]' value='<?php 
+	if ( !$options['greenhouse_job_board_apply_now'] ) { // Nothing yet saved
+		echo 'Apply Now'; 
+	}
+	else {
+		echo $options['greenhouse_job_board_apply_now']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your `Apply Now` button.</div>
+	<?php
+
+}
+
+
+function greenhouse_job_board_read_full_desc_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_read_full_desc]' value='<?php 
+	if ( !$options['greenhouse_job_board_read_full_desc'] ) { // Nothing yet saved
+		echo 'Read Full Description'; 
+	}
+	else {
+		echo $options['greenhouse_job_board_read_full_desc']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your `Read Full Description` button.</div>
+	<?php
+
+}
+
+
+function greenhouse_job_board_hide_full_desc_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_hide_full_desc]' value='<?php 
+	if ( !$options['greenhouse_job_board_hide_full_desc'] ) { // Nothing yet saved
+		echo 'Hide Full Description'; 
+	}
+	else {
+		echo $options['greenhouse_job_board_hide_full_desc']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your `Hide Full Description` button.</div>
 	<?php
 
 }
