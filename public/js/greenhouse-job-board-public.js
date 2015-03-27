@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
 	
 
 function greenhouse_jobs(json){
- 	console.log(json);
+ 	// console.log(json);
  	
  	
  	//setup handlebars
@@ -150,7 +150,7 @@ function greenhouse_jobs(json){
  					jQuery.inArray( '-'+json.jobs[i].title, job_filter ) == -1 ) {
  			job_filter_pass = true;
  		}
-     	console.log('job filter:', job_filter, json.jobs[i].id, '-'+json.jobs[i].title, job_filter_pass, job_filter_exclude);
+     	// console.log('job filter:', job_filter, json.jobs[i].id, '-'+json.jobs[i].title, job_filter_pass, job_filter_exclude);
      	
      	
      	

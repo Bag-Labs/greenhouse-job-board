@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,17 +30,33 @@ Know the code!
 
 Current Features of the [greenhouse] shortcode:
 
+Filter the jobs displayed. These filters can be combined to create complex filters.
+
 Department Filtering
 
-*	Want to filter results by department?  Add the departmentfilter attribute.
-*	ex. [greenhouse departmentfilter="Value1|Value2"]
-*	supports multiple values, pipe-delimited
-*	supports single negated value - Excludes this department and shows all others. (example: departmentfilter="-Value3")
+*	Want to filter results by department? Show only one deparment or a couple? Exclude a whole department?
+*	Add the `department_filter` attribute: `[greenhouse department_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports either using the department name OR the department id as the value.
+*	supports single negated value - Excludes this department and shows all others. (example: `department_filter="-Value3"`)
+
+Job Filtering
+
+*	Want to filter results by job? Show only specific jobs? Exclude specific jobs?
+*	Add the `job_filter` attribute: `[greenhouse job_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports either using the job title OR the job id as the value.
+*	supports single negated value - Excludes this job and shows all others. (example: `job_filter="-Value3"`)
+
+Filters coming soon:
+
+*	Office Filter
+*	Location Filter
 
 Hiding Forms
 
-*	If you don't want application forms to show up and simply want to display listings, simply add the hideforms attribute
-*	ex. [greenhouse hideforms="true"]
+*	If you don't want application forms to show up and simply want to display listings, simply add the `hide_forms` attribute
+*	ex. `[greenhouse hide_forms="true"]`
 
 
 == Installation ==
@@ -54,6 +70,11 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.3 =
+* Adding support for job filter (include and exclude).
+* Adding support to filter by name/title or id.
+* Adding global settings for the text strings used on the job list.
 
 = 1.2 =
 * Adding support for department filter (include and exclude departments).
