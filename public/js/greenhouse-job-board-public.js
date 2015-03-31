@@ -92,7 +92,7 @@ function greenhouse_jobs(json){
      	var location_filter_exclude = false;
      	
      	//////////
-     	//Department Filter - can a single job have miultiple departments? 
+     	// Department Filter - can a single job have multiple departments? 
      	//
      	var department_filter = false;
      	if ( jQuery('.jobs').attr('data-department_filter') ) {
@@ -102,31 +102,90 @@ function greenhouse_jobs(json){
      			department_filter_exclude = true;
      		}
      		department_filter_pass = false;
+	     	
+	     	//read job department(s) and test against filter
+	     	// var departments = [];
+	     	for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
+	     		//add to array of departments
+	     		// departments.push( json.jobs[i].departments[j].name );
+	     		// departments.push( json.jobs[i].departments[j].id );
+	     		//if not excluding check if department matches any department filter
+	     		if ( 	!department_filter_exclude &&
+	     				(jQuery.inArray( json.jobs[i].departments[j].name, department_filter ) >= 0 ||
+	 					 jQuery.inArray( json.jobs[i].departments[j].id + '', department_filter ) >= 0 )) {
+	     			department_filter_pass = true;
+	     		}
+	     		//if excluding check to see if not department match by name or id
+	     		else if ( 	department_filter_exclude &&
+	     					jQuery.inArray( '-'+json.jobs[i].departments[j].name, department_filter ) == -1 &&
+	     					jQuery.inArray( '-'+json.jobs[i].departments[j].id, department_filter ) == -1 ) {
+	     			department_filter_pass = true;
+	     		}
+	     	}
+	     	console.log('department filter:', department_filter, 'pass=', department_filter_pass);
      	}
-     	//read job department(s) and test against filter
-     	var departments = [];
-     	for( var j = 0; j < json.jobs[j].departments.length; j++ ) {
-     		//add to array of departments
-     		departments.push( json.jobs[i].departments[j].name );
-     		departments.push( json.jobs[i].departments[j].id );
-     		//if not excluding check if department matches any department filter
-     		if ( 	!department_filter_exclude &&
-     				(jQuery.inArray( json.jobs[i].departments[j].name, department_filter ) >= 0 ||
- 					 jQuery.inArray( json.jobs[i].departments[j].id + '', department_filter ) >= 0 )) {
-     			department_filter_pass = true;
-     		}
-     		//if excluding check to see if not department match by name or id
-     		else if ( 	department_filter_exclude &&
-     					jQuery.inArray( '-'+json.jobs[i].departments[j].name, department_filter ) == -1 &&
-     					jQuery.inArray( '-'+json.jobs[i].departments[j].id, department_filter ) == -1 ) {
-     			department_filter_pass = true;
-     		}
+     	
+     	    	
+    	//////////
+    	// Office Filter - can a single job have multiple offices? 
+    	//
+    	var office_filter = false;
+    	if ( jQuery('.jobs').attr('data-office_filter') ) {
+    		office_filter = jQuery('.jobs').attr('data-office_filter').split('|');
+    		if ( office_filter[0].charAt(0) == '-' ) {
+    			// condition met for exclude flag, set office filter to look for excludes
+    			office_filter_exclude = true;
+    		}
+    		office_filter_pass = false;
+    	
+	    	//read job office(s) and test against filter
+	    	for( var j = 0; j < json.jobs[i].offices.length; j++ ) {
+	    		//if not excluding check if office matches any office filter
+	    		if ( 	!office_filter_exclude &&
+	    				(jQuery.inArray( json.jobs[i].offices[j].name, office_filter ) >= 0 ||
+						 jQuery.inArray( json.jobs[i].offices[j].id + '', office_filter ) >= 0 )) {
+	    			office_filter_pass = true;
+	    		}
+	    		//if excluding check to see if not office match by name or id
+	    		else if ( 	office_filter_exclude &&
+	    					jQuery.inArray( '-'+json.jobs[i].offices[j].name, office_filter ) == -1 &&
+	    					jQuery.inArray( '-'+json.jobs[i].offices[j].id, office_filter ) == -1 ) {
+	    			office_filter_pass = true;
+	    		}
+	    	}
+	    	console.log('office filter:', office_filter, 'pass=', office_filter_pass);
      	}
-     	// console.log('department filter:', department_filter, departments, department_filter_pass);
+     	
+     	    	
+    	//////////
+    	// Location Filter - can a single job have multiple locations? 
+    	//
+    	var location_filter = false;
+    	if ( jQuery('.jobs').attr('data-location_filter') ) {
+    		location_filter = jQuery('.jobs').attr('data-location_filter').split('|');
+    		if ( location_filter[0].charAt(0) == '-' ) {
+    			// condition met for exclude flag, set location filter to look for excludes
+    			location_filter_exclude = true;
+    		}
+    		location_filter_pass = false;
+    	
+	    	//read job location(s) and test against filter
+			//if not excluding check if location matches any location filter
+			if ( 	!location_filter_exclude &&
+					jQuery.inArray( json.jobs[i].location.name, location_filter ) >= 0 ) {
+				location_filter_pass = true;
+			}
+			//if excluding check to see if not location match by name or id
+			else if ( 	location_filter_exclude &&
+						jQuery.inArray( '-'+json.jobs[i].location.name, location_filter ) == -1 ) {
+				location_filter_pass = true;
+			}
+	    	console.log('location filter:', location_filter, 'pass=', location_filter_pass);
+     	}
      	
      	
      	//////////
-     	//Job Filter  - a single job can only have one title or id
+     	// Job Filter  - a single job can only have one title or id
      	//
      	var job_filter = false;
      	if ( jQuery('.jobs').attr('data-job_filter') ) {
@@ -136,22 +195,22 @@ function greenhouse_jobs(json){
      			job_filter_exclude = true;
      		}
      		job_filter_pass = false;
-     	}
-     	//read job id and test against filter
- 		//if not excluding check if job matches any job filter
- 		if ( 	!job_filter_exclude &&
- 				(jQuery.inArray( json.jobs[i].id + '', job_filter ) >= 0 ||
- 				 jQuery.inArray( json.jobs[i].title + '', job_filter ) >= 0 ) ) {
- 			job_filter_pass = true;
- 		}
- 		//if excluding check to see if not job match by id
- 		else if ( 	job_filter_exclude &&
- 					jQuery.inArray( '-'+json.jobs[i].id, job_filter ) == -1 &&
- 					jQuery.inArray( '-'+json.jobs[i].title, job_filter ) == -1 ) {
- 			job_filter_pass = true;
- 		}
-     	// console.log('job filter:', job_filter, json.jobs[i].id, '-'+json.jobs[i].title, job_filter_pass, job_filter_exclude);
      	
+	     	//read job id and test against filter
+	 		//if not excluding check if job matches any job filter
+	 		if ( 	!job_filter_exclude &&
+	 				(jQuery.inArray( json.jobs[i].id + '', job_filter ) >= 0 ||
+	 				 jQuery.inArray( json.jobs[i].title + '', job_filter ) >= 0 ) ) {
+	 			job_filter_pass = true;
+	 		}
+	 		//if excluding check to see if not job match by id
+	 		else if ( 	job_filter_exclude &&
+	 					jQuery.inArray( '-'+json.jobs[i].id, job_filter ) == -1 &&
+	 					jQuery.inArray( '-'+json.jobs[i].title, job_filter ) == -1 ) {
+	 			job_filter_pass = true;
+	 		}
+	     	console.log('job filter:', job_filter, 'pass=', job_filter_pass);
+     	}
      	
      	
      	// if filters pass
@@ -165,7 +224,7 @@ function greenhouse_jobs(json){
 	 			id: json.jobs[i].id,
 	 			title: json.jobs[i].title,
 	 			content: decodeHtml( json.jobs[i].content ),
-	 			departments: departments.join('|'),
+	 			//departments: departments.join('|'),
 	 			hide_forms: hide_forms
 	 		});
 	     	
