@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: brownbagmarketing, circlecube
+Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
-Tags: greenhouse, job board, api
+Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 1.0.0
+Tested up to: 4.1.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,12 +12,66 @@ Plugin to pull a job board from greenhouse.io via their API.
 
 == Description ==
 
-Plugin to pull a job board from greenhouse.io via their API.
+Plugin to pull a job board from greenhouse.io via their API and display it on your WordPress site. Use a shortcode with your URL Token to pull the data. Find your URL token on <a href="https://app.greenhouse.io/configure/dev_center/config" target="_blank">this page</a> when you are logged into your greenhouse account. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 Requirements:
 
-*   Must have a greenhouse account.
-*	Use a shortcode with your URL Token to pull the data. Find your URL token on this page https://app.greenhouse.io/configure/dev_center/config when you are logged into your greenhouse account.
+*	Must have a greenhouse account.
+*	Know your URL Token
+
+Initial Setup:
+
+*	For ease of use, setup your URL Token within Settings->Greenhouse Job Board Settings. (NOTE that you can also set this inline within a shortcode)
+*	API Key can also be set, but is not yet supported.
+
+Know the code!
+
+*	To post your job board on a page, simply add the shortcode: [greenhouse].  By default, this will display all of the postings you currently have, along with the forms for applying.  These forms are actually hosted at Greenhouse.io.
+
+Current Features of the [greenhouse] shortcode:
+
+Filter the jobs displayed. These filters can be combined to create complex filters.
+
+Department Filtering
+
+*	Want to filter results by department? Show only one deparment or a couple? Exclude a whole department?
+*	Add the `department_filter` attribute: `[greenhouse department_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports either using the department name OR the department id as the value.
+*	supports negated values - Excludes department(s) and display others. (example: `department_filter="-Value3|-Value4"`)
+
+Job Filtering
+
+*	Want to filter results by job? display only specific jobs? Exclude specific jobs?
+*	Add the `job_filter` attribute: `[greenhouse job_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports either using the job title OR the job id as the value.
+*	supports negated values - Excludes this job and show others. (example: `job_filter="-Value3|-Value4"`)
+
+Office Filtering
+
+*	Want to filter results by office? Show only jobs from a specific office or exclude a specific office?
+*	Add the `office_filter` attribute: `[greenhouse office_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports either using the office name OR the office id as the value.
+*	supports negated values - Excludes office(s) and only display jobs from elsewhere. (example: `office_filter="-Value3"`)
+
+Location Filtering
+
+*	Want to filter results by location? Show only jobs from a specific location or exclude a specific location?
+*	Add the `location_filter` attribute: `[greenhouse location_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports location text value, since there is no id associated to locations in greenhouse.
+*	supports negated values - Excludes location(s) and only display jobs from elsewhere. (example: `location_filter="-Value3"`)
+
+Hiding Forms
+
+*	If you don't want application forms to display and simply want to display listings, just add the `hide_forms` attribute
+*	ex. `[greenhouse hide_forms="true"]`
+
+Coming soon:
+
+*	Sorting
 
 == Installation ==
 
@@ -29,25 +83,39 @@ e.g.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
-== Frequently Asked Questions ==
-
-= Why No Questions? =
-
-None have been asked yet.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
 == Changelog ==
+
+= 1.4 =
+* Adding support for location filter (include and exclude).
+* Adding support for office filter by name/title or id(include and exclude).
+* Adding another global settings for the text strings used on the job list.
+* Cleaning up toggle scripts.
+
+= 1.3 =
+* Adding support for job filter (include and exclude).
+* Adding support to filter by name/title or id.
+* Adding global settings for the text strings used on the job list.
+
+= 1.2 =
+* Adding support for department filter (include and exclude departments).
+* Adding support for hiding forms from the job board.
+
+= 1.1 =
+* Adding settings page with global default settings.
 
 = 1.0 =
 * Initial release
 
-== Upgrade Notice ==
+== Screenshots ==
 
-= 1.0 =
+1. Shortcode in action.
+2. View the job board list.
+3. Click to view description of each job.
+4. Click to apply for each job.
+
+
+== Frequently Asked Questions ==
+
+= Why no FAQ? =
+
+If you ask questions, answers will come.

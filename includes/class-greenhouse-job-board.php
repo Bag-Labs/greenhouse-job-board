@@ -7,7 +7,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       http://example.com
- * @since      1.0.0
+ * @since      1.1.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/includes
@@ -22,7 +22,7 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @since      1.1.0
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/includes
  * @author     Your Name <email@example.com>
@@ -69,7 +69,7 @@ class Greenhouse_Job_Board {
 	public function __construct() {
 
 		$this->greenhouse_job_board = 'greenhouse-job-board';
-		$this->version = '1.0.0';
+		$this->version = '1.1.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -91,7 +91,7 @@ class Greenhouse_Job_Board {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
@@ -118,6 +118,7 @@ class Greenhouse_Job_Board {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-greenhouse-job-board-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/greenhouse-job-board-public-display.php';
 
 		$this->loader = new Greenhouse_Job_Board_Loader();
 
@@ -161,7 +162,7 @@ class Greenhouse_Job_Board {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 * @access   private
 	 */
 	private function define_public_hooks() {
@@ -172,6 +173,10 @@ class Greenhouse_Job_Board {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
+		
+		
+		$this->loader->add_action( 'admin_menu', $plugin_public, 'greenhouse_job_board_add_admin_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_public, 'greenhouse_job_board_settings_init' );
 	}
 
 	/**
