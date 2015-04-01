@@ -30,18 +30,44 @@ jQuery(document).ready(function($) {
 	 */
 	 
 	$('.jobs').on('click', '.job_read_full', function(e){
-		$(this).next('.job_description').toggle();
-		$(this).next('.job_description').toggleClass('open');
-		var temp = $(this).data('toggle-text');
-		$(this).data( 'toggle-text', $(this).text() );
-		$(this).text( temp );
+		e.preventDefault();
+		var job_id = $(this).parents('.job').data('id');
+		if ( $(this).hasClass('open') ) {
+			$(this).removeClass('open');
+			$(this).text( $(this).data('closed-text') );
+			$('.job_description_' + job_id).toggle(false);
+			$('.job_description_' + job_id).removeClass('open');
+		}
+		else {
+			$(this).addClass('open');
+			$(this).text( $(this).data('opened-text') );
+			$('.job_description_' + job_id).toggle(true);
+			$('.job_description_' + job_id).addClass('open');
+		}
 	});
 	$('.jobs').on('click', '.job_apply', function(e){
-		if ($('#grnhse_app').hasClass('open')) {
-			$('#grnhse_app').empty(); 
-			$('#grnhse_app').removeClass('open');
+		e.preventDefault();
+		if ( $(this).hasClass('open') ) {
+			//closing since already open
+			$(this).text( $(this).data('closed-text') );
+			$(this).removeClass('open');
+			if ($('#grnhse_app').hasClass('open')) {
+				$('#grnhse_app').empty(); 
+				$('#grnhse_app').removeClass('open');
+			}
 		}
 		else{
+			//close others
+			$('.job_apply').removeClass('open');
+			$('.job_apply').text( $(this).data('closed-text') );
+			if ($('#grnhse_app').hasClass('open')) {
+				$('#grnhse_app').empty(); 
+				$('#grnhse_app').removeClass('open');
+			}
+			//open this one
+			$(this).addClass('open');
+			$(this).text( $(this).data('opened-text') );
+
 			$(this).parent().append( $('#grnhse_app') ); 
 			$('#grnhse_app').addClass('open');
 			var jid = $(this).parent().data('id');
@@ -122,12 +148,12 @@ function greenhouse_jobs(json){
 	     			department_filter_pass = true;
 	     		}
 	     	}
-	     	console.log('department filter:', department_filter, 'pass=', department_filter_pass);
+	     	// console.log('department filter:', department_filter, 'pass=', department_filter_pass);
      	}
      	
      	    	
     	//////////
-    	// Office Filter - can a single job have multiple offices? 
+    	// Office Filter - can a single job have multiple offices YES
     	//
     	var office_filter = false;
     	if ( jQuery('.jobs').attr('data-office_filter') ) {
@@ -153,13 +179,13 @@ function greenhouse_jobs(json){
 	    			office_filter_pass = true;
 	    		}
 	    	}
-	    	console.log('office filter:', office_filter, 'pass=', office_filter_pass);
+	    	// console.log('office filter:', office_filter, 'pass=', office_filter_pass);
      	}
      	
      	    	
     	//////////
-    	// Location Filter - can a single job have multiple locations? 
-    	//
+    	// Location Filter - can a single job have multiple locations. NO. 
+    	// Location is a text field. Must be an exact match.
     	var location_filter = false;
     	if ( jQuery('.jobs').attr('data-location_filter') ) {
     		location_filter = jQuery('.jobs').attr('data-location_filter').split('|');
@@ -180,7 +206,7 @@ function greenhouse_jobs(json){
 						jQuery.inArray( '-'+json.jobs[i].location.name, location_filter ) == -1 ) {
 				location_filter_pass = true;
 			}
-	    	console.log('location filter:', location_filter, 'pass=', location_filter_pass);
+	    	// console.log('location filter:', location_filter, 'pass=', location_filter_pass);
      	}
      	
      	
@@ -209,7 +235,7 @@ function greenhouse_jobs(json){
 	 					jQuery.inArray( '-'+json.jobs[i].title, job_filter ) == -1 ) {
 	 			job_filter_pass = true;
 	 		}
-	     	console.log('job filter:', job_filter, 'pass=', job_filter_pass);
+	     	// console.log('job filter:', job_filter, 'pass=', job_filter_pass);
      	}
      	
      	
