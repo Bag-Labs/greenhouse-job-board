@@ -112,7 +112,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.3.0
+	 * @since    1.4.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		$options = get_option( 'greenhouse_job_board_settings' );

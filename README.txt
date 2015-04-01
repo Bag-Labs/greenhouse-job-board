@@ -3,8 +3,8 @@ Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 1.3.0
+Tested up to: 4.1.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,26 +38,40 @@ Department Filtering
 *	Add the `department_filter` attribute: `[greenhouse department_filter="Value1|Value2"]`
 *	supports single or multiple values, pipe-delimited
 *	supports either using the department name OR the department id as the value.
-*	supports single negated value - Excludes this department and shows all others. (example: `department_filter="-Value3"`)
+*	supports negated values - Excludes department(s) and display others. (example: `department_filter="-Value3|-Value4"`)
 
 Job Filtering
 
-*	Want to filter results by job? Show only specific jobs? Exclude specific jobs?
+*	Want to filter results by job? display only specific jobs? Exclude specific jobs?
 *	Add the `job_filter` attribute: `[greenhouse job_filter="Value1|Value2"]`
 *	supports single or multiple values, pipe-delimited
 *	supports either using the job title OR the job id as the value.
-*	supports single negated value - Excludes this job and shows all others. (example: `job_filter="-Value3"`)
+*	supports negated values - Excludes this job and show others. (example: `job_filter="-Value3|-Value4"`)
 
-Filters coming soon:
+Office Filtering
 
-*	Office Filter
-*	Location Filter
+*	Want to filter results by office? Show only jobs from a specific office or exclude a specific office?
+*	Add the `office_filter` attribute: `[greenhouse office_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports either using the office name OR the office id as the value.
+*	supports negated values - Excludes office(s) and only display jobs from elsewhere. (example: `office_filter="-Value3"`)
+
+Location Filtering
+
+*	Want to filter results by location? Show only jobs from a specific location or exclude a specific location?
+*	Add the `location_filter` attribute: `[greenhouse location_filter="Value1|Value2"]`
+*	supports single or multiple values, pipe-delimited
+*	supports location text value, since there is no id associated to locations in greenhouse.
+*	supports negated values - Excludes location(s) and only display jobs from elsewhere. (example: `location_filter="-Value3"`)
 
 Hiding Forms
 
-*	If you don't want application forms to show up and simply want to display listings, simply add the `hide_forms` attribute
+*	If you don't want application forms to display and simply want to display listings, just add the `hide_forms` attribute
 *	ex. `[greenhouse hide_forms="true"]`
 
+Coming soon:
+
+*	Sorting
 
 == Installation ==
 
@@ -70,6 +84,12 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.4 =
+* Adding support for location filter (include and exclude).
+* Adding support for office filter by name/title or id(include and exclude).
+* Adding another global settings for the text strings used on the job list.
+* Cleaning up toggle scripts.
 
 = 1.3 =
 * Adding support for job filter (include and exclude).
@@ -98,4 +118,4 @@ e.g.
 
 = Why no FAQ? =
 
-No answers for no questions...
+If you ask questions, answers will come.
