@@ -67,6 +67,24 @@ function greenhouse_job_board_apply_now_render(  ) {
 }
 
 
+function greenhouse_job_board_apply_now_cancel_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_apply_now_cancel]' value='<?php 
+	if ( !$options['greenhouse_job_board_apply_now_cancel'] ) { // Nothing yet saved
+		echo 'Cancel'; 
+	}
+	else {
+		echo $options['greenhouse_job_board_apply_now_cancel']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your `Cancel` button.</div>
+	<?php
+
+}
+
+
 function greenhouse_job_board_read_full_desc_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );

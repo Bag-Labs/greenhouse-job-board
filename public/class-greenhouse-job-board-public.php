@@ -121,6 +121,7 @@ class Greenhouse_Job_Board_Public {
 	        'url_token' 		=> $options['greenhouse_job_board_url_token'],
 	        'api_key' 			=> $options['greenhouse_job_board_api_key'],
 	        'apply_now'			=> $options['greenhouse_job_board_apply_now'] ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
+	        'apply_now_cancel'	=> $options['greenhouse_job_board_apply_now_cancel'] ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
 	        'read_full_desc'	=> $options['greenhouse_job_board_read_full_desc'] ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
 	        'hide_full_desc'	=> $options['greenhouse_job_board_hide_full_desc'] ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
 	        'hide_forms'		=> 'false',
@@ -235,6 +236,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_apply_now', 
 			__( 'Apply Now Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_apply_now_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_apply_now_cancel', 
+			__( 'Apply Now Cancel Text', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_apply_now_cancel_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);
