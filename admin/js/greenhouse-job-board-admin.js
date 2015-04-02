@@ -47,21 +47,22 @@
 				shortcode += ' department_filter="' + department_filter + '"';
 			}
 			
+			//job filter
+			var job_filter = $('#job_filter').val();
+			if (job_filter) {
+				shortcode += ' job_filter="' + job_filter + '"';
+			}
+			
 			shortcode += ']';
 						
 			window.send_to_editor(shortcode);
 			
 		});
 		
-		$('.include_url_token').on('click', function(e){
-			$('.section_url_token').toggle();
+		$('.include').on('click', function(e){
+			$('.section_' + $(this).data('include') ).toggle();
 		});
-		$('.include_filter').on('click', function(e){
-			$('.section_filter').toggle();
-		});
-		$('.include_department_filter').on('click', function(e){
-			$('.section_department_filter').toggle();
-		});
+		
     });
 
 })( jQuery );

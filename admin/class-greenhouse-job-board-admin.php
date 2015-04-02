@@ -119,7 +119,7 @@ class Greenhouse_Job_Board_Admin {
 		
 		<div class="section">
 			<label>
-				<input type="checkbox" class="include_url_token" />Include URL token to override plugin settings?
+				<input type="checkbox" class="include" data-include="url_token" />Include URL token to override plugin settings?
 			</label>
 			<div class="section section_url_token" style="display:none;">
 				<label for="url_token">Url token
@@ -130,19 +130,30 @@ class Greenhouse_Job_Board_Admin {
 		
 		<div class="section">
 			<label>
-				<input type="checkbox" class="include_filter" />Filter jobs?
+				<input type="checkbox" class="include" data-include="filter" />Filter jobs?
 			</label>
 		
 			<div class="section section_filter" style="display:none;">
 				<div class="section">
 					<label>
-						<input type="checkbox" class="include_department_filter" />Filter by department?
+						<input type="checkbox" class="include" data-include="department_filter" />Filter by department?
 					</label>
 					<div class="section section_department_filter" style="display:none;">
 						<label for="department_filter">Department Filter
 							<input id="department_filter" type="text" />
 						</label>
 						<div class="help_text">Pipe '|' delimeted. For example: Department 1| Department 2.</div>
+					</div>
+				</div>
+				<div class="section">
+					<label>
+						<input type="checkbox" class="include" data-include="job_filter" />Filter by Job?
+					</label>
+					<div class="section section_job_filter" style="display:none;">
+						<label for="job_filter">Job Filter
+							<input id="job_filter" type="text" />
+						</label>
+						<div class="help_text">Pipe '|' delimeted. For example: job 1| job 2.</div>
 					</div>
 				</div>
 			</div>
