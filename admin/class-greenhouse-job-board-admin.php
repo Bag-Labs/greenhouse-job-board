@@ -99,5 +99,62 @@ class Greenhouse_Job_Board_Admin {
 		wp_enqueue_script( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+	
+	
+	
+	/**
+	 * Add the shortcodes media button.
+	 *
+	 * @since    1.5.0
+	 */
+	public function greenhouse_add_shortcode_media_button() {
+		add_thickbox();
+		echo <<<HTML
+		
+		<a href="#TB_inline?width=600&height=550&inlineId=add-greenhouse-shortcode-form" id="add-greenhouse-shortcode-button" class="button thickbox">Add Greenhouse Job Board</a>
+		<div id="add-greenhouse-shortcode-form" style="display:none;">
+		<div class="greenhouse-wizard">
+		
+		<h1>Greenhouse Job Board Shortcode</h1>
+		
+		<div class="section">
+			<label>
+				<input type="checkbox" class="include_url_token" />Include URL token to override plugin settings?
+			</label>
+			<div class="section section_url_token" style="display:none;">
+				<label for="url_token">Url token
+					<input id="url_token" type="text" />
+				</label>
+			</div>
+		</div>
+		
+		<div class="section">
+			<label>
+				<input type="checkbox" class="include_filter" />Filter jobs?
+			</label>
+		
+			<div class="section section_filter" style="display:none;">
+				<div class="section">
+					<label>
+						<input type="checkbox" class="include_department_filter" />Filter by department?
+					</label>
+					<div class="section section_department_filter" style="display:none;">
+						<label for="department_filter">Department Filter
+							<input id="department_filter" type="text" />
+						</label>
+						<div class="help_text">Pipe '|' delimeted. For example: Department 1| Department 2.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<hr />
+		<a style="float: left;" href="#" onclick="tb_remove(); return false;">Cancel</a>		
+		<a style="float: right;" class="insert-greenhouse-shortcode-button button button-primary">Insert Shortcode</a>
+		
+		</div>
+		</div>
+HTML;
+	}
 
 }
