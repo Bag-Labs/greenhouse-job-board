@@ -109,6 +109,8 @@ class Greenhouse_Job_Board_Admin {
 	 */
 	public function greenhouse_add_shortcode_media_button() {
 		add_thickbox();
+		
+		$greenhouse_settings_url = admin_url('options-general.php?page=greenhouse_job_board' );
 		echo <<<HTML
 		
 		<a href="#TB_inline?width=600&height=550&inlineId=add-greenhouse-shortcode-form" id="add-greenhouse-shortcode-button" class="button thickbox">Add Greenhouse Job Board</a>
@@ -119,13 +121,66 @@ class Greenhouse_Job_Board_Admin {
 		
 		<div class="section">
 			<label>
-				<input type="checkbox" class="include" data-include="url_token" />Include URL token to override plugin settings?
+				<input type="checkbox" class="include" data-include="url_token" />Include URL token to override <a href="$greenhouse_settings_url">plugin settings</a>?
 			</label>
 			<div class="section section_url_token" style="display:none;">
 				<label for="url_token">Url token
 					<input id="url_token" type="text" />
 				</label>
 			</div>
+		</div>
+		
+		<div class="section">
+			<label>
+				<input type="checkbox" class="include" data-include="api_key" />Include API Key to override <a href="$greenhouse_settings_url">plugin settings</a>?
+			</label>
+			<div class="section section_api_key" style="display:none;">
+				<label for="api_key">API Key
+					<input id="api_key" type="text" />
+				</label>
+			</div>
+		</div>
+		
+		<div class="section">
+			<label>
+				<input type="checkbox" class="include" data-include="texts" />Set Text Values to override <a href="$greenhouse_settings_url">plugin settings</a>?
+			</label>
+		
+			<div class="section section_texts" style="display:none;">
+				<div class="section">
+					<label for="apply_now">Apply Now Text
+						<input id="apply_now" type="text" />
+					</label>
+				</div>
+				<div class="section">
+					<label for="apply_now_cancel">Apply Now Cancel Text
+						<input id="apply_now_cancel" type="text" />
+					</label>
+				</div>
+				<div class="section">
+					<label for="read_full_desc">Read Full Description Text
+						<input id="read_full_desc" type="text" />
+					</label>
+				</div>
+				<div class="section">
+					<label for="hide_full_desc">Hide Full Description Text
+						<input id="hide_full_desc" type="text" />
+					</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="section">
+			<label>
+				<input type="checkbox" id="hide_forms" class="include" checked="checked" data-include="display_form" />Display Application Forms?
+			</label>
+		
+			<div class="section section_display_form">
+				<label>
+					<input type="checkbox" id="form_type" disabled="disabled" checked="checked" />Use embedded iFrame Forms?
+				</label>
+			</div>
+			
 		</div>
 		
 		<div class="section">
@@ -156,8 +211,31 @@ class Greenhouse_Job_Board_Admin {
 						<div class="help_text">Pipe '|' delimeted. For example: job 1| job 2.</div>
 					</div>
 				</div>
+				<div class="section">
+					<label>
+						<input type="checkbox" class="include" data-include="office_filter" />Filter by Office?
+					</label>
+					<div class="section section_office_filter" style="display:none;">
+						<label for="office_filter">Office Filter
+							<input id="office_filter" type="text" />
+						</label>
+						<div class="help_text">Pipe '|' delimeted. For example: office 1| office 2.</div>
+					</div>
+				</div>
+				<div class="section">
+					<label>
+						<input type="checkbox" class="include" data-include="location_filter" />Filter by Location?
+					</label>
+					<div class="section section_location_filter" style="display:none;">
+						<label for="location_filter">Location Filter
+							<input id="location_filter" type="text" />
+						</label>
+						<div class="help_text">Single locations only. For example: location 1.</div>
+					</div>
+				</div>
 			</div>
 		</div>
+		
 		
 		<hr />
 		<a style="float: left;" href="#" onclick="tb_remove(); return false;">Cancel</a>		

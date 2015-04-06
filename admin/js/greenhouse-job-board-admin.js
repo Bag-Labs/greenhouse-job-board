@@ -40,6 +40,34 @@
 			if (url_token) {
 				shortcode += ' url_token="' + url_token + '"';
 			}
+			//API key
+			var api_key = $('#api_key').val();
+			if (api_key) {
+				shortcode += ' api_key="' + api_key + '"';
+			}
+			
+			//text strings
+			var apply_now = $('#apply_now').val();
+			if (apply_now) {
+				shortcode += ' apply_now="' + apply_now + '"';
+			}
+			var apply_now_cancel = $('#apply_now_cancel').val();
+			if (apply_now_cancel) {
+				shortcode += ' apply_now_cancel="' + apply_now_cancel + '"';
+			}
+			var read_full_desc = $('#read_full_desc').val();
+			if (read_full_desc) {
+				shortcode += ' read_full_desc="' + read_full_desc + '"';
+			}
+			var hide_full_desc = $('#hide_full_desc').val();
+			if (hide_full_desc) {
+				shortcode += ' hide_full_desc="' + hide_full_desc + '"';
+			}
+			
+			//hide_forms
+			if ( !$('#hide_forms').is(':checked') ) {
+				shortcode += ' hide_forms="true"';
+			}
 			
 			//department filter
 			var department_filter = $('#department_filter').val();
@@ -51,6 +79,18 @@
 			var job_filter = $('#job_filter').val();
 			if (job_filter) {
 				shortcode += ' job_filter="' + job_filter + '"';
+			}
+			
+			//office filter
+			var office_filter = $('#office_filter').val();
+			if (office_filter) {
+				shortcode += ' office_filter="' + office_filter + '"';
+			}
+			
+			//location filter
+			var location_filter = $('#location_filter').val();
+			if (location_filter) {
+				shortcode += ' location_filter="' + location_filter + '"';
 			}
 			
 			shortcode += ']';
