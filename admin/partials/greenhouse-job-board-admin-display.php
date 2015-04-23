@@ -11,6 +11,7 @@
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/admin/partials
  */
-?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+
+/** This file should primarily consist of HTML with a little bit of PHP. */
+?>

@@ -3,8 +3,8 @@ Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
-Tested up to: 4.1.1
-Stable tag: 1.4.0
+Tested up to: 4.1.2
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ Plugin to pull a job board from greenhouse.io via their API and display it on yo
 Requirements:
 
 *	Must have a greenhouse account.
-*	Know your URL Token
+*	Know your URL Token.
 
 Initial Setup:
 
@@ -84,6 +84,11 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.5 =
+* Adding add job board media button and wizard to help construct your shortcode.
+* Bug fixes - compatability with ACF Pro
+* Bug fixes - unexpected output
 
 = 1.4 =
 * Adding support for location filter (include and exclude).
