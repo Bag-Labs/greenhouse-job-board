@@ -209,7 +209,7 @@ class Greenhouse_Job_Board_Public {
 	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
-		add_options_page( 'Greenhouse Job Board Settings', 'Greenhouse Job Board Settings', 'manage_options', 'greenhouse_job_board', 'greenhouse_job_board_options_page' );
+		add_options_page( 'Greenhouse Job Board Settings', 'Greenhouse', 'manage_options', 'greenhouse_job_board', 'greenhouse_job_board_options_page' );
 	}
 	
 	function greenhouse_job_board_settings_init(  ) { 
