@@ -118,12 +118,12 @@ class Greenhouse_Job_Board_Public {
 		$options = get_option( 'greenhouse_job_board_settings' );
 		
 	    $atts = shortcode_atts( array(
-	        'url_token' 		=> $options['greenhouse_job_board_url_token'],
-	        'api_key' 			=> $options['greenhouse_job_board_api_key'],
-	        'apply_now'			=> $options['greenhouse_job_board_apply_now'] ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
-	        'apply_now_cancel'	=> $options['greenhouse_job_board_apply_now_cancel'] ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
-	        'read_full_desc'	=> $options['greenhouse_job_board_read_full_desc'] ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
-	        'hide_full_desc'	=> $options['greenhouse_job_board_hide_full_desc'] ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
+	        'url_token' 		=> isset( $options['greenhouse_job_board_url_token'] ) ? $options['greenhouse_job_board_url_token'] : '',
+	        'api_key' 			=> isset( $options['greenhouse_job_board_api_key'] ) ? $options['greenhouse_job_board_api_key'] : '',
+	        'apply_now'			=> isset( $options['greenhouse_job_board_apply_now'] ) ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
+	        'apply_now_cancel'	=> isset( $options['greenhouse_job_board_apply_now_cancel'] ) ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
+	        'read_full_desc'	=> isset( $options['greenhouse_job_board_read_full_desc'] ) ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
+	        'hide_full_desc'	=> isset( $options['greenhouse_job_board_hide_full_desc'] ) ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
 	        'hide_forms'		=> 'false',
 	        'form_type'			=> 'iframe',
 	        'department_filter'	=> '',
@@ -142,9 +142,16 @@ class Greenhouse_Job_Board_Public {
 	    	$atts['form_type'] = 'iframe';
 	    }
 	    
+	    
 		// $api_key = $atts['api_key'];
 				
 		$options  = '<div class="greenhouse-job-board">';
+		
+	    if ( $atts['url_token'] == '' ) {
+	    	$options .= 'The greenhouse url_token is required. Please either add it as a shortcode attribute or add it to your <a href="' . admin_url('options-general.php?page=greenhouse_job_board' ) . '">greenhouse settings</a>.';
+			$options .= '</div>';
+			return $options;
+	    }
 		// $options .= '<p>Greenhouse shortcode detected';
 		// if ($atts['department_filter']) {
 			// $options .= ', with department_filter: ' . $atts['department_filter'];
