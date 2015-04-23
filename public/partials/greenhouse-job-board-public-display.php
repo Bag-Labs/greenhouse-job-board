@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       http://example.com
- * @since      1.4.0
+ * @since      1.5.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public/partials
@@ -29,7 +29,10 @@ function greenhouse_job_board_url_token_render(  ) {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
-	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_url_token]' value='<?php echo $options['greenhouse_job_board_url_token']; ?>'>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_url_token]' value='<?php 
+	if ( isset( $options['greenhouse_job_board_url_token'] ) ) {
+		echo $options['greenhouse_job_board_url_token']; 
+	} ?>'>
 	<div class="helper">Find your Greenhouse URL Token when you are logged into Greenhouse <a href="https://app.greenhouse.io/configure/dev_center/config" target="_blank">here</a> <br />
 	Configure > Dev Center > Configuring your Job Board &amp; labeled 'Your URL Token'</div>
 	<?php
@@ -41,7 +44,10 @@ function greenhouse_job_board_api_key_render(  ) {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
-	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_api_key]' value='<?php echo $options['greenhouse_job_board_api_key']; ?>'>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_api_key]' value='<?php 
+	if ( isset( $options['greenhouse_job_board_api_key'] ) ) {
+		echo $options['greenhouse_job_board_api_key']; 
+	} ?>'>
 	<div class="helper">Find your Greenhouse API Key when you are logged into Greenhouse <a href="https://app.greenhouse.io/configure/dev_center/credentials" target="_blank">here</a> <br />
 	Configure > Dev Center > API Credentials &amp; labeled 'Job Board API'</div>
 	<?php
@@ -54,7 +60,7 @@ function greenhouse_job_board_apply_now_render(  ) {
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_apply_now]' value='<?php 
-	if ( !$options['greenhouse_job_board_apply_now'] ) { // Nothing yet saved
+	if ( !isset( $options['greenhouse_job_board_apply_now'] ) ) { // Nothing yet saved
 		echo 'Apply Now'; 
 	}
 	else {
@@ -72,7 +78,7 @@ function greenhouse_job_board_apply_now_cancel_render(  ) {
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_apply_now_cancel]' value='<?php 
-	if ( !$options['greenhouse_job_board_apply_now_cancel'] ) { // Nothing yet saved
+	if ( !isset( $options['greenhouse_job_board_apply_now_cancel']) ) { // Nothing yet saved
 		echo 'Cancel'; 
 	}
 	else {
@@ -90,7 +96,7 @@ function greenhouse_job_board_read_full_desc_render(  ) {
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_read_full_desc]' value='<?php 
-	if ( !$options['greenhouse_job_board_read_full_desc'] ) { // Nothing yet saved
+	if ( !isset( $options['greenhouse_job_board_read_full_desc'] ) ) { // Nothing yet saved
 		echo 'Read Full Description'; 
 	}
 	else {
@@ -108,7 +114,7 @@ function greenhouse_job_board_hide_full_desc_render(  ) {
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_hide_full_desc]' value='<?php 
-	if ( !$options['greenhouse_job_board_hide_full_desc'] ) { // Nothing yet saved
+	if ( !isset( $options['greenhouse_job_board_hide_full_desc'] ) ) { // Nothing yet saved
 		echo 'Hide Full Description'; 
 	}
 	else {
@@ -135,9 +141,9 @@ function greenhouse_job_board_options_page(  ) {
 		<h2>Greenhouse Job Board Settings</h2>
 		
 		<?php
-		settings_fields( 'greenhouse_settings' );
-		do_settings_sections( 'greenhouse_settings' );
-		submit_button();
+			settings_fields( 'greenhouse_settings' );
+			do_settings_sections( 'greenhouse_settings' );
+			submit_button();
 		?>
 		
 	</form>
