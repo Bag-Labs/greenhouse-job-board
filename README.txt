@@ -3,7 +3,7 @@ Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
-Tested up to: 4.1.2
+Tested up to: 4.2
 Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
