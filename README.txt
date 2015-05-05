@@ -3,8 +3,8 @@ Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume
 Requires at least: 3.0.1
-Tested up to: 4.2
-Stable tag: 1.5.0
+Tested up to: 4.2.1
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,11 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.6 =
+* Adding options to customize display of job data: location, office, department and description.
+* Also adding options to customize labels for each of the above.
+* Minor Bug fixes.
 
 = 1.5 =
 * Adding add job board media button and wizard to help construct your shortcode.
