@@ -70,8 +70,8 @@ jQuery(document).ready(function($) {
 
 			$(this).parent().append( $('#grnhse_app') ); 
 			$('#grnhse_app').addClass('open');
-			var jid = $(this).parent().data('id');
-		 	
+			var jid = $(this).parents('.job').data('id');
+		 	// console.log(jid);
 		 	// Loads job with ID 5555555 with a source tracking token taken 
 		 	// from the gh_src querystring parameter. NOTE: this is what you
 		 	// want to do to ensure source tracking works (i.e., tracking
@@ -238,6 +238,40 @@ function greenhouse_jobs(json){
 	     	// console.log('job filter:', job_filter, 'pass=', job_filter_pass);
      	}
      	
+     	//display val
+     	var display = jQuery('.jobs').attr('data-display').split('|');
+     	var display_office = null;
+     	var display_location = null;
+     	var display_department = null;
+     	var display_description = null;
+     	
+     	if ( jQuery.inArray( 'office', display ) >= 0 ) {
+     		if ( json.jobs[i].offices.length > 0) {
+     			display_office = json.jobs[i].offices[0].name;
+     		}
+     		if ( json.jobs[i].offices.length > 1) {
+	     		for( var j = 0; j < json.jobs[i].offices.length; j++ ) {
+		     		display_office += ', ' + json.jobs[i].offices[j].name;
+		     	}
+		    }
+     	}
+     	if ( jQuery.inArray( 'department', display ) >= 0 ) {
+     		if ( json.jobs[i].departments.length > 0) {
+     			display_department = json.jobs[i].departments[0].name;
+     		}
+     		if ( json.jobs[i].departments.length > 1) {
+	     		for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
+		     		display_department += ', ' + json.jobs[i].departments[j].name;
+		     	}
+		    }
+     	}
+     	//location is one field only
+     	if ( jQuery.inArray( 'location', display ) >= 0 ) {
+	     	display_location = json.jobs[i].location.name;
+     	}
+     	if ( jQuery.inArray( 'description', display ) >= 0 ) {
+	     	display_description = true;
+     	}
      	
      	// if filters pass
      	if ( 	department_filter_pass &&
@@ -251,7 +285,11 @@ function greenhouse_jobs(json){
 	 			title: json.jobs[i].title,
 	 			content: decodeHtml( json.jobs[i].content ),
 	 			//departments: departments.join('|'),
-	 			hide_forms: hide_forms
+	 			hide_forms: hide_forms,
+	 			display_description: display_description,
+	 			display_department: display_department,
+	 			display_office: display_office,
+	 			display_location: display_location
 	 		});
 	     	
 	     	jQuery('.all_jobs .jobs').append(jobshtml);

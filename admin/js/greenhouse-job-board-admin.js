@@ -63,11 +63,49 @@
 			if (hide_full_desc) {
 				shortcode += ' hide_full_desc="' + hide_full_desc + '"';
 			}
+			var location_label = $('#location_label').val();
+			if (location_label) {
+				shortcode += ' location_label="' + location_label + '"';
+			}
+			var office_label = $('#office_label').val();
+			if (office_label) {
+				shortcode += ' office_label="' + office_label + '"';
+			}
+			var department_label = $('#department_label').val();
+			if (department_label) {
+				shortcode += ' department_label="' + department_label + '"';
+			}
 			
 			//hide_forms
-			if ( !$('#hide_forms').is(':checked') ) {
+			if ( $('#hide_forms:checked').length == 0 ) {
 				shortcode += ' hide_forms="true"';
 			}
+			
+			//meta data display
+			var display_meta = '';
+						
+			if ( $('#display_custom_meta:checked').length > 0 ) {
+				
+				console.log($('#display_custom_meta:checked').length + ' ' + $('#display_description:checked').length + ' ' + $('#display_location:checked').length + ' ' + $('#display_office:checked').length + ' ' + $('#display_department:checked').length);
+
+				if ( $('#display_description:checked').length > 0 ) {
+					display_meta += 'description';
+				}
+				if ( $('#display_location:checked').length > 0 ) {
+					display_meta += '|location';
+				}
+				if ( $('#display_office:checked').length > 0 ) {
+					display_meta += '|office';
+				}
+				if ( $('#display_department:checked').length > 0 ) {
+					display_meta += '|department';
+				}
+				
+				if ( display_meta != '' ) {
+					shortcode += ' display="' + display_meta + '"';
+				}
+			}
+				// shortcode += ' display="' + display_meta + '"';
 			
 			//department filter
 			var department_filter = $('#department_filter').val();

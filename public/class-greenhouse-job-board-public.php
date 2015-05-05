@@ -112,7 +112,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.4.0
+	 * @since    1.6.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		$options = get_option( 'greenhouse_job_board_settings' );
@@ -130,6 +130,11 @@ class Greenhouse_Job_Board_Public {
 	        'job_filter'		=> '',
 	        'office_filter'		=> '',
 	        'location_filter'	=> '',
+	        'location_label'	=> isset( $options['greenhouse_job_board_location_label'] ) ? $options['greenhouse_job_board_location_label'] : 'Location: ',
+	        'office_label'	=> isset( $options['greenhouse_job_board_office_label'] ) ? $options['greenhouse_job_board_office_label'] : 'Office: ',
+	        'department_label'	=> isset( $options['greenhouse_job_board_department_label'] ) ? $options['greenhouse_job_board_department_label'] : 'Department: ',
+	        'description_label'	=> isset( $options['greenhouse_job_board_description_label'] ) ? $options['greenhouse_job_board_description_label'] : '',
+	        'display'			=> isset( $options['display'] ) ? $options['display'] : 'description',
 	    ), $atts );
 	    
 	    //sanitize values
@@ -165,7 +170,12 @@ class Greenhouse_Job_Board_Public {
 			data-departments="{{departments}}">
 	 	    	<h2 class="job_title">{{title}}</h2>
 	 	    	<p><a href="#" class="job_read_full" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
-	 	    	<div class="job_description job_description_{{id}}">{{{content}}}</div>
+	 	    	<div class="job_description job_description_{{id}}">
+    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
+    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
+    	 	    	{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
+	 	    			{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
+	 	    	</div>
 	 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
 	 	</div>
 </script>';
@@ -179,6 +189,7 @@ class Greenhouse_Job_Board_Public {
 				data-location_filter="' . $atts['location_filter'] . '"
 				data-hide_forms="' . $atts['hide_forms'] . '"
 				data-form_type="' . $atts['form_type'] . '"
+				data-display="' . $atts['display'] . '"
 				>
 			</div>
 		</div>';
@@ -194,11 +205,8 @@ class Greenhouse_Job_Board_Public {
 		// close all_jobs
 		$options .= '</div>';
 		
-		
-		
 		return $options;
 
-		
 	}
 	
 	
@@ -267,6 +275,38 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_hide_full_desc', 
 			__( 'Hide Full Description Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_hide_full_desc_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_location_label', 
+			__( 'Location Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_location_label_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_office_label', 
+			__( 'Office Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_office_label_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_department_label', 
+			__( 'Department Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_department_label_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_description_label', 
+			__( 'Description Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_description_label_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);

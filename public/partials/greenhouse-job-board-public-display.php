@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       http://example.com
- * @since      1.5.0
+ * @since      1.6.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public/partials
@@ -122,6 +122,75 @@ function greenhouse_job_board_hide_full_desc_render(  ) {
 	}
 	?>'>
 	<div class="helper">Set the text for your `Hide Full Description` button.</div>
+	<?php
+
+}
+
+
+function greenhouse_job_board_location_label_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_location_label]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_location_label'] ) ) { // Nothing yet saved
+		echo 'Location: '; 
+	}
+	else {
+		echo $options['greenhouse_job_board_location_label']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your location label. Note, this is only displayed when the display location option is active.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_office_label_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_office_label]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_office_label'] ) ) { // Nothing yet saved
+		echo 'Office: '; 
+	}
+	else {
+		echo $options['greenhouse_job_board_office_label']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your office label. Note, this is only displayed when the display office option is active.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_department_label_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_department_label]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_department_label'] ) ) { // Nothing yet saved
+		echo 'Department: '; 
+	}
+	else {
+		echo $options['greenhouse_job_board_department_label']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your department label. Note, this is only displayed when the display department option is active.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_description_label_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_description_label]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_description_label'] ) ) { // Nothing yet saved
+		echo ''; 
+	}
+	else {
+		echo $options['greenhouse_job_board_description_label']; 
+	}
+	?>'>
+	<div class="helper">Set the text for your description label. Note, this is only displayed when the display description option is active. Default is blank.</div>
 	<?php
 
 }

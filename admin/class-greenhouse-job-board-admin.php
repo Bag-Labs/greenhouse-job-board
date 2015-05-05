@@ -105,7 +105,7 @@ class Greenhouse_Job_Board_Admin {
 	/**
 	 * Add the shortcodes media button.
 	 *
-	 * @since    1.5.0
+	 * @since    1.6.0
 	 */
 	public function greenhouse_add_shortcode_media_button() {
 		add_thickbox();
@@ -174,21 +174,67 @@ class Greenhouse_Job_Board_Admin {
 								<input id="hide_full_desc" type="text" />
 							</label>
 						</div>
+						<div class="section">
+							<label for="location_label">Location Label Text
+								<input id="location_label" type="text" />
+							</label>
+						</div>
+						<div class="section">
+							<label for="office_label">Office Label Text
+								<input id="office_label" type="text" />
+							</label>
+						</div>
+						<div class="section">
+							<label for="department_label">Department Label Text
+								<input id="department_label" type="text" />
+							</label>
+						</div>
 					</div>
 				</div>
 				
 				<div class="section">
 					<label>
-						<input type="checkbox" id="hide_forms" class="include" checked="checked" data-include="display_form" />Display Application Forms?
+						<input type="checkbox" id="hide_forms" class="include" checked data-include="display_form" />Display Application Forms?
 					</label>
 				
 					<div class="section section_display_form">
 						<label>
-							<input type="checkbox" id="form_type" disabled="disabled" checked="checked" />Use embedded iFrame Forms?
+							<input type="checkbox" id="form_type" disabled="disabled" checked />Use embedded iFrame Forms?
 						</label>
 					</div>
 					
 				</div>
+				
+				
+				<div class="section">
+					<label>
+						<input type="checkbox" id="display_custom_meta" class="include" data-include="display_meta" />Customize Displayed Job Data?
+					</label>
+				
+					<div class="section section_display_meta" style="display:none;">
+						<div class="section">
+							<label>
+								<input type="checkbox" id="display_location" />Display Job Location?
+							</label>
+						</div>
+						<div class="section">
+							<label>
+								<input type="checkbox" id="display_office" />Display Job Office?
+							</label>
+						</div>
+						<div class="section">
+							<label>
+								<input type="checkbox" id="display_department" />Display Job Department?
+							</label>
+						</div>
+						<div class="section">
+							<label>
+								<input type="checkbox" id="display_description" />Display Job Description?
+							</label>
+						</div>
+					</div>
+				</div>
+				
 				
 				<div class="section">
 					<label>
