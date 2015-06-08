@@ -167,6 +167,8 @@ class Greenhouse_Job_Board_Public {
 		}
 		$options .= '</p>';
 		
+		//accordion template
+		if ( $atts['board_type'] == 'accordion' ) {
 		// handlebars template for returned job
 		$options .= '<script id="job-template" type="text/x-handlebars-template">
 		<div class="job" 
@@ -183,10 +185,47 @@ class Greenhouse_Job_Board_Public {
 	 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
 	 	</div>
 </script>';
-
+		}
+		
+		
+		// cycle template
+		else if ( $atts['board_type'] == 'cycle') {
+		// handlebars template for returned job
+		$options .= '<script id="job-template" type="text/x-handlebars-template">
+		<div class="job" 
+			data-id="{{id}}" 
+			data-departments="{{departments}}">
+	 	    	<h2 class="job_title">{{title}}</h2>
+	 	    	<p><a href="#" class="job_read_full job_goto" data-opened-text="' . $atts['hide_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
+	 	</div>
+</script>';
+		$options .= '<script id="job-slide-template" type="text/x-handlebars-template">
+		<div class="job cycle-slide" 
+			data-cycle-hash="{{title}}"
+			data-id="{{id}}" 
+			data-departments="{{departments}}">
+				<div class="job_single">
+		 	    	<h2 class="job_title">{{title}}</h2>
+		 	    	<p><a href="#" class="job_read_full return" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['hide_full_desc'] . '</a></p>
+		 	    	<div class="job_description job_description_{{id}}">
+	    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
+	    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
+	    	 	    	{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
+		 	    			{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
+		 	    	</div>
+		 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
+	 	    	</div>
+	 	</div>
+</script>';
+		}
+		
 		// html container
 		$options .= '<div class="all_jobs">
-			<div class="jobs" 
+			<div class="jobs';
+		if ( $atts['board_type'] == 'cycle') {
+			$options .= ' cycle-slide';	
+		}
+		$options .= '"
 				data-department_filter="' . $atts['department_filter'] . '"
 				data-job_filter="' . $atts['job_filter'] . '"
 				data-office_filter="' . $atts['office_filter'] . '"

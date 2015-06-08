@@ -85,23 +85,93 @@ jQuery(document).ready(function($) {
 		 	// Grnhse.Iframe.load();	 });
 		}
 	});
+
+
+	
+	$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle({
+		fx: 'fade',
+		slides: '.cycle-slide',
+		timeout: 0,
+		// log: false
+	});
+	
+	window.reset_cycle = function (){
+		$('.jobs-cycle').cycle('reinit');
+	};
+
+	window.add_slide = function(newSlide, id, title){
+		//add to cycle
+		$('.jobs-cycle').cycle('add', newSlide);
+		
+		//trigger hashchange
+		$(window).trigger('hashchange');
+		// console.log('hashchange trigger');
+		// $('.jobs-cycle').reinit();
+		
+		
+	};
+	function jobs_scroll_top(){
+		//scroll to top of section
+		$('html, body').animate({
+        	scrollTop: $('#grnhse_app').offset().top - $('#header').height()
+	    }, 500);
+	}
+	
+	//navigation
+	$('.all_jobs').on('click', '.job_goto', function(e){
+		e.preventDefault();
+		
+		//find correct slide by data-id
+		var jobid = parseInt( $(this).parents('.job').data('id') );
+		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index() - 1;
+		console.log(jobid, slideindex, $('.cycle-slide [data-id="' + jobid + '"] .job_title').text() );
+		// if (slideindex < 0) {
+		// 	//job failed to load via json, reload it.
+		// 	var jobshtml = '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/brownbagmarketing/embed/job?id=';
+		// 	jobshtml += jobid;
+		// 	jobshtml += '&questions=true&callback=greenhouse_jobs_job_late"></s';
+		// 	jobshtml += 'cript>'
+			
+		// 	$('.all_jobs').append(jobshtml);
+		// }
+		// else {
+			$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', slideindex );
+			// jobs_scroll_top();
+		// }
+		
+	});
+	
+	$('.all_jobs').on('click', '.return', function(e){
+		e.preventDefault();
+		
+		$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', 0 );
+		// jobs_scroll_top();
+	});
+	
+	
+	
 });
 
 	
 
 function greenhouse_jobs(json){
- 	// console.log(json);
+ 	console.log(json);
  	
+ 	var board_type = jQuery(".greenhouse-job-board").data('type');
  	
  	//setup handlebars
- 	var job_html = jQuery("#job-template").html();
- 	// console.log( job_html );
- 	var job_html_template = Handlebars.compile(job_html);
+ 	var job_html, job_html_template, slide_html, slide_html_template;
+ 	job_html = jQuery("#job-template").html();
+ 	job_html_template = Handlebars.compile(job_html);
  	
+ 	if (board_type == 'cycle' ) {
+ 		slide_html = jQuery("#job-slide-template").html();
+	 	slide_html_template = Handlebars.compile(slide_html);
+ 	}
  	//sort
  	
  	//list all jobs
-     for (var i = 0; i < json.jobs.length; i++){
+    for (var i = 0; i < json.jobs.length; i++){
      	// console.log( json.jobs[i].id);
      	
      	//hide_forms val
@@ -291,14 +361,31 @@ function greenhouse_jobs(json){
 	 			display_office: display_office,
 	 			display_location: display_location
 	 		});
+	     	jQuery('.all_jobs .jobs').append(jobshtml);	
 	     	
-	     	jQuery('.all_jobs .jobs').append(jobshtml);
+     		if ( board_type == "cycle" ) {
+	     		var slidehtml = slide_html_template({
+		 			index: i,
+		 			id: json.jobs[i].id,
+		 			title: json.jobs[i].title,
+		 			content: decodeHtml( json.jobs[i].content ),
+		 			//departments: departments.join('|'),
+		 			hide_forms: hide_forms,
+		 			display_description: display_description,
+		 			display_department: display_department,
+		 			display_office: display_office,
+		 			display_location: display_location
+	     		});
+     			jQuery('.all_jobs').append(slidehtml);
+			    //reset_cycle();
+	     	}
+	     	
+		    
 	    }
  		// add_position( json.jobs[i].id, json.jobs[i].title );
      }
      
-     // jobshtml = '<a href="#" class="apply">Apply Now</a>';	
-     // jQuery('.all_jobs').append(jobshtml);
+     // jobshtml = '<a href="#" class="apply">Apply Now</a>';
 }
 
 
