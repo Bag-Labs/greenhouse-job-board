@@ -55,6 +55,25 @@ function greenhouse_job_board_api_key_render(  ) {
 }
 
 
+function greenhouse_job_board_type_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_board_type'] ) ) {
+		$options['greenhouse_job_board_type'] = 'accordion';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_type]'>
+		<option value="accordion" <?php if ( $options['greenhouse_job_board_type'] == 'accordion' ) { echo 'selected'; } ?>>Accordion</option>
+		<option value="cycle" <?php if ( $options['greenhouse_job_board_type'] == 'cycle' ) { echo 'selected'; } ?>>Cycle</option>
+	</select>
+	<div class="helper">Select the type of job board you would like to display on your site by default.</div>
+	<?php
+
+}
+
+
 function greenhouse_job_board_apply_now_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );
