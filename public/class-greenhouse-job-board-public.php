@@ -123,6 +123,7 @@ class Greenhouse_Job_Board_Public {
 	        'url_token' 		=> isset( $options['greenhouse_job_board_url_token'] ) ? $options['greenhouse_job_board_url_token'] : '',
 	        'api_key' 			=> isset( $options['greenhouse_job_board_api_key'] ) ? $options['greenhouse_job_board_api_key'] : '',
 	        'board_type' 			=> isset( $options['greenhouse_job_board_type'] ) ? $options['greenhouse_job_board_type'] : 'accordion',
+	        'back'			=> isset( $options['greenhouse_job_board_back'] ) ? $options['greenhouse_job_board_back'] : 'Back',
 	        'apply_now'			=> isset( $options['greenhouse_job_board_apply_now'] ) ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
 	        'apply_now_cancel'	=> isset( $options['greenhouse_job_board_apply_now_cancel'] ) ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
 	        'read_full_desc'	=> isset( $options['greenhouse_job_board_read_full_desc'] ) ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
@@ -199,7 +200,7 @@ class Greenhouse_Job_Board_Public {
 			data-departments="{{departments}}">
 	 	    	<h2 class="job_title">{{title}}</h2>
 	 	    	<div class="job_excerpt">{{{excerpt}}}</div>
-	 	    	<p><a href="#" class="job_read_full job_goto" data-opened-text="' . $atts['hide_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
+	 	    	<p><a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></p>
 	 	</div>
 </script>';
 		$options .= '<script id="job-slide-template" type="text/x-handlebars-template">
@@ -208,7 +209,7 @@ class Greenhouse_Job_Board_Public {
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
 				<div class="job_single">
-					<p><a href="#" class="return">Back</a></p>
+					<p><a href="#" class="return">' . $atts['back'] . '</a></p>
 		 	    	<h2 class="job_title">{{title}}</h2>
 		 	    	<div class="job_description job_description_{{id}}">
 	    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
@@ -297,6 +298,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_type', 
 			__( 'Type', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_type_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_back', 
+			__( 'Back Text', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_back_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);
