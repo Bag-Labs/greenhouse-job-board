@@ -9,6 +9,6 @@
 .job_apply {
 	cursor: pointer;
 }
-.job_description{
+.greenhouse-job-board[data-type="accordion"] .job_description {
 	display: none;	
 }

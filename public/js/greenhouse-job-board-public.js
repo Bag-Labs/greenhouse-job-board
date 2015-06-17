@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 	 * be doing this, we should try to minimize doing that in our own work.
 	 */
 	 
-	$('.jobs').on('click', '.job_read_full', function(e){
+	$('.greenhouse-job-board[data-type="accordion"] .jobs').on('click', '.job_read_full', function(e){
 		e.preventDefault();
 		var job_id = $(this).parents('.job').data('id');
 		if ( $(this).hasClass('open') ) {
