@@ -92,6 +92,7 @@ jQuery(document).ready(function($) {
 		fx: 'fade',
 		slides: '.cycle-slide',
 		timeout: 0,
+		autoHeight: 'container',
 		// log: false
 	});
 	
@@ -123,7 +124,7 @@ jQuery(document).ready(function($) {
 		
 		//find correct slide by data-id
 		var jobid = parseInt( $(this).parents('.job').data('id') );
-		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index() - 1;
+		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index();
 		console.log(jobid, slideindex, $('.cycle-slide [data-id="' + jobid + '"] .job_title').text() );
 		// if (slideindex < 0) {
 		// 	//job failed to load via json, reload it.
@@ -353,8 +354,7 @@ function greenhouse_jobs(json){
 	 			index: i,
 	 			id: json.jobs[i].id,
 	 			title: json.jobs[i].title,
-	 			content: decodeHtml( json.jobs[i].content ),
-	 			//departments: departments.join('|'),
+	 			excerpt: get_role_from_content( json.jobs[i].content ),
 	 			hide_forms: hide_forms,
 	 			display_description: display_description,
 	 			display_department: display_department,
@@ -369,7 +369,6 @@ function greenhouse_jobs(json){
 		 			id: json.jobs[i].id,
 		 			title: json.jobs[i].title,
 		 			content: decodeHtml( json.jobs[i].content ),
-		 			//departments: departments.join('|'),
 		 			hide_forms: hide_forms,
 		 			display_description: display_description,
 		 			display_department: display_department,
@@ -414,6 +413,46 @@ function decodeHtml(html){
     return text;
 }
 
+function strip_tags(input, allowed) {
+  //  discuss at: http://phpjs.org/functions/strip_tags/
+  allowed = (((allowed || '') + '')
+    .toLowerCase()
+    .match(/<[a-z][a-z0-9]*>/g) || [])
+    .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+  var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+    commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+  return input.replace(commentsAndPhpTags, '')
+    .replace(tags, function($0, $1) {
+      return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    });
+}
+
 Handlebars.registerHelper('ifeq', function (a, b, options) {
 	if (a == b) { return options.fn(this); }
 });
+
+function get_role_from_content(content){
+	//decode
+	var this_content = decodeHtml(content);
+	//strip tags
+	this_content = strip_tags(this_content);
+	
+	var short_content_start = this_content.indexOf("ROLE:");
+	var short_content_end = this_content.indexOf(".", short_content_start);
+	//if too short get next sentence too
+	if ( (short_content_end - short_content_start) < 120) {
+		short_content_end = this_content.indexOf(".", short_content_end+1);
+
+	}
+	var short_content = this_content.slice(short_content_start + 5, short_content_end + 1);
+	if (short_content_start < 0){
+		short_content = this_content.slice(0, short_content_end + 1);
+	}
+	// console.log(short_content);
+	//remove extra space
+	if ( 	short_content.indexOf('&nbsp;') == 0 ) {
+		short_content = short_content.slice(6);
+	}
+	
+	return short_content;
+}

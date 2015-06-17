@@ -161,11 +161,13 @@ class Greenhouse_Job_Board_Public {
 			return $options;
 	    }
 	    
+	    /*
 		$options .= '<p>Greenhouse shortcode detected';
 		if ($atts['board_type']) {
 			$options .= ', with board_type: ' . $atts['board_type'];
 		}
 		$options .= '</p>';
+		*/
 		
 		//accordion template
 		if ( $atts['board_type'] == 'accordion' ) {
@@ -196,6 +198,7 @@ class Greenhouse_Job_Board_Public {
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
 	 	    	<h2 class="job_title">{{title}}</h2>
+	 	    	<div class="job_excerpt">{{{excerpt}}}</div>
 	 	    	<p><a href="#" class="job_read_full job_goto" data-opened-text="' . $atts['hide_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
 	 	</div>
 </script>';
@@ -205,8 +208,8 @@ class Greenhouse_Job_Board_Public {
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
 				<div class="job_single">
+					<p><a href="#" class="return">Back</a></p>
 		 	    	<h2 class="job_title">{{title}}</h2>
-		 	    	<p><a href="#" class="job_read_full return" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['hide_full_desc'] . '</a></p>
 		 	    	<div class="job_description job_description_{{id}}">
 	    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
 	    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
