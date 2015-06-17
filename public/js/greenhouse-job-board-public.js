@@ -45,8 +45,10 @@ jQuery(document).ready(function($) {
 			$('.job_description_' + job_id).addClass('open');
 		}
 	});
-	$('.jobs').on('click', '.job_apply', function(e){
+	$('.jobs, .job').on('click', '.job_apply', function(e){
+		
 		e.preventDefault();
+		
 		if ( $(this).hasClass('open') ) {
 			//closing since already open
 			$(this).text( $(this).data('closed-text') );
@@ -84,6 +86,10 @@ jQuery(document).ready(function($) {
 		 	// Loads the job board (not a specific application)
 		 	// Grnhse.Iframe.load();	 });
 		}
+		// if cycle - reset height of container to contain the iframe
+		if ( $('.greenhouse-job-board').data('type') == 'cycle' ) {
+			setTimeout( reset_cycle_container_height, 1000);
+		}
 	});
 
 
@@ -111,6 +117,11 @@ jQuery(document).ready(function($) {
 		
 		
 	};
+	
+	function reset_cycle_container_height(){
+		$('.all_jobs').height( $('.cycle-slide-active').height() );
+	}
+	
 	function jobs_scroll_top(){
 		//scroll to top of section
 		$('html, body').animate({
