@@ -45,11 +45,12 @@ jQuery(document).ready(function($) {
 			$('.job_description_' + job_id).addClass('open');
 		}
 	});
-	$('.jobs, .job').on('click', '.job_apply', function(e){
+	$('.greenhouse-job-board').on('click', '.job_apply', function(e){
 		
 		e.preventDefault();
 		
-		if ( $(this).hasClass('open') ) {
+		if ( 	$('.greenhouse-job-board').data('form_type') === 'iframe' &&
+				$(this).hasClass('open') ) {
 			//closing since already open
 			$(this).text( $(this).data('closed-text') );
 			$(this).removeClass('open');
@@ -58,7 +59,8 @@ jQuery(document).ready(function($) {
 				$('#grnhse_app').removeClass('open');
 			}
 		}
-		else{
+		else if (	$('.greenhouse-job-board').data('form_type') === 'iframe' &&
+					!$(this).hasClass('open') ){
 			//close others
 			$('.job_apply').removeClass('open');
 			$('.job_apply').text( $(this).data('closed-text') );
@@ -86,20 +88,56 @@ jQuery(document).ready(function($) {
 		 	// Loads the job board (not a specific application)
 		 	// Grnhse.Iframe.load();	 });
 		}
-		// if cycle - reset height of container to contain the iframe
-		if ( $('.greenhouse-job-board').data('type') == 'cycle' ) {
-			setTimeout( reset_cycle_container_height, 1000);
+		// cycle job board with iframe form - reset height of container to contain the iframe
+		if ( $('.greenhouse-job-board').data('form_type') === 'iframe' &&
+			 $('.greenhouse-job-board').data('type') == 'cycle' ) {
+			// setTimeout( reset_cycle_container_height, 1000);
+		}
+		
+		// cycle job board with inline form
+		if ( $('.greenhouse-job-board').data('form_type') === 'inline' ) {
+			$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', 1 );
+			
+			jobs_scroll_top();
+			
+			//pre select positions select
+			var jobid = $(this).data('id');
+			update_form_per_position(jobid);
+			
 		}
 	});
 
+	$('.greenhouse-job-board').on('blur', '#positions', update_form_per_position );
 
+	function update_form_per_position( e, jobid ){
+		// if ( typeof jobid === 'undefined' || typeof jobid === 'Event' ) {
+			jobid = $('#positions option:selected').val();
+		// }
+		
+		// if (jobid == ''){
+		// 	$('#positions option:first-child').prop('selected', true);
+		// }
+		// else{
+		// 	$('#positions option[value="' + jobid + '"]').prop('selected', true);
+		// }
+		// console.log(jobid);
+		
+		if ( jobid != '') {
+			$('#positions').removeClass('required_error');
+			$('#positions').parent().find('.required_message').remove();
+		}
+		$('#hidden_id').val( jobid );
+		$('#hidden_mapped_url_token').val('https://www.brownbagmarketing.com/careers/?gh_jid='+jobid );
+		$('#linkedin_profile_url').attr('name', get_linkedin_name(jobid) );
+		$('#cover_letter_text').attr('name', get_cover_name(jobid) );
+	}
 	
 	$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle({
 		fx: 'fade',
 		slides: '.cycle-slide',
 		timeout: 0,
 		autoHeight: 'container',
-		// log: false
+		log: false
 	});
 	
 	window.reset_cycle = function (){
@@ -125,7 +163,7 @@ jQuery(document).ready(function($) {
 	function jobs_scroll_top(){
 		//scroll to top of section
 		$('html, body').animate({
-        	scrollTop: $('#grnhse_app').offset().top - $('#header').height()
+        	scrollTop: $('.greenhouse-job-board').offset().top 
 	    }, 500);
 	}
 	
@@ -136,7 +174,7 @@ jQuery(document).ready(function($) {
 		//find correct slide by data-id
 		var jobid = parseInt( $(this).parents('.job').data('id') );
 		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index();
-		console.log(jobid, slideindex, $('.cycle-slide [data-id="' + jobid + '"] .job_title').text() );
+		// console.log(jobid, slideindex, $('.cycle-slide [data-id="' + jobid + '"] .job_title').text() );
 		// if (slideindex < 0) {
 		// 	//job failed to load via json, reload it.
 		// 	var jobshtml = '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/brownbagmarketing/embed/job?id=';
@@ -147,8 +185,8 @@ jQuery(document).ready(function($) {
 		// 	$('.all_jobs').append(jobshtml);
 		// }
 		// else {
+			jobs_scroll_top();
 			$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', slideindex );
-			// jobs_scroll_top();
 		// }
 		
 	});
@@ -157,17 +195,252 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		
 		$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', 0 );
-		// jobs_scroll_top();
+		jobs_scroll_top();
 	});
 	
 	
+
+	$('.all_jobs').on('click', '.apply_jobs .submit', function(e){
+		
+		var form_id = '#apply_form';
+		
+		if ( is_valid( form_id ) ){
+			// console.log('submitting form');
+			ajax_submit( form_id, null);
+		}
+		return false;
+	});
+	
+	function get_linkedin_name(jobid){
+		var linkedin = '';
+		for (var i = 0; i < jobs.length; i++){
+			if ( jobs[i].id == jobid) {
+				for( var j = 0; j < jobs[i].questions.length; j++){
+					if ( jobs[i].questions[j].label == "LinkedIn Profile" ){
+						linkedin = jobs[i].questions[j].fields[0].name;
+						// console.log('found linkedin name', linkedin, jobid);
+
+					}
+				}
+			}
+		}
+		return linkedin;
+	}
+	function get_cover_name(jobid){
+		var coverletter = '';
+		for (var i = 0; i < jobs.length; i++){
+			if ( jobs[i].id == jobid) {
+				for( var j = 0; j < jobs[i].questions.length; j++){
+					if ( jobs[i].questions[j].label == "I’m curious as to why you reached out to us? Are you looking for a change, new adventure, etc?" ||
+						 jobs[i].questions[j].label == "Let me elaborate: " ){
+						coverletter = jobs[i].questions[j].fields[0].name;
+						// console.log('found cover name', coverletter, jobid);
+
+					}
+				}
+			}
+		}
+		return coverletter;
+	}
+	
+	
+	
+	//on submit, set hidden fields to values for that job// id and url token
+	function is_valid(formid){
+		// console.log('validating', formid);
+		var validates = true;
+		$( formid + ' .required').each(function(){
+			// console.log('validating field:', $(this).attr('title') );
+			$(this).parent().find('.required_message').remove();
+			if ( $(this).hasClass('url') &&
+					$(this).val() != $(this).attr('name') &&
+					$(this).val() != '' ) {
+				if ( !is_url( $(this).val())){
+					$(this).addClass('required_error');
+					$(this).after('<span class="required_message">Invalid LinkedIn url</span>');
+					validates = false;
+				}
+			}
+			else if ( $(this).hasClass('email') &&
+					$(this).val() != $(this).attr('title') &&
+					$(this).val() != '' ) {
+				if ( !is_email( $(this).val())){
+					$(this).addClass('required_error');
+					$(this).after('<span class="required_message">Invalid email</span>');
+					validates = false;
+				}
+			}
+			else if( $(this).hasClass('phone') &&
+					$(this).val() != $(this).attr('title') &&
+					$(this).val() != ''){
+				if ( !is_phone( $(this).val() )){
+					$(this).addClass('required_error');
+					$('input.tel').addClass('required_error');
+					$(this).after('<span class="required_message">Invalid phone number</span>');
+		    		validates = false;
+		    	}
+		    }
+		    
+			if(	$(this).val() == $(this).attr('title') ||
+						$(this).val() == ''){
+				$(this).addClass('required_error');
+				$(this).after('<span class="required_message">' + $(this).attr('title') + ' is required</span>');
+				validates = false;
+			}
+		});
+		//if(!validates){ alert("Please, fill all required fields"); }
+		return validates;
+	}
+	function validate_me(ele) {
+		if (ele.hasClass('email')) {
+			if ( is_email( ele.val() )){
+				ele.removeClass('required_error');
+				ele.parent().find('.required_message').remove();
+			} else if (!ele.hasClass('required_error') ) {
+				ele.addClass('required_error');
+				ele.after('<span class="required_message">Invalid email</span>');
+			}
+		}
+		else if(ele.hasClass('url')){
+			if ( is_url( ele.val() )){
+				ele.removeClass('required_error');
+				ele.parent().find('.required_message').remove();
+			} else if (!ele.hasClass('required_error') ) {
+				ele.addClass('required_error');
+				ele.after('<span class="required_message">Invalid LinkedIn url</span>');
+			}
+		}
+		else if(ele.hasClass('tel')){
+			if ( is_phone( $('.tel1').val() + '' + $('.tel2').val() + '' + $('.tel3').val() )){
+				$('#phone_number').removeClass('required_error');
+				$('input.tel').removeClass('required_error');
+				$('#phone_number').parent().find('.required_message').remove();
+			} else if (!$('#phone_number').hasClass('required_error') ) {
+				$('#phone_number').addClass('required_error');
+				$('input.tel').addClass('required_error');
+				$('#phone_number').after('<span class="required_message">Invalid phone number</span>');
+			}
+		}
+		else {
+			if( is_not_empty( ele.val() )){
+				ele.removeClass('required_error');
+				ele.parent().find('.required_message').remove();
+			} else if (!ele.hasClass('required_error') ) {
+				ele.addClass('required_error');
+				ele.after('<span class="required_message">' + ele.attr('title') + ' is required</span>');
+			}
+		}
+	}
+	$(".field_wrap").on('blur', '.required, .tel', function(e){
+		$(this).addClass('edited');
+		validate_me( $(this) );
+	});
+	$(".field_wrap").on('keyup change', '.edited', function(e){
+		validate_me( $(this) );
+	});
+	function is_not_empty(val){      
+		return val != '';
+	}
+	function is_email(email){      
+		var emailReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+		return emailReg.test(email);
+	}
+	function is_phone(the_val){
+		var phoneValidChars = /^[0-9()#x+. \t-]+$/;
+      	var digCount = 0;
+		var digits = "0123456789";
+		
+		for (var ix = 0; ix < the_val.length; ix++) {
+		    if (digits.indexOf(the_val.charAt(ix)) != -1) {
+			    digCount++;
+		    }
+		}
+		if (!phoneValidChars.test(the_val) || (digCount < 10) || (digCount > 15)) {
+			return false;
+		}
+		return true;
+	}
+	function is_url(url){
+		if ( 	url.indexOf('http://www.linkedin.com/') == 0 ||
+				url.indexOf('https://www.linkedin.com/') == 0 ||
+				url.indexOf('http://linkedin.com/') == 0 ||
+				url.indexOf('https://linkedin.com/') == 0 ||
+				url.indexOf('www.linkedin.com/in/') == 0 ||
+				url.indexOf('www.linkedin.com/pub/') == 0 ||
+				url.indexOf('linkedin.com/in/') == 0 ||
+				url.indexOf('linkedin.com/pub/') == 0
+			) {
+			return true;
+		}
+		return false;
+	}
+	
+	function ajax_submit(formid, redirect){
+		if (redirect != null){
+			// console.log(redirect);
+		}
+		// var dataString = "";
+		/*$(formid + " input, " + formid + " select, " + formid + " textarea").each(function(){
+			if( $(this).attr('type') == 'checkbox' && $(this).attr('checked') ) {
+				dataString += "&" + $(this).attr('name') + "=1";
+			}
+			else if( $(this).attr('type') == 'checkbox' && !$(this).attr('checked') ) {
+				dataString += "&" + $(this).attr('name') + "=0";
+			}
+			else{
+				dataString += "&" + $(this).attr('name') + "=" + encodeURIComponent($(this).val());
+			}
+		});*/
+				//console.log(formid + ', data: '  + dataString);
+		var formData = new FormData( $(formid)[0]);
+		$.ajax({
+		    type: $(formid).attr('method'),
+		    url: $(formid).attr('action'),
+		    data: formData,
+		    async: false,
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        enctype: 'multipart/form-data',
+	        mimeType: 'multipart/form-data', 
+		    success: function(data, textStatus, jqXHR) {
+		    	console.log('success', textStatus, data, jqXHR);
+		    	thanks_message();
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		    	// console.log('error', textStatus, errorThrown, jqXHR);
+		    },
+		    complete: function(jqXHR, textStatus) {
+		    	// console.log('complete', textStatus, jqXHR);
+		    	if (redirect != null && redirect != undefined) {
+			    	window.location.href = redirect;
+			    }
+		    },
+
+		});
+		return false;
+	}
+	
+	
+	function thanks_message(){
+		$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', 2 );
+		jobs_scroll_top();
+	}
+	
+	
+	$('input.tel').keyup(function(){
+	    if( this.value.length == $(this).attr("maxlength" )){
+	        $(this).next('.tel').focus();
+	    }
+	    $('input[name="phone"]').val( $('.tel1').val() + '' + $('.tel2').val() + '' + $('.tel3').val() );
+	});
 	
 });
 
 	
 
 function greenhouse_jobs(json){
- 	console.log(json);
+ 	// console.log(json);
  	
  	var board_type = jQuery(".greenhouse-job-board").data('type');
  	
@@ -390,19 +663,26 @@ function greenhouse_jobs(json){
 			    //reset_cycle();
 	     	}
 	     	
+	     	if ( board_type == 'cycle' ) {
+	     		add_position( json.jobs[i].id, json.jobs[i].title );
+	     	}	
 		    
 	    }
- 		// add_position( json.jobs[i].id, json.jobs[i].title );
      }
      
-     // jobshtml = '<a href="#" class="apply">Apply Now</a>';
+     
 }
+function add_position(id, title){
+	// console.log('add_position', id, title);
+	//add option to form select
+	jQuery("#positions").append('<option value="'+id+'">'+title+'</option>');
+};
 
-
+var jobs = [];
 function greenhouse_jobs_job(json){
 	jobs.push(json);
 	// console.log(jobs);
-	// console.log(json);
+	// console.log(json.id);
 	
 	var jobhtml = '';
 	jobhtml += '<div class="job" ';
@@ -413,7 +693,7 @@ function greenhouse_jobs_job(json){
 	jobhtml += '</div></div>';
 	
 	// add_slide( jobhtml, json.id, json.title );
-	jQuery('.job_description_' + json.id ).append(jobhtml);
+	// jQuery('.job_description_' + json.id ).append(jobhtml);
 }
 
 function decodeHtml(html){

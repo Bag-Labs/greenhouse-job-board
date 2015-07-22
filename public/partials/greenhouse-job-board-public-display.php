@@ -73,6 +73,24 @@ function greenhouse_job_board_type_render(  ) {
 
 }
 
+function greenhouse_job_board_form_type_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_board_form_type'] ) ) {
+		$options['greenhouse_job_board_form_type'] = 'iframe';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_form_type]'>
+		<option value="iframe" <?php if ( $options['greenhouse_job_board_form_type'] == 'iframe' ) { echo 'selected'; } ?>>IFrame</option>
+		<option value="inline" <?php if ( $options['greenhouse_job_board_form_type'] == 'inline' ) { echo 'selected'; } ?>>Inline</option>
+	</select>
+	<div class="helper">Select the type of forms you would like to display on your site by default.</div>
+	<?php
+
+}
+
 
 function greenhouse_job_board_back_render(  ) { 
 
