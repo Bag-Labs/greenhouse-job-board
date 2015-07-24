@@ -201,7 +201,6 @@ class Greenhouse_Job_Board_Public {
 	 	    	<h3 class="job_title">{{title}}</h3>
 	 	    	<div class="job_excerpt">{{{excerpt}}}<br />
 	 	    	<a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></div>
-	 	    	<sc{{!}}ript type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/job?id={{id}}&questions=true&callback=greenhouse_jobs_job"></sc{{!}}ript>
 	 	</div>
 </script>';
 		$options .= '<script id="job-slide-template" type="text/x-handlebars-template">
@@ -241,14 +240,14 @@ class Greenhouse_Job_Board_Public {
 				data-hide_forms="' . $atts['hide_forms'] . '"
 				data-form_type="' . $atts['form_type'] . '"
 				data-display="' . $atts['display'] . '"
-				><h1>Careers</h1>
+				>
 			</div>';
 			
 		if ( $atts['hide_forms'] !== 'true' &&
 			 $atts['form_type'] === 'inline' ) {
 			$options .= '<div class="cycle-slide" data-cycle-hash="Apply"><div class="apply_jobs">
 					<h1>Join the Team!</h1><h2>Apply for a job with Vetlocity</h2>
-					<form id="apply_form" method="POST" action="/wp-content/plugins/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php" enctype="multipart/form-data">
+					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
 							<input type="hidden" id="hidden_id" name="id" value="35682" />
 							<input type="hidden" id="hidden_mapped_url_token" name="mapped_url_token" value="https://www.brownbagmarketing.com/careers/?gh_jid=35682" />
 							
@@ -308,8 +307,40 @@ class Greenhouse_Job_Board_Public {
 		}
 			
 		$options .= '</div>';
-		// api call to get jobs with callback
-		$options .= '<script type="text/javascript" src="https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true&callback=greenhouse_jobs"></script>';
+		
+		// Get any existing copy of our transient data
+		// http://www.tailored4wp.com/get-a-better-performance-with-wordpress-transients-api-501/
+		delete_transient( 'ghjb_json' );
+		delete_transient( 'ghjb_jobs' );
+		if ( false === ( $ghjb_json = get_transient( 'ghjb_json' ) ) ) {
+			// It wasn't there, so regenerate the data and save the transient
+			// api call to get jobs with callback
+			$ghjb_json = wp_remote_retrieve_body( wp_remote_get('https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true'));
+			//save json data to transient
+			set_transient( 'ghjb_json', $ghjb_json, HOUR_IN_SECONDS );
+		}
+		if ( false === ( $ghjb_jobs = get_transient( 'ghjb_jobs' ) ) ) {
+			// It wasn't there, so regenerate the data and save the transient
+			//read job ids from json data
+			$ghjb_json_php = json_decode($ghjb_json);
+			//retreive json object for each job and save into transient
+			$ghjb_jobs = '';//$ghjb_json_php->jobs[0]->id;
+			foreach ( $ghjb_json_php->jobs as $job) {
+				$job_json = wp_remote_retrieve_body( wp_remote_get('https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/job?id=' . $job->id . '&questions=true'));
+				
+				$ghjb_jobs .= $job_json . ',';
+			}
+			$ghjb_jobs = '[' . $ghjb_jobs . ']';
+			set_transient( 'ghjb_jobs', $ghjb_jobs, HOUR_IN_SECONDS );
+
+		}
+		$options .= '<script type="text/javascript">';
+		$options .= 'ghjb_jobs = ';
+		$options .=  $ghjb_jobs;
+		$options .= ';ghjb_json = ';
+		$options .=  $ghjb_json;
+		$options .= ';</script>';
+		
 		// iframe container
 		if ( $atts['hide_forms'] !== 'true' &&
 			 $atts['form_type'] === 'iframe' ) {
