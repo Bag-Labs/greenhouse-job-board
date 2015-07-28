@@ -290,7 +290,7 @@ class Greenhouse_Job_Board_Public {
 							</div>
 							
 							<div class="field_wrap field_submit">
-								<div class="submit button">Submit Application</div>
+								<button class="submit button">Submit Application</button>
 							</div>
 							
 							

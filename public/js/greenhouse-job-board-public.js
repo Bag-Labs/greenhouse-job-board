@@ -101,8 +101,9 @@ jQuery(document).ready(function($) {
 			jobs_scroll_top();
 			
 			//pre select positions select
-			var jobid = $(this).data('id');
-			update_form_per_position(jobid);
+			var jobid = $(this).parents('.job').data('id');
+			console.log(jobid);
+			update_form_per_position(null, jobid);
 			
 		}
 	});
@@ -110,16 +111,48 @@ jQuery(document).ready(function($) {
 	$('.greenhouse-job-board').on('blur', '#positions', update_form_per_position );
 
 	function update_form_per_position( e, jobid ){
-		jobid = $('#positions option:selected').val();
+		// jobid = $('#positions option:selected').val();
 		
-		if ( jobid != '') {
-			$('#positions').removeClass('required_error');
-			$('#positions').parent().find('.required_message').remove();
+		// if ( jobid != '') {
+		// 	$('#positions').removeClass('required_error');
+		// 	$('#positions').parent().find('.required_message').remove();
+		// }
+		
+		// construct form from json data for this job
+		var this_job = $.grep(ghjb_jobs, function (o,i){
+			return o.id == jobid;
+		});
+		var job_questions = this_job[0].questions;
+		console.log( jobid, this_job, job_questions );
+		
+		$("#apply_form *").remove();
+		
+		var hidden_field = "<input type='hidden' id='hidden_id' name='id' value='" + jobid + "' />";
+		$("#apply_form").append(hidden_field);
+		hidden_field = "<input type='hidden' id='hidden_mapped_url_token' name='mapped_url_token' value='" + this_job[0].absolute_url + "' />";
+		$("#apply_form").append(hidden_field);
+		
+		
+		for ( var i = 0; i < job_questions.length; i++){
+			
+			var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name + "'>";
+			field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
+			if ( job_questions[i].fields[0].type === 'input_text' ) {
+				field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+			}
+			else if ( job_questions[i].fields[0].type === 'textarea' ) {
+				field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+			}
+			else if ( job_questions[i].fields[0].type === 'input_file' ) {
+				field_wrap += "<input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+			}
+			
+			$("#apply_form").append(field_wrap);
 		}
-		$('#hidden_id').val( jobid );
-		$('#hidden_mapped_url_token').val('https://www.brownbagmarketing.com/careers/?gh_jid='+jobid );
-		$('#linkedin_profile_url').attr('name', get_linkedin_name(jobid) );
-		$('#cover_letter_text').attr('name', get_cover_name(jobid) );
+		var submit_button = "<div class='field_wrap field_submit'><button class='submit button'>Submit Application</button></div></div>";
+		$("#apply_form").append(submit_button);
+		
+		
 	}
 	
 	function jobs_scroll_top(){
