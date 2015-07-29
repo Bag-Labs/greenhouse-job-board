@@ -12,3 +12,11 @@
 .greenhouse-job-board[data-type="accordion"] .job_description {
 	display: none;	
 }
+
+.greenhouse-job-board .field_wrap {
+	margin: 0 0 1em;
+}
+.greenhouse-job-board .field_wrap input[type="file"] {
+	background: none; 
+	border: 0;
+}

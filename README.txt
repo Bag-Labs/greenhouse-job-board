@@ -85,6 +85,10 @@ e.g.
 
 == Changelog ==
 
+=1.7=
+* Adding cycle option
+* Adding inline form option
+
 = 1.6 =
 * Adding options to customize display of job data: location, office, department and description.
 * Also adding options to customize labels for each of the above.

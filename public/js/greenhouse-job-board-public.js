@@ -96,36 +96,40 @@ jQuery(document).ready(function($) {
 		
 		// cycle job board with inline form
 		if ( $('.greenhouse-job-board').data('form_type') === 'inline' ) {
-			$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', 1 );
 			
-			jobs_scroll_top();
 			
 			//pre select positions select
 			var jobid = $(this).parents('.job').data('id');
-			console.log(jobid);
+			// console.log(jobid);
 			update_form_per_position(null, jobid);
+			
+			$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', 1 );
+			jobs_scroll_top();
 			
 		}
 	});
 
-	$('.greenhouse-job-board').on('blur', '#positions', update_form_per_position );
+	// $('.greenhouse-job-board').on('blur', '#positions', update_form_per_position );
 
 	function update_form_per_position( e, jobid ){
-		// jobid = $('#positions option:selected').val();
-		
-		// if ( jobid != '') {
-		// 	$('#positions').removeClass('required_error');
-		// 	$('#positions').parent().find('.required_message').remove();
-		// }
-		
-		// construct form from json data for this job
+		// get json questoin data for this job
 		var this_job = $.grep(ghjb_jobs, function (o,i){
 			return o.id == jobid;
 		});
 		var job_questions = this_job[0].questions;
-		console.log( jobid, this_job, job_questions );
 		
+		//get form_fields from settings
+		var form_fields = $('.jobs').attr('data-form_fields');
+		if ( typeof form_fields !== typeof undefined && form_fields !== false ) {
+			form_fields = form_fields.split('|');
+		}
+		else {
+			form_fields = ['*'];
+		}
+				
 		$("#apply_form *").remove();
+		
+		$("#apply_form").append('<h2>' + this_job[0].title + '</h2>');
 		
 		var hidden_field = "<input type='hidden' id='hidden_id' name='id' value='" + jobid + "' />";
 		$("#apply_form").append(hidden_field);
@@ -135,24 +139,35 @@ jQuery(document).ready(function($) {
 		
 		for ( var i = 0; i < job_questions.length; i++){
 			
-			var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name + "'>";
-			field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
-			if ( job_questions[i].fields[0].type === 'input_text' ) {
-				field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
-			}
-			else if ( job_questions[i].fields[0].type === 'textarea' ) {
-				field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
-			}
-			else if ( job_questions[i].fields[0].type === 'input_file' ) {
-				field_wrap += "<input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+			//check that the field is listed if form fields are specified
+			// console.log(form_fields, job_questions[i].fields[0].name, job_questions[i].label);
+			if ( form_fields[0] === '*' ||
+				 jQuery.inArray( job_questions[i].fields[0].name, form_fields ) >= 0 ||
+				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0  ) {
+			
+				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name + "'>";
+				//write label for field
+				field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
+				
+				//detect input type and write proper html for correct type
+				if ( job_questions[i].fields[0].type === 'input_text' ) {
+					field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+				}
+				else if ( job_questions[i].fields[0].type === 'textarea' ) {
+					field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+				}
+				else if ( job_questions[i].fields[0].type === 'input_file' ) {
+					field_wrap += "<input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' class='required' />"
+				}
+				
+				$("#apply_form").append(field_wrap);
 			}
 			
-			$("#apply_form").append(field_wrap);
 		}
+		
 		var submit_button = "<div class='field_wrap field_submit'><button class='submit button'>Submit Application</button></div></div>";
+		
 		$("#apply_form").append(submit_button);
-		
-		
 	}
 	
 	function jobs_scroll_top(){

@@ -91,6 +91,28 @@ function greenhouse_job_board_form_type_render(  ) {
 
 }
 
+function greenhouse_job_board_form_fields_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_board_form_fields'] ) ) {
+		$options['greenhouse_job_board_form_fields'] = '';
+	}
+	
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_form_fields]' value='<?php 
+		if ( !isset( $options['greenhouse_job_board_form_fields'] ) ) { // Nothing yet saved
+			echo ''; 
+		}
+		else {
+			echo $options['greenhouse_job_board_form_fields']; 
+		}
+		?>'>
+	<div class="helper">Select the form fields you would like to display on your apply forms by default, List either the form labels or names from greenhouse. Note that this is only used when using inline forms (and not iframes).</div>
+	<?php
+
+}
+
 
 function greenhouse_job_board_back_render(  ) { 
 
@@ -245,6 +267,74 @@ function greenhouse_job_board_description_label_render(  ) {
 		echo $options['greenhouse_job_board_description_label']; 
 	}
 	?>'>
+	<div class="helper">Set the text for your description label. Note, this is only displayed when the display description option is active. Default is blank.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_apply_headline_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_apply_headline]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_apply_headline'] ) ) { // Nothing yet saved
+		echo 'Apply'; 
+	}
+	else {
+		echo $options['greenhouse_job_board_apply_headline']; 
+	}
+	?>'>
+	<div class="helper">Set the headline for your application form. Note, this is only displayed when the inline form type. Default is 'Apply'.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_thanks_headline_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_thanks_headline]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_thanks_headline'] ) ) { // Nothing yet saved
+		echo 'Thank you for your interest!'; 
+	}
+	else {
+		echo $options['greenhouse_job_board_thanks_headline']; 
+	}
+	?>'>
+	<div class="helper">Set the headline for your thank you messaging. Note, this is only displayed when the inline form type after successful application submission. Default is 'Thank you for your interest'.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_thanks_body_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_thanks_body]'><?php 
+	if ( !isset( $options['greenhouse_job_board_thanks_body'] ) ) { // Nothing yet saved
+		echo ''; 
+	}
+	else {
+		echo $options['greenhouse_job_board_thanks_body']; 
+	}
+	?></textarea>
+	<div class="helper">Set the text for your thank you messaging. Note, this is only displayed when the inline form type after successful application submission.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_inline_form_template_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_inline_form_template]'><?php 
+	if ( !isset( $options['greenhouse_job_board_inline_form_template'] ) ) { // Nothing yet saved
+		echo ''; 
+	}
+	else {
+		echo $options['greenhouse_job_board_inline_form_template']; 
+	}
+	?></textarea>
 	<div class="helper">Set the text for your description label. Note, this is only displayed when the display description option is active. Default is blank.</div>
 	<?php
 

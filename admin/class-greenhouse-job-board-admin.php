@@ -199,8 +199,19 @@ class Greenhouse_Job_Board_Admin {
 				
 					<div class="section section_display_form">
 						<label>
-							<input type="checkbox" id="form_type" disabled="disabled" checked />Use embedded iFrame Forms?
+							<select id="form_type">
+								<option value="" selected>Use default setting</option>
+								<option value="iframe">Use embedded iFrame Forms</option>
+								<option value="inline">Use inline dynamic Forms (may require some advanced setup)</option>
+							</select>
 						</label>
+					</div>
+					
+					<div class="section section_display_form section_form_fields" style="display:none;">
+						<label for="form_fields">Form Fields
+							<input id="form_fields" type="text" />
+						</label>
+						<div class="help_text">Pipe '|' delimeted. For example: First Name|Email (leave blank to display all fields).</div>
 					</div>
 					
 				</div>

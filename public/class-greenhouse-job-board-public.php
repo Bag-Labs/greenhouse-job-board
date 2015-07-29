@@ -130,6 +130,7 @@ class Greenhouse_Job_Board_Public {
 	        'hide_full_desc'	=> isset( $options['greenhouse_job_board_hide_full_desc'] ) ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
 	        'hide_forms'		=> 'false',
 	        'form_type'			=> isset( $options['greenhouse_job_board_form_type'] ) ? $options['greenhouse_job_board_form_type'] : 'iframe',
+	        'form_fields'		=> isset( $options['greenhouse_job_board_form_fields'] ) ? $options['greenhouse_job_board_form_fields'] : '',
 	        'department_filter'	=> '',
 	        'job_filter'		=> '',
 	        'office_filter'		=> '',
@@ -152,28 +153,28 @@ class Greenhouse_Job_Board_Public {
 	    // }
 	    
 	    
-		$options  = '<div class="greenhouse-job-board" 
+		$ghjb_html  = '<div class="greenhouse-job-board" 
 			data-type="' . $atts['board_type'] . '" 
 			data-form_type="' . $atts['form_type'] . '">';
 		
 	    if ( $atts['url_token'] == '' ) {
-	    	$options .= 'The greenhouse url_token is required. Please either add it as a shortcode attribute or add it to your <a href="' . admin_url('options-general.php?page=greenhouse_job_board' ) . '">greenhouse settings</a>.';
-			$options .= '</div>';
-			return $options;
+	    	$ghjb_html .= 'The greenhouse url_token is required. Please either add it as a shortcode attribute or add it to your <a href="' . admin_url('options-general.php?page=greenhouse_job_board' ) . '">greenhouse settings</a>.';
+			$ghjb_html .= '</div>';
+			return $ghjb_html;
 	    }
 	    
 	    /*
-		$options .= '<p>Greenhouse shortcode detected';
+		$ghjb_html .= '<p>Greenhouse shortcode detected';
 		if ($atts['board_type']) {
-			$options .= ', with board_type: ' . $atts['board_type'];
+			$ghjb_html .= ', with board_type: ' . $atts['board_type'];
 		}
-		$options .= '</p>';
+		$ghjb_html .= '</p>';
 		*/
 		
 		//accordion template
 		if ( $atts['board_type'] == 'accordion' ) {
 		// handlebars template for returned job
-		$options .= '<script id="job-template" type="text/x-handlebars-template">
+		$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
 		<div class="job" 
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
@@ -194,7 +195,7 @@ class Greenhouse_Job_Board_Public {
 		// cycle template
 		else if ( $atts['board_type'] == 'cycle') {
 		// handlebars template for returned job
-		$options .= '<script id="job-template" type="text/x-handlebars-template">
+		$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
 		<div class="job job_{{id}}" 
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
@@ -203,9 +204,9 @@ class Greenhouse_Job_Board_Public {
 	 	    	<a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></div>
 	 	</div>
 </script>';
-		$options .= '<script id="job-slide-template" type="text/x-handlebars-template">
+		$ghjb_html .= '<script id="job-slide-template" type="text/x-handlebars-template">
 		<div class="job cycle-slide" 
-			data-cycle-hash="{{title}}"
+			data-cycle-hash="{{id}}"
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
 				<div class="job_single">
@@ -225,88 +226,60 @@ class Greenhouse_Job_Board_Public {
 		}
 		
 		// html container
-		$options .= '<div class="all_jobs">';
-		if ( $atts['board_type'] != 'cycle') {
-			$options .= '<div class="jobs"';
+		$ghjb_html .= '<div class="all_jobs">';
+		if ( $atts['board_type'] !== 'cycle') {
+			$ghjb_html .= '<div class="jobs" ';
 		}
-		elseif ( $atts['board_type'] == 'cycle') {
-			$options .= '<div class="jobs cycle-slide" data-cycle-hash="All"';	
+		elseif ( $atts['board_type'] === 'cycle') {
+			$ghjb_html .= '<div class="jobs cycle-slide" data-cycle-hash="#" ';	
 		}
-		$options .= '"
-				data-department_filter="' . $atts['department_filter'] . '"
-				data-job_filter="' . $atts['job_filter'] . '"
-				data-office_filter="' . $atts['office_filter'] . '"
-				data-location_filter="' . $atts['location_filter'] . '"
-				data-hide_forms="' . $atts['hide_forms'] . '"
-				data-form_type="' . $atts['form_type'] . '"
-				data-display="' . $atts['display'] . '"
-				>
+		
+		// fill in attributes as applicable
+		if ( $atts['department_filter'] !== '') {
+			$ghjb_html .=	' data-department_filter="' . $atts['department_filter'] . '" ';
+		}
+		if ( $atts['job_filter'] !== '') {
+			$ghjb_html .=	' data-job_filter="' . $atts['job_filter'] . '" ';
+		}
+		if ( $atts['office_filter'] !== '') {
+			$ghjb_html .=	' data-office_filter="' . $atts['office_filter'] . '" ';
+		}
+		if ( $atts['location_filter'] !== '') {
+			$ghjb_html .= ' data-location_filter="' . $atts['location_filter'] . '" ';
+		}
+		if ( $atts['hide_forms'] !== '') {
+			$ghjb_html .=	' data-hide_forms="' . $atts['hide_forms'] . '" ';
+		}
+		if ( $atts['form_type'] !== '') {
+			$ghjb_html .=	' data-form_type="' . $atts['form_type'] . '" ';
+		}
+		if ( $atts['form_fields'] != '' && 
+			 $atts['form_type'] === 'inline' ) {
+			$ghjb_html .=	' data-form_fields="' . $atts['form_fields'] . '" ';
+		}
+		if ( $atts['display'] !== '') {
+			$ghjb_html .=	' data-display="' . $atts['display'] . '" ';
+		}
+		$ghjb_html .= '>
 			</div>';
 			
 		if ( $atts['hide_forms'] !== 'true' &&
 			 $atts['form_type'] === 'inline' ) {
-			$options .= '<div class="cycle-slide" data-cycle-hash="Apply"><div class="apply_jobs">
-					<h1>Join the Team!</h1><h2>Apply for a job with Vetlocity</h2>
+			$ghjb_html .= '<div class="cycle-slide"><div class="apply_jobs">
+					<h1>' . $options['greenhouse_job_board_apply_headline'] . '</h1>
 					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
-							<input type="hidden" id="hidden_id" name="id" value="35682" />
-							<input type="hidden" id="hidden_mapped_url_token" name="mapped_url_token" value="https://www.brownbagmarketing.com/careers/?gh_jid=35682" />
-							
-							<div class="field_wrap field_fname field_left">
-								<label for="first_name">First Name<span class="asty">*</span></label>
-								<input type="text" name="first_name" id="first_name" title="First Name" placeholder="First" class="required" />
-							</div>
-							<div class="field_wrap field_lname field_right">
-								<label for="last_name">Last Name<span class="asty">*</span></label>
-								<input type="text" name="last_name" id="last_name" title="Last Name" placeholder="Last" class="required" />
-							</div>
-							<div class="field_wrap field_email field_left">
-								<label for="email">Email<span class="asty">*</span></label>
-								<input type="email" name="email" id="email" title="Email" placeholder="email@example.com" class="email required" />
-							</div>
-							<div class="field_wrap field_phone field_right">
-								<label for="tel1">Phone<span class="asty">*</span></label>
-								<input type="text" class="tel tel1" id="tel1" maxlength="3" placeholder="xxx" />
-								<input type="text" class="tel tel2" maxlength="3" placeholder="xxx" />
-								<input type="text" class="tel tel3" maxlength="4" placeholder="xxxx" />
-								<input type="hidden" name="phone" id="phone_number" title="Phone" placeholder="Phone" class="phone required" />
-							</div>
-							<div class="field_wrap field_linkedin field_left">
-								<label for="linkedin_profile_url">LinkedIn Profile Url<span class="asty">*</span></label>
-								<input type="text" name="question_89835" id="linkedin_profile_url" title="LinkedIn Profile Url" placeholder="https://www.linkedin.com/in/myurl" class="url required" />
-							</div>
-							<div class="field_wrap field_position field_right">
-								<label for="positions">Position<span class="asty">*</span></label>
-								<select id="positions" class="select required" title="Position">
-									<option value="">Select Position</option>
-								</select>
-							</div>
-							<div class="field_wrap field_resume field_left">
-								<label for="resume">Upload Resume<span class="asty">*</span></label>
-								<input type="file" id="resume" name="resume" title="Resume" placeholder="Resume" class="required" />
-							</div>
-							<div class="field_wrap field_cl field_full">
-								<label for="cover_letter_text">Tell us why you\'re interested in working at Vetlocity</label>
-								<textarea id="cover_letter_text" name="cover_letter_text" title="Cover Letter" class="" rows="4" placeholder="" ></textarea>
-							</div>
-							
-							<div class="field_wrap field_submit">
-								<button class="submit button">Submit Application</button>
-							</div>
-							
-							
 						</form>
 						<p><a href="#" class="return">' . $atts['back'] . '</a></p>
 						</div></div>
-						<div class="cycle-slide" data-cycle-hash="Thanks">
+						<div class="cycle-slide">
 							<div class="apply_ty">
-								<h2>Thank you for your interest in Vetlocity!</h2>
-								<p>We’ll review your application as soon as possible.</p>
-								<p>Hopefully your skills and our needs will be a perfect match.</p>
+								<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
+								<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
 							</div>
 						</div>';
 		}
 			
-		$options .= '</div>';
+		$ghjb_html .= '</div>';
 		
 		// Get any existing copy of our transient data
 		// http://www.tailored4wp.com/get-a-better-performance-with-wordpress-transients-api-501/
@@ -334,24 +307,24 @@ class Greenhouse_Job_Board_Public {
 			set_transient( 'ghjb_jobs', $ghjb_jobs, HOUR_IN_SECONDS );
 
 		}
-		$options .= '<script type="text/javascript">';
-		$options .= 'ghjb_jobs = ';
-		$options .=  $ghjb_jobs;
-		$options .= ';ghjb_json = ';
-		$options .=  $ghjb_json;
-		$options .= ';</script>';
+		$ghjb_html .= '<script type="text/javascript">';
+		$ghjb_html .= 'ghjb_jobs = ';
+		$ghjb_html .=  $ghjb_jobs;
+		$ghjb_html .= ';ghjb_json = ';
+		$ghjb_html .=  $ghjb_json;
+		$ghjb_html .= ';</script>';
 		
 		// iframe container
 		if ( $atts['hide_forms'] !== 'true' &&
 			 $atts['form_type'] === 'iframe' ) {
-			$options .= '<div id="grnhse_app"></div>';// script for loading iframe
-			$options .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
+			$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe
+			$ghjb_html .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
 		}
 		
 		// close all_jobs
-		$options .= '</div>';
+		$ghjb_html .= '</div>';
 		
-		return $options;
+		return $ghjb_html;
 
 	}
 	
@@ -448,6 +421,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);
+		
+		add_settings_field( 
+			'greenhouse_job_board_form_fields', 
+			__( 'Form Fields', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_form_fields_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
 
 		add_settings_field( 
 			'greenhouse_job_board_location_label', 
@@ -474,9 +455,25 @@ class Greenhouse_Job_Board_Public {
 		);
 
 		add_settings_field( 
-			'greenhouse_job_board_description_label', 
+			'greenhouse_job_board_apply_headline', 
 			__( 'Description Label', 'greenhouse_job_board' ), 
-			'greenhouse_job_board_description_label_render', 
+			'greenhouse_job_board_apply_headline_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_thanks_headline', 
+			__( 'Description Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_thanks_headline_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_thanks_body', 
+			__( 'Description Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_thanks_body_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);

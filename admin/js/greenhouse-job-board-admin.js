@@ -47,7 +47,9 @@
 				department_filter,
 				location_filter,
 				office_filter,
-				job_filter;
+				job_filter,
+				form_type,
+				form_fields;
 			var scope = '#TB_window ';
 			
 			
@@ -101,6 +103,15 @@
 			//hide_forms
 			if ( $( scope + '#hide_forms:checked').length == 0 ) {
 				shortcode += ' hide_forms="true"';
+			}
+			
+			form_type = $( scope + '#form_type option:selected').val();
+			if (form_type) {
+				shortcode += ' form_type="' + form_type + '"';
+			}
+			form_fields = $( scope + '#form_fields').val();
+			if (form_fields) {
+				shortcode += ' form_fields="' + form_fields + '"';
 			}
 			
 			//meta data display
@@ -159,6 +170,16 @@
 		
 		$('.include').on('click', function(e){
 			$('.section_' + $(this).data('include') ).toggle();
+		});
+		
+		$('#form_type').on('change blur mouseup', function(e){
+			
+			if ( $(this).find(':selected').val() === 'inline') {
+				$('.section_form_fields').show();
+			}
+			else {
+				$('.section_form_fields').hide();
+			}
 		});
 		
     });
