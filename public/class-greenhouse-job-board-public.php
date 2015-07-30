@@ -262,9 +262,12 @@ class Greenhouse_Job_Board_Public {
 		}
 		$ghjb_html .= '>
 			</div>';
-			
+		
+		// cycle inline
 		if ( $atts['hide_forms'] !== 'true' &&
-			 $atts['form_type'] === 'inline' ) {
+			 $atts['form_type'] === 'inline' &&
+			 $atts['board_type'] === 'cycle'
+			) {
 			$ghjb_html .= '<div class="cycle-slide"><div class="apply_jobs">
 					<h1>' . $options['greenhouse_job_board_apply_headline'] . '</h1>
 					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
@@ -277,6 +280,31 @@ class Greenhouse_Job_Board_Public {
 								<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
 							</div>
 						</div>';
+		} 
+		// accordion inline
+		elseif ( 	$atts['hide_forms'] !== 'true' &&
+			 		$atts['form_type'] === 'inline' &&
+			 		$atts['board_type'] === 'accordion'
+			) {
+			$ghjb_html .= '<div class="apply_jobs">
+					
+					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
+						</form>
+						<p><a href="#" class="return">' . $atts['back'] . '</a></p>
+						</div></div>
+						<div class="cycle-slide">
+							<div class="apply_ty">
+								<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
+								<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
+							</div>
+						</div>';
+		} 
+		// iframe form
+		elseif ( $atts['hide_forms'] !== 'true' &&
+				 $atts['form_type'] === 'iframe' 
+			) {
+			$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe
+			$ghjb_html .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
 		}
 			
 		$ghjb_html .= '</div>';
@@ -314,12 +342,7 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html .=  $ghjb_json;
 		$ghjb_html .= ';</script>';
 		
-		// iframe container
-		if ( $atts['hide_forms'] !== 'true' &&
-			 $atts['form_type'] === 'iframe' ) {
-			$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe
-			$ghjb_html .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
-		}
+		
 		
 		// close all_jobs
 		$ghjb_html .= '</div>';
@@ -455,8 +478,16 @@ class Greenhouse_Job_Board_Public {
 		);
 
 		add_settings_field( 
-			'greenhouse_job_board_apply_headline', 
+			'greenhouse_job_board_description_label', 
 			__( 'Description Label', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_description_label_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_apply_headline', 
+			__( 'Apply Headline', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_apply_headline_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
@@ -464,7 +495,7 @@ class Greenhouse_Job_Board_Public {
 
 		add_settings_field( 
 			'greenhouse_job_board_thanks_headline', 
-			__( 'Description Label', 'greenhouse_job_board' ), 
+			__( 'Thank You Headline', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_thanks_headline_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
@@ -472,7 +503,7 @@ class Greenhouse_Job_Board_Public {
 
 		add_settings_field( 
 			'greenhouse_job_board_thanks_body', 
-			__( 'Description Label', 'greenhouse_job_board' ), 
+			__( 'Thank You Body', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_thanks_body_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 

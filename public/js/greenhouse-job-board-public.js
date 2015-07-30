@@ -619,20 +619,35 @@ function greenhouse_jobs(json){
      			office_filter_pass &&
      			location_filter_pass ){
      	
-     		var jobshtml = job_html_template({
-	 			index: i,
-	 			id: json.jobs[i].id,
-	 			title: json.jobs[i].title,
-	 			excerpt: get_role_from_content( json.jobs[i].content ),
-	 			hide_forms: hide_forms,
-	 			display_description: display_description,
-	 			display_department: display_department,
-	 			display_office: display_office,
-	 			display_location: display_location
-	 		});
-	     	$('.all_jobs .jobs').append(jobshtml);	
 	     	
-     		if ( board_type == "cycle" ) {
+	     	if ( board_type == "accordion" ) {
+	     		var jobshtml = job_html_template({
+		 			index: i,
+		 			id: json.jobs[i].id,
+		 			title: json.jobs[i].title,
+		 			content: get_excerpt_from_content( json.jobs[i].content ),
+		 			hide_forms: hide_forms,
+		 			display_description: display_description,
+		 			display_department: display_department,
+		 			display_office: display_office,
+		 			display_location: display_location
+		 		});
+	     		$('.all_jobs .jobs').append(jobshtml);
+	     	}
+     		else if ( board_type == "cycle" ) {
+	     		var jobshtml = job_html_template({
+		 			index: i,
+		 			id: json.jobs[i].id,
+		 			title: json.jobs[i].title,
+		 			excerpt: get_excerpt_from_content( json.jobs[i].content ),
+		 			hide_forms: hide_forms,
+		 			display_description: display_description,
+		 			display_department: display_department,
+		 			display_office: display_office,
+		 			display_location: display_location
+		 		});
+	     		$('.all_jobs .jobs').append(jobshtml);
+	     		
 	     		var slidehtml = slide_html_template({
 		 			index: i,
 		 			id: json.jobs[i].id,
@@ -697,27 +712,41 @@ function strip_tags(input, allowed) {
     });
 }
 
-function get_role_from_content(content){
+function get_excerpt_from_content(content, limit){
+	limit = typeof limit !== 'undefined' ? limit : 120;
+	
 	//decode
 	var this_content = decodeHtml(content);
 	//strip tags
 	this_content = strip_tags(this_content);
 	
-	var short_content_start = this_content.indexOf("ROLE:");
-	var short_content_end = this_content.indexOf(".", short_content_start);
-	//if too short get next sentence too
-	if ( (short_content_end - short_content_start) < 120) {
-		short_content_end = this_content.indexOf(".", short_content_end+1);
-
+	//get the first full sentence 
+	//OR
+	//get the first number of characters and the last full word
+	//OR
+	//get the full content if total length is less than the limit
+	
+	//start at 0
+	var short_content_start = 0;
+	var content_length = this_content.length;
+	
+	//
+	if ( content_length <= limit) {
+		short_content_end = content_length;
 	}
-	var short_content = this_content.slice(short_content_start + 5, short_content_end + 1);
+	else {
+	
+		//find period
+		var short_content_end = this_content.indexOf(".", short_content_start);
+	
+	
+	//if too short get next sentence too
+	if ( (short_content_end - short_content_start) < length) {
+		short_content_end = this_content.indexOf(".", short_content_end+1);
+	}
+	var short_content = this_content.slice(short_content_start, short_content_end + 1);
 	if (short_content_start < 0){
 		short_content = this_content.slice(0, short_content_end + 1);
-	}
-	// console.log(short_content);
-	//remove extra space
-	if ( 	short_content.indexOf('&nbsp;') == 0 ) {
-		short_content = short_content.slice(6);
 	}
 	
 	return short_content;

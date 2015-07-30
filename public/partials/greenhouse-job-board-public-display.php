@@ -25,14 +25,14 @@
 
 
 //options page fields
-function greenhouse_job_board_url_token_render(  ) { 
+function greenhouse_job_board_url_token_render(  ) {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_url_token]' value='<?php 
 	if ( isset( $options['greenhouse_job_board_url_token'] ) ) {
 		echo $options['greenhouse_job_board_url_token']; 
-	} ?>'>
+	} ?>' class="regular-text">
 	<div class="helper">Find your Greenhouse URL Token when you are logged into Greenhouse <a href="https://app.greenhouse.io/configure/dev_center/config" target="_blank">here</a> <br />
 	Configure > Dev Center > Configuring your Job Board &amp; labeled 'Your URL Token'</div>
 	<?php
@@ -47,7 +47,7 @@ function greenhouse_job_board_api_key_render(  ) {
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_api_key]' value='<?php 
 	if ( isset( $options['greenhouse_job_board_api_key'] ) ) {
 		echo $options['greenhouse_job_board_api_key']; 
-	} ?>'>
+	} ?>' class="regular-text">
 	<div class="helper">Find your Greenhouse API Key when you are logged into Greenhouse <a href="https://app.greenhouse.io/configure/dev_center/credentials" target="_blank">here</a> <br />
 	Configure > Dev Center > API Credentials &amp; labeled 'Job Board API'</div>
 	<?php
@@ -64,7 +64,7 @@ function greenhouse_job_board_type_render(  ) {
 	}
 	
 	?>
-	<select name='greenhouse_job_board_settings[greenhouse_job_board_type]'>
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_type]' class='regular-text'>
 		<option value="accordion" <?php if ( $options['greenhouse_job_board_type'] == 'accordion' ) { echo 'selected'; } ?>>Accordion</option>
 		<option value="cycle" <?php if ( $options['greenhouse_job_board_type'] == 'cycle' ) { echo 'selected'; } ?>>Cycle</option>
 	</select>
@@ -82,7 +82,7 @@ function greenhouse_job_board_form_type_render(  ) {
 	}
 	
 	?>
-	<select name='greenhouse_job_board_settings[greenhouse_job_board_form_type]'>
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_form_type]' class='regular-text'>
 		<option value="iframe" <?php if ( $options['greenhouse_job_board_form_type'] == 'iframe' ) { echo 'selected'; } ?>>IFrame</option>
 		<option value="inline" <?php if ( $options['greenhouse_job_board_form_type'] == 'inline' ) { echo 'selected'; } ?>>Inline</option>
 	</select>
@@ -107,7 +107,7 @@ function greenhouse_job_board_form_fields_render(  ) {
 		else {
 			echo $options['greenhouse_job_board_form_fields']; 
 		}
-		?>'>
+		?>' class="regular-text">
 	<div class="helper">Select the form fields you would like to display on your apply forms by default, List either the form labels or names from greenhouse. Note that this is only used when using inline forms (and not iframes).</div>
 	<?php
 
@@ -125,7 +125,7 @@ function greenhouse_job_board_back_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_back']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your `Back` button.</div>
 	<?php
 
@@ -143,7 +143,7 @@ function greenhouse_job_board_apply_now_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_apply_now']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your `Apply Now` button.</div>
 	<?php
 
@@ -161,7 +161,7 @@ function greenhouse_job_board_apply_now_cancel_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_apply_now_cancel']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your `Cancel` button.</div>
 	<?php
 
@@ -179,7 +179,7 @@ function greenhouse_job_board_read_full_desc_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_read_full_desc']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your `Read Full Description` button.</div>
 	<?php
 
@@ -197,7 +197,7 @@ function greenhouse_job_board_hide_full_desc_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_hide_full_desc']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your `Hide Full Description` button.</div>
 	<?php
 
@@ -215,7 +215,7 @@ function greenhouse_job_board_location_label_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_location_label']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your location label. Note, this is only displayed when the display location option is active.</div>
 	<?php
 
@@ -232,7 +232,7 @@ function greenhouse_job_board_office_label_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_office_label']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your office label. Note, this is only displayed when the display office option is active.</div>
 	<?php
 
@@ -249,7 +249,7 @@ function greenhouse_job_board_department_label_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_department_label']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your department label. Note, this is only displayed when the display department option is active.</div>
 	<?php
 
@@ -266,7 +266,7 @@ function greenhouse_job_board_description_label_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_description_label']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the text for your description label. Note, this is only displayed when the display description option is active. Default is blank.</div>
 	<?php
 
@@ -283,7 +283,7 @@ function greenhouse_job_board_apply_headline_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_apply_headline']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the headline for your application form. Note, this is only displayed when the inline form type. Default is 'Apply'.</div>
 	<?php
 
@@ -300,17 +300,17 @@ function greenhouse_job_board_thanks_headline_render(  ) {
 	else {
 		echo $options['greenhouse_job_board_thanks_headline']; 
 	}
-	?>'>
+	?>' class="regular-text">
 	<div class="helper">Set the headline for your thank you messaging. Note, this is only displayed when the inline form type after successful application submission. Default is 'Thank you for your interest'.</div>
 	<?php
 
 }
 
-function greenhouse_job_board_thanks_body_render(  ) { 
+function greenhouse_job_board_thanks_body_render(  ) {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
-	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_thanks_body]'><?php 
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_thanks_body]' class="large-text"><?php 
 	if ( !isset( $options['greenhouse_job_board_thanks_body'] ) ) { // Nothing yet saved
 		echo ''; 
 	}
@@ -327,7 +327,7 @@ function greenhouse_job_board_inline_form_template_render(  ) {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 	?>
-	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_inline_form_template]'><?php 
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_inline_form_template]' class="large-text"><?php 
 	if ( !isset( $options['greenhouse_job_board_inline_form_template'] ) ) { // Nothing yet saved
 		echo ''; 
 	}
@@ -347,7 +347,7 @@ function greenhouse_job_board_settings_section_callback(  ) {
 
 }
 
-function greenhouse_job_board_options_page(  ) { 
+function greenhouse_job_board_options_page(  ) {
 
 	?>
 	<form action='options.php' method='post'>
@@ -363,4 +363,4 @@ function greenhouse_job_board_options_page(  ) {
 	</form>
 	<?php
 
-}
+} ?>
