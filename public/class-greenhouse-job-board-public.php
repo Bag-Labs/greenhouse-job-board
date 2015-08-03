@@ -271,15 +271,15 @@ class Greenhouse_Job_Board_Public {
 			$ghjb_html .= '<div class="cycle-slide"><div class="apply_jobs">
 					<h1>' . $options['greenhouse_job_board_apply_headline'] . '</h1>
 					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
-						</form>
-						<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-						</div></div>
-						<div class="cycle-slide">
-							<div class="apply_ty">
-								<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
-								<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
-							</div>
-						</div>';
+					</form>
+					<p><a href="#" class="return">' . $atts['back'] . '</a></p>
+					</div></div>
+					<div class="cycle-slide">
+						<div class="apply_ty">
+							<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
+							<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
+						</div>
+					</div>';
 		} 
 		// accordion inline
 		elseif ( 	$atts['hide_forms'] !== 'true' &&
@@ -289,15 +289,12 @@ class Greenhouse_Job_Board_Public {
 			$ghjb_html .= '<div class="apply_jobs">
 					
 					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
-						</form>
-						<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-						</div></div>
-						<div class="cycle-slide">
-							<div class="apply_ty">
-								<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
-								<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
-							</div>
-						</div>';
+					</form>
+					<div class="apply_ty" style="display:none;">
+						<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
+						<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
+					</div>
+				</div>';
 		} 
 		// iframe form
 		elseif ( $atts['hide_forms'] !== 'true' &&
