@@ -290,13 +290,14 @@ jQuery(document).ready(function($) {
 		
 		var form_id = '#apply_form';
 		
-		//if not valid, display the html5 validation messages
+		//if not valid, display the html5 validation messages (by clicking the temp submit button)
 		if ( !$(form_id)[0].checkValidity() ) {
 			// $(form_id).find(':submit').click();
 			$('<input type="submit">').hide().appendTo( $(form_id) ).click().remove();
 			return false;
 		}
 		
+		//if all html5 validates then submit via ajax
 		else if ( $(form_id)[0].checkValidity() ) {
 			// console.log('submitting form');
 			ajax_submit( form_id, null);
@@ -626,10 +627,6 @@ jQuery(document).ready(function($) {
 		var this_content = decodeHtml(content);
 		//strip tags
 		this_content = strip_tags(this_content);
-		
-		//OR
-		//get the first number of characters and the last full word
-		//OR
 		
 		//start at 0
 		var short_content_start = 0;
