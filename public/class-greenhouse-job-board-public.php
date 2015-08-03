@@ -265,14 +265,20 @@ class Greenhouse_Job_Board_Public {
 		
 		// cycle inline
 		if ( $atts['hide_forms'] !== 'true' &&
-			 $atts['form_type'] === 'inline' &&
 			 $atts['board_type'] === 'cycle'
 			) {
 			$ghjb_html .= '<div class="cycle-slide"><div class="apply_jobs">
-					<h1>' . $options['greenhouse_job_board_apply_headline'] . '</h1>
-					<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
-					</form>
-					<p><a href="#" class="return">' . $atts['back'] . '</a></p>
+					<h1>' . $options['greenhouse_job_board_apply_headline'] . '</h1>';
+					if ( $atts['form_type'] === 'iframe' ) {
+						
+						$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe
+						$ghjb_html .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
+					}
+					elseif ($atts['form_type'] === 'inline') {
+						$ghjb_html .= '<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
+						</form>';
+					}
+					$ghjb_html .= '<p><a href="#" class="return">' . $atts['back'] . '</a></p>
 					</div></div>
 					<div class="cycle-slide">
 						<div class="apply_ty">
@@ -298,7 +304,8 @@ class Greenhouse_Job_Board_Public {
 		} 
 		// iframe form
 		elseif ( $atts['hide_forms'] !== 'true' &&
-				 $atts['form_type'] === 'iframe' 
+				 $atts['form_type'] === 'iframe' &&
+			 		$atts['board_type'] === 'accordion'
 			) {
 			$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe
 			$ghjb_html .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';

@@ -139,7 +139,10 @@ jQuery(document).ready(function($) {
 				 	// want to do to ensure source tracking works (i.e., tracking
 				 	// where a candidate came from)
 				 	// Grnhse.Iframe.load(jid, 'abc123');
-
+				 	
+				 	// stop pdefault page scrolling behavior
+				 	Grnhse.Settings['scrollOnLoad'] = false;
+				 	
 				 	// Loads job with ID 5555555 with no source tracking token
 				 	Grnhse.Iframe.load(jid);
 
@@ -147,7 +150,7 @@ jQuery(document).ready(function($) {
 				 	// Grnhse.Iframe.load();	 });
 				}
 				//reset height of container to contain the iframe
-				// setTimeout( reset_cycle_container_height, 1000);
+				setTimeout( reset_cycle_container_height, 1000);
 			}
 			
 			//cycle & inline
@@ -166,6 +169,10 @@ jQuery(document).ready(function($) {
 		}
 		
 	});
+
+	function reset_cycle_container_height(){
+		$('.all_jobs').height( $('.cycle-slide-active').height() );
+	}
 
 	function thanks_message(){
 		
@@ -186,7 +193,7 @@ jQuery(document).ready(function($) {
 	// $('.greenhouse-job-board').on('blur', '#positions', update_form_per_position );
 
 	function update_form_per_position( e, jobid ){
-		// get json questoin data for this job
+		// get json question data for this job
 		var this_job = $.grep(ghjb_jobs, function (o,i){
 			return o.id == jobid;
 		});
@@ -262,7 +269,7 @@ jQuery(document).ready(function($) {
 		//find correct slide by data-id
 		var jobid = parseInt( $(this).parents('.job').data('id') );
 		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index();
-
+		
 		jobs_scroll_top();
 		$('.greenhouse-job-board[data-type="cycle"] .all_jobs').cycle('goto', slideindex );
 
