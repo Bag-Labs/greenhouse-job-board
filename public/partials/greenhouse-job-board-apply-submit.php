@@ -3,7 +3,6 @@ require('../../../../../wp-blog-header.php');
 $options = get_option( 'greenhouse_job_board_settings' );
 // echo $options['greenhouse_job_board_api_key'];
 
-
 // print_r($_POST);
 // print_r($_FILES);
 
@@ -15,19 +14,16 @@ $tmpfile = $_FILES['resume']['tmp_name'];
 $filename = basename($_FILES['resume']['name']);
 $filesize = $_FILES['resume']['size'];
 $filetype = $_FILES['resume']['type'];
-// $_POST['resume'] = array('resume' => '@'.$tmpfile.';filename='.$filename );
-
-// $_POST['resume'] = new CURLFile($tmpfile, $filetype, 'resume');
-
-// $_POST['resume'] = file_get_contents( $tmpfile );
-
-// $file = fopen($tmpfile, 'r');
-// $filedata = fread($file, $filesize);
-// $_POST['resume'] = $filedata;
-
-/*echo( $tmpfile . '
-	');*/
 $_POST['resume'] = '@'.$tmpfile.';filename='.$filename.';type='.$filetype;
+
+
+//add cover_letter to post vars
+// print_r($_FILES['cover_letter']);
+// $tmpfile2 = $_FILES['cover_letter']['tmp_name'];
+// $filename2 = basename($_FILES['cover_letter']['name']);
+// $filesize2 = $_FILES['cover_letter']['size'];
+// $filetype2 = $_FILES['cover_letter']['type'];
+// $_POST['cover_letter'] = '@'.$tmpfile2.';filename='.$filename2.';type='.$filetype2;
 
 // print_r($_POST);
 
