@@ -162,8 +162,14 @@ class Greenhouse_Job_Board_Public {
 			data-type="' . $atts['board_type'] . '" 
 			data-form_type="' . $atts['form_type'] . '">';
 		
-	    if ( $atts['url_token'] == '' ) {
-	    	$ghjb_html .= 'The greenhouse url_token is required. Please either add it as a shortcode attribute or add it to your <a href="' . admin_url('options-general.php?page=greenhouse_job_board' ) . '">greenhouse settings</a>.';
+	    	
+        if ( $atts['url_token'] == '' ) {
+        	$ghjb_html .= 'The greenhouse url_token is required. Please add it to your <a href="' . admin_url('options-general.php?page=greenhouse_job_board' ) . '">greenhouse settings</a>.';
+    		$ghjb_html .= '</div>';
+    		return $ghjb_html;
+        }
+	    if ( $atts['form_type'] == 'inline' && $atts['api_key'] == '' ) {
+	    	$ghjb_html .= 'The greenhouse api key is required with inline forms. Please add it to your <a href="' . admin_url('options-general.php?page=greenhouse_job_board' ) . '">greenhouse settings</a>.';
 			$ghjb_html .= '</div>';
 			return $ghjb_html;
 	    }
