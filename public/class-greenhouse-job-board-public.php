@@ -74,7 +74,12 @@ class Greenhouse_Job_Board_Public {
 		 */
 
 		wp_enqueue_style( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'css/greenhouse-job-board-public.css', array(), $this->version, 'all' );
-
+		
+		
+		$options = get_option( 'greenhouse_job_board_settings' );
+		$custom_css = $options['greenhouse_job_board_custom_css'];
+		
+		wp_add_inline_style( $this->greenhouse_job_board, $custom_css );
 	}
 
 	/**
@@ -512,6 +517,15 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_settings', 
 			'greenhouse_job_board_greenhouse_settings_section' 
 		);
+
+		add_settings_field( 
+			'greenhouse_job_board_custom_css', 
+			__( 'Custom CSS', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_custom_css_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+		
 	}
 
 

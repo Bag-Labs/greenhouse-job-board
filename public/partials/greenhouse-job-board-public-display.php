@@ -323,6 +323,23 @@ function greenhouse_job_board_thanks_body_render(  ) {
 
 }
 
+function greenhouse_job_board_custom_css_render(  ) {
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_custom_css]' class="large-text" rows="20"><?php 
+	if ( !isset( $options['greenhouse_job_board_custom_css'] ) ) { // Nothing yet saved
+		echo ''; 
+	}
+	else {
+		echo $options['greenhouse_job_board_custom_css']; 
+	}
+	?></textarea>
+	<div class="helper">Place any custom CSS here.</div>
+	<?php
+
+}
+
 function greenhouse_job_board_inline_form_template_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );
