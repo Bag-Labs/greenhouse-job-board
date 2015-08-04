@@ -8,23 +8,31 @@ $options = get_option( 'greenhouse_job_board_settings' );
 
 // $postfields = http_build_query($_POST);
 
-//add resume to post vars
-// print_r($_FILES['resume']);
-$tmpfile = $_FILES['resume']['tmp_name'];
-$filename = basename($_FILES['resume']['name']);
-$filesize = $_FILES['resume']['size'];
-$filetype = $_FILES['resume']['type'];
-$_POST['resume'] = '@'.$tmpfile.';filename='.$filename.';type='.$filetype;
-
-
-//add cover_letter to post vars
-// print_r($_FILES['cover_letter']);
-// $tmpfile2 = $_FILES['cover_letter']['tmp_name'];
-// $filename2 = basename($_FILES['cover_letter']['name']);
-// $filesize2 = $_FILES['cover_letter']['size'];
-// $filetype2 = $_FILES['cover_letter']['type'];
-// $_POST['cover_letter'] = '@'.$tmpfile2.';filename='.$filename2.';type='.$filetype2;
-
+	//add resume to post vars
+	// print_r($_FILES['resume']);
+	$resume_path = $_FILES['resume']['tmp_name'];
+	$resume_filename = basename($_FILES['resume']['name']);
+	$resume_filesize = $_FILES['resume']['size'];
+	$resume_filetype = $_FILES['resume']['type'];
+	
+	//add cover_letter to post vars
+	// print_r($_FILES['cover_letter']);
+	$cover_path = $_FILES['cover_letter']['tmp_name'];
+	$cover_filename = basename($_FILES['cover_letter']['name']);
+	$cover_filesize = $_FILES['cover_letter']['size'];
+	$cover_filetype = $_FILES['cover_letter']['type'];
+	
+//for PHP 5.5 with 
+if ( function_exists('curl_file_create') ) {
+	//CURLFile curl_file_create ( string $filename [, string $mimetype [, string $postname ]] )
+	$_POST['resume'] = new CURLFile($resume_path, $resume_filetype, $resume_filename );
+	$_POST['cover_letter'] = new CURLFile($cover_path, $cover_filetype, $cover_filename );
+}
+//for PHP 5.4 and lower
+else {
+	$_POST['resume'] = '@' . $resume_path . ';filename=' . $resume_filename . ';type=' . $resume_filetype;
+	$_POST['cover_letter'] = '@' . $cover_path . ';filename=' . $cover_filename . ';type=' . $cover_filetype;
+}
 // print_r($_POST);
 
 $url = "https://" . $options['greenhouse_job_board_api_key'] . ":@api.greenhouse.io/v1/applications/";
