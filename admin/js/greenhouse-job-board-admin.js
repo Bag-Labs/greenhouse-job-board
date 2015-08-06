@@ -174,11 +174,17 @@
 		
 		$('#form_type').on('change blur mouseup', function(e){
 			
-			if ( $(this).find(':selected').val() === 'inline') {
-				$('.section_form_fields').show();
-			}
-			else {
-				$('.section_form_fields').hide();
+			if ( $(this).parents('.section').is(":visible") ) {
+				console.log('hide forms checked');
+				
+				if ( $(this).find(':selected').val() === 'inline' ) {
+					$('.section_form_fields').show();
+				}
+				else if (	$(this).find(':selected').val() === 'default' ||
+							$(this).find(':selected').val() === 'iframe'
+						){
+					$('.section_form_fields').hide();
+				}
 			}
 		});
 		
