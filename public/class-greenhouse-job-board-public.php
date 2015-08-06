@@ -4,7 +4,7 @@
  * The public-facing functionality of the plugin.
  *
  * @link       http://example.com
- * @since      1.2.0
+ * @since      1.7.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public
@@ -57,7 +57,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since    1.7.0
 	 */
 	public function enqueue_styles() {
 
@@ -119,7 +119,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.6.0
+	 * @since    1.7.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		$options = get_option( 'greenhouse_job_board_settings' );
