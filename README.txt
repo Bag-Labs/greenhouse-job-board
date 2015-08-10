@@ -69,12 +69,15 @@ Hiding Forms
 *	If you don't want application forms to display and simply want to display listings, just add the `hide_forms` attribute
 *	ex. `[greenhouse hide_forms="true"]`
 
-Coming soon:
+== Coming Soon ==
 
-*	Job board sorting options
+Roadmap
+
+*	Job board sorting and grouping options
 *	Templating for your own layout
 *	Caching options
 *	Cleaner, smarter interface
+*	Widget
 
 
 == Installation ==
@@ -89,7 +92,7 @@ e.g.
 
 == Changelog ==
 
-=1.7=
+= 1.7 =
 * Add cycle option for the job board layout.
 * Add inline form option, no longer need to load an iframe (may take special setup and requires).
 * Add custom css block.
