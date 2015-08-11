@@ -2,3 +2,37 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ 
+.greenhouse-wizard {
+	position: absolute;
+	background: #FCFCFC;
+	margin: 0 -30px -30px;
+}
+.greenhouse-wizard .media-frame-title,
+.greenhouse-wizard .media-frame-content,
+.greenhouse-wizard .media-frame-toolbar {
+	left: 0;
+	padding: 0 30px;
+}
+.greenhouse-wizard .media-frame-title h2 {
+	margin: 0;
+	padding: 0 16px;
+}
+.greenhouse-wizard .media-frame-content {
+	padding: 0 30px 60px;
+}
+.greenhouse-wizard input[type="text"] {
+	display: block;
+	width: 100%;
+	max-width: 240px;
+	margin: 0.5em 0;
+}
+.greenhouse-wizard .media-frame-toolbar .media-toolbar-secondary a{
+	padding: 12px;
+}
+.greenhouse-wizard .section {
+ 	padding: 1em 0 0 1em;
+}
+.greenhouse-wizard .section .section{
+	padding: .5em 0 0 1.5em;
+}

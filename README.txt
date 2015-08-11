@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
-Tags: greenhouse, job board, api, resume
-Requires at least: 3.0.1
-Tested up to: 4.1.1
-Stable tag: 1.4.0
+Tags: greenhouse, job board, api, resume, careers, hr, recruiter
+Requires at least: 3.0
+Tested up to: 4.2.4
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,12 +17,12 @@ Plugin to pull a job board from greenhouse.io via their API and display it on yo
 Requirements:
 
 *	Must have a greenhouse account.
-*	Know your URL Token
+*	Enter your URL Token & API key.
 
 Initial Setup:
 
-*	For ease of use, setup your URL Token within Settings->Greenhouse Job Board Settings. (NOTE that you can also set this inline within a shortcode)
-*	API Key can also be set, but is not yet supported.
+*	For ease of use, setup your URL Token within Settings->Greenhouse. (NOTE: you can also set this inline with shortcode attributes.)
+*	Add shortcode or use the wizard to add a job board to any page or post.
 
 Know the code!
 
@@ -69,9 +69,16 @@ Hiding Forms
 *	If you don't want application forms to display and simply want to display listings, just add the `hide_forms` attribute
 *	ex. `[greenhouse hide_forms="true"]`
 
-Coming soon:
+== Coming Soon ==
 
-*	Sorting
+Roadmap
+
+*	Job board sorting and grouping options
+*	Templating for your own layout
+*	Caching options
+*	Cleaner, smarter interface
+*	Widget
+
 
 == Installation ==
 
@@ -84,6 +91,29 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.8 =
+* Fix minor bug in shortcode wizard for form type setting.
+* Fix bug when submitting optional files.
+* Allow multiple shortcodes on one page.
+
+= 1.7 =
+* Add cycle option for the job board layout.
+* Add inline form option, no longer need to load an iframe (may take special setup and requires).
+* Add custom css block.
+* Various bug fixes.
+* Cache greenhouse data for faster performance. 
+
+= 1.6 =
+* Adding options to customize display of job data: location, office, department and description.
+* Also adding options to customize labels for each of the above.
+* Minor Bug fixes.
+
+= 1.5 =
+* Adding add job board media button and wizard to help construct your shortcode.
+* Bug fixes - compatability with ACF Pro.
+* Bug fixes - unexpected output.
+* Updates - requiring a url_token with user feedback on error.
 
 = 1.4 =
 * Adding support for location filter (include and exclude).
@@ -108,14 +138,23 @@ e.g.
 
 == Screenshots ==
 
-1. Shortcode in action.
+1. Shortcode in action. Notice the 'Add Greenhouse Job Board' button.
 2. View the job board list.
 3. Click to view description of each job.
 4. Click to apply for each job.
+5. View the 'Add Greenhosuse Job Board' button modal wizard. This will allow you to easily configure your board with all the settings. It will insert the configured shortcode into the content editor.
 
 
 == Frequently Asked Questions ==
 
-= Why no FAQ? =
+= Any Requirements? =
 
-If you ask questions, answers will come.
+Yes, this plugin requires that you have a greenhouse.io account. You will need to enter your url token as well as your API key.
+
+= Server requirements =
+
+If you desire inline forms rather than iframe forms, to submit applications to the greenhouse API the web server must support cURL since it is used for the proxy data submission as to not expose your API key to the public.
+
+= Can I add my own styles? =
+
+Yes, you can add your own custom CSS on the plugin options page.
