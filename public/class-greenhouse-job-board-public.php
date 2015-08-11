@@ -125,6 +125,7 @@ class Greenhouse_Job_Board_Public {
 		$options = get_option( 'greenhouse_job_board_settings' );
 		
 	    $atts = shortcode_atts( array(
+	    	'id'				=> '',
 	        'url_token' 		=> isset( $options['greenhouse_job_board_url_token'] ) ? $options['greenhouse_job_board_url_token'] : '',
 	        'api_key' 			=> isset( $options['greenhouse_job_board_api_key'] ) ? $options['greenhouse_job_board_api_key'] : '',
 	        'board_type' 		=> isset( $options['greenhouse_job_board_type'] ) ? $options['greenhouse_job_board_type'] : 'accordion',
@@ -146,6 +147,17 @@ class Greenhouse_Job_Board_Public {
 	        'description_label'	=> isset( $options['greenhouse_job_board_description_label'] ) ? $options['greenhouse_job_board_description_label'] : '',
 	        'display'			=> isset( $options['display'] ) ? $options['display'] : 'description',
 	    ), $atts );
+
+		STATIC $shortcode_id = 0;
+		$shortcode_id++;
+		
+		
+		if ( $atts['id'] === '' ) {
+			$jbid = $shortcode_id;
+		}
+		else {
+			$jbid = $atts['id'];
+		}
 	    
 	    //sanitize values
 	    //if hide_forms is anything other than true, set it to false
@@ -159,6 +171,7 @@ class Greenhouse_Job_Board_Public {
 	    
 	    
 		$ghjb_html  = '<div class="greenhouse-job-board" 
+			id="greenhouse-job-board_' . $jbid . '" 
 			data-type="' . $atts['board_type'] . '" 
 			data-form_type="' . $atts['form_type'] . '">';
 		
