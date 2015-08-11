@@ -152,10 +152,10 @@ class Greenhouse_Job_Board_Public {
 	    if ( $atts['hide_forms'] !== 'true' ) {
 	    	$atts['hide_forms'] = 'false';
 	    }
-	    //reset form_type until set up for more types
-	    // if ( $atts['form_type'] !== 'iframe' ) {
-	    // 	$atts['form_type'] = 'iframe';
-	    // }
+	    //set form_type 
+	    if ( $atts['form_type'] === 'default' ) {
+	    	$atts['form_type'] = '';
+	    }
 	    
 	    
 		$ghjb_html  = '<div class="greenhouse-job-board" 
@@ -261,7 +261,7 @@ class Greenhouse_Job_Board_Public {
 		if ( $atts['hide_forms'] !== '') {
 			$ghjb_html .=	' data-hide_forms="' . $atts['hide_forms'] . '" ';
 		}
-		if ( $atts['form_type'] !== '') {
+		if ( $atts['form_type'] !== '' ) {
 			$ghjb_html .=	' data-form_type="' . $atts['form_type'] . '" ';
 		}
 		if ( $atts['form_fields'] != '' && 
