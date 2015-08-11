@@ -325,9 +325,10 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html .= '</div>';
 		
 		// Get any existing copy of our transient data
+		// transients can be saved for multiple shortcode uses since it stores the full api return and nothing is filtered until it hits our js.
 		// http://www.tailored4wp.com/get-a-better-performance-with-wordpress-transients-api-501/
-		delete_transient( 'ghjb_json' );
-		delete_transient( 'ghjb_jobs' );
+		// delete_transient( 'ghjb_json' );
+		// delete_transient( 'ghjb_jobs' );
 		if ( false === ( $ghjb_json = get_transient( 'ghjb_json' ) ) ) {
 			// It wasn't there, so regenerate the data and save the transient
 			// api call to get jobs with callback
