@@ -369,7 +369,7 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html .=  $ghjb_jobs;
 		$ghjb_html .= ';ghjb_json = ';
 		$ghjb_html .=  $ghjb_json;
-		$ghjb_html .= ';</script>';
+		$ghjb_html .= ';greenhouse_jobs(ghjb_json, "#greenhouse-job-board_' . $jbid . '");</script>';
 		
 		
 		
