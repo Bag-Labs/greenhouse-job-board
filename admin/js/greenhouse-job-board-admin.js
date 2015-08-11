@@ -106,7 +106,11 @@
 			}
 			
 			form_type = $( scope + '#form_type option:selected').val();
-			if (form_type) {
+			console.log(form_type);
+			if (form_type === 'default' ){
+				form_type = false;
+			}
+			else if (form_type) {
 				shortcode += ' form_type="' + form_type + '"';
 			}
 			form_fields = $( scope + '#form_fields').val();
