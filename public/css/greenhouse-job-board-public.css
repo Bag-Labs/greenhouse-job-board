@@ -20,3 +20,6 @@
 	background: none; 
 	border: 0;
 }
+.greenhouse-job-board .field_wrap.field_required label:after {
+	content: ' *';
+}

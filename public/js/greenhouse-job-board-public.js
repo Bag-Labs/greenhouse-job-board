@@ -226,14 +226,18 @@ jQuery(document).ready(function($) {
 				 jQuery.inArray( job_questions[i].fields[0].name, form_fields ) >= 0 ||
 				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0  ) {
 			
-				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name + "'>";
-				//write label for field
-				field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
+				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name ;
 				
 				var required = '';
 				if (job_questions[i].required === true) {
 					required = ' required="true" ';
+					field_wrap += " field_required ";
 				}
+				
+				field_wrap += "' >";
+				//write label for field
+				field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
+				
 				//detect input type and write proper html for correct type
 				if ( job_questions[i].fields[0].type === 'input_text' ) {
 					field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required + " />"
