@@ -105,7 +105,7 @@ class Greenhouse_Job_Board_Admin {
 	/**
 	 * Add the shortcodes media button.
 	 *
-	 * @since    1.7.0
+	 * @since    1.8.0
 	 */
 	public function greenhouse_add_shortcode_media_button() {
 		add_thickbox();
