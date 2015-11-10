@@ -73,11 +73,10 @@ Hiding Forms
 
 Roadmap
 
-*	Job board sorting and grouping options
-*	Templating for your own layout
-*	Caching options
+*	Job board grouping options
 *	Cleaner, smarter interface
 *	Widget
+*	Templating for your own layout
 
 
 == Installation ==
@@ -91,6 +90,15 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.9 =
+* Load assets (css &  js) conditionally - only on pages with the job board shortcode.
+* Check if cycle2 js library is already loaded and only load it if it's needed still.
+* Add sorting options to job board.
+* Add sticky option to have jobs stick to top or bottom when sorting.
+* Ensure to only allow inline forms after API key is entered.
+* Set cache expiration limits and clear cached data from Greenhouse API.
+* Minor code clean up and documnetation updates.
 
 = 1.8 =
 * Fix minor bug in shortcode wizard for form type setting.
@@ -158,3 +166,7 @@ If you desire inline forms rather than iframe forms, to submit applications to t
 = Can I add my own styles? =
 
 Yes, you can add your own custom CSS on the plugin options page.
+
+= I made edits in my Greenhouse account, but I'm not seeing those edits on my website, what gives? =
+
+This plugin connects to Greenhouse to retreive data and saves it locally in your WordPress database for a while so your site will load faster and not have to wait for Greenhouse API everytime your job board loads. Go to the settings page and check your cache expiration setting to see how long this temporary or transient data will be stored locally, and also notice the checkbox option to clear the cache. To force fresh data to your site, check this box and save changes.
