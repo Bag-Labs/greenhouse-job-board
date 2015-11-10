@@ -155,6 +155,7 @@ class Greenhouse_Job_Board_Public {
 	        'office_label'		=> isset( $options['greenhouse_job_board_office_label'] ) ? $options['greenhouse_job_board_office_label'] : 'Office: ',
 	        'department_label'	=> isset( $options['greenhouse_job_board_department_label'] ) ? $options['greenhouse_job_board_department_label'] : 'Department: ',
 	        'description_label'	=> isset( $options['greenhouse_job_board_description_label'] ) ? $options['greenhouse_job_board_description_label'] : '',
+	        'sticky'			=> isset( $options['greenhouse_job_board_sticky'] ) ? $options['greenhouse_job_board_sticky'] : '',
 	        'display'			=> isset( $options['display'] ) ? $options['display'] : 'description',
 	    ), $atts );
 
@@ -295,6 +296,9 @@ class Greenhouse_Job_Board_Public {
 		}
 		if ( $atts['display'] !== '') {
 			$ghjb_html .=	' data-display="' . $atts['display'] . '" ';
+		}
+		if ( $atts['sticky'] !== '') {
+			$ghjb_html .=	' data-sticky="' . $atts['sticky'] . '" ';
 		}
 		$ghjb_html .= '>
 			</div>';

@@ -1,5 +1,14 @@
 jQuery(document).ready(function($) {
 	'use strict';
+	
+	if ( $('.greenhouse-job-board').length ){
+		// console.log(ghjb_json);
+		$('.greenhouse-job-board').each( function(){
+			greenhouse_jobs( ghjb_json, '#' + $(this).attr('id') );
+		});
+	} else {
+		console.log('none found');
+	}
 
 	 
 	$('.greenhouse-job-board[data-type="accordion"] .jobs').on('click', '.job_read_full', function(e){
@@ -418,7 +427,7 @@ function get_excerpt_from_content(content, limit){
 }
 
 function greenhouse_jobs(json, jbid){
- 	// console.log(json);
+ 	console.log(json);
  	// console.log(jbid);
  	
  	var board_type = jQuery(jbid).data('type');
@@ -432,7 +441,31 @@ function greenhouse_jobs(json, jbid){
  		slide_html = jQuery("#job-slide-template").html();
 	 	slide_html_template = Handlebars.compile(slide_html);
  	}
- 	//sort
+ 	
+ 	//sort jobs and factor sticky option
+ 	if ( jQuery(jbid + ' .jobs').attr('data-sticky') ) {
+ 		sticky = jQuery(jbid + ' .jobs').attr('data-sticky').split('|');
+ 		// console.log(sticky[0], sticky[1]);
+ 		json.jobs.sort(function(a, b){
+ 			if ( sticky[0] == 'bottom' ) {
+ 				if ( sticky[1] == a.id ) return 1;	
+ 				if ( sticky[1] == b.id ) return -1;
+ 			}
+ 			
+ 			if ( sticky[0] == 'top' ) {
+ 				if ( sticky[1] == a.id ) return -1;	
+ 				if ( sticky[1] == b.id ) return 1;
+ 			}
+ 			
+ 			//alphabetically sort
+ 			if ( a.title < b.title ) return -1;
+		    if ( a.title > b.title ) return 1;
+ 			
+ 			//do nothing
+ 			return 0;
+ 		});
+ 	}
+ 	
  	
  	//list all jobs
     for (var i = 0; i < json.jobs.length; i++){
