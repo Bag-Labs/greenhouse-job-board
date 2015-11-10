@@ -77,9 +77,10 @@ class Greenhouse_Job_Board_Public {
 		
 		
 		$options = get_option( 'greenhouse_job_board_settings' );
-		$custom_css = $options['greenhouse_job_board_custom_css'];
-		
-		wp_add_inline_style( $this->greenhouse_job_board, $custom_css );
+		if ( isset( $options['greenhouse_job_board_custom_css'] ) ) {
+			$custom_css = $options['greenhouse_job_board_custom_css'];		
+			wp_add_inline_style( $this->greenhouse_job_board, $custom_css );
+		}
 	}
 
 	/**
@@ -101,10 +102,16 @@ class Greenhouse_Job_Board_Public {
 		 * class.
 		 */
 		
-		wp_enqueue_script( $this->greenhouse_job_board + '_handlebars', plugin_dir_url( __FILE__ ) . 'js/handlebars-v3.0.0.js', array( 'jquery' ), null, false );
-		wp_enqueue_script( 'cycle2', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.min.js', array( 'jquery' ), '20141007', false );
-		wp_enqueue_script( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery' ), '1.7.0', false );
-
+		
+		
+		if ( !wp_script_is( 'handlebars', 'registered' ) ) {
+			wp_register_script( 'handlebars', plugin_dir_url( __FILE__ ) . 'js/handlebars-v3.0.0.js', array( 'jquery' ), null, false );
+		}
+		if ( !wp_script_is( 'jquery.cycle2', 'registered' ) ) {
+			wp_register_script( 'jquery.cycle2', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.min.js', array( 'jquery' ), '20141007', false );
+		}
+		wp_register_script( 'ghjbp', plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery', 'handlebars' ), '1.8.0', false );
+		
 	}
 	
 	/**
@@ -119,9 +126,12 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.8.0
+	 * @since    1.9.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
+		
+		wp_enqueue_script('ghjbp');
+		
 		$options = get_option( 'greenhouse_job_board_settings' );
 		
 	    $atts = shortcode_atts( array(
@@ -218,6 +228,8 @@ class Greenhouse_Job_Board_Public {
 		
 		// cycle template
 		else if ( $atts['board_type'] == 'cycle') {
+			
+			wp_enqueue_script('jquery.cycle2');
 		// handlebars template for returned job
 		$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
 		<div class="job job_{{id}}" 
