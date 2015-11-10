@@ -33,7 +33,7 @@ function greenhouse_job_board_url_token_render(  ) {
 		echo $options['greenhouse_job_board_url_token']; 
 	} ?>' class="regular-text">
 	<div class="helper">Find your Greenhouse URL Token when you are logged into Greenhouse <a href="https://app.greenhouse.io/configure/dev_center/config" target="_blank">here</a> <br />
-	Configure > Dev Center > Configuring your Job Board &amp; labeled 'Your URL Token'</div>
+	Configure > Dev Center > Configuring your Job Board &amp; labeled 'Your URL Token'. If you have multple job boards within greenhouse, ensure you have properly selected the url token to the job board you wish to display.</div>
 	<?php
 
 }

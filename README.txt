@@ -92,7 +92,7 @@ e.g.
 == Changelog ==
 
 = 1.9 =
-* Load assets (css &  js) conditionally - only on pages with the job board shortcode.
+* Load assets (css &  js) conditionally - only on pages with the job board shortcode. (props - bsteinlo)
 * Check if cycle2 js library is already loaded and only load it if it's needed still.
 * Add sorting options to job board.
 * Add sticky option to have jobs stick to top or bottom when sorting.
