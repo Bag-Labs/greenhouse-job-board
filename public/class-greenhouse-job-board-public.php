@@ -156,6 +156,8 @@ class Greenhouse_Job_Board_Public {
 	        'department_label'	=> isset( $options['greenhouse_job_board_department_label'] ) ? $options['greenhouse_job_board_department_label'] : 'Department: ',
 	        'description_label'	=> isset( $options['greenhouse_job_board_description_label'] ) ? $options['greenhouse_job_board_description_label'] : '',
 	        'sticky'			=> isset( $options['greenhouse_job_board_sticky'] ) ? $options['greenhouse_job_board_sticky'] : '',
+	        'orderby'			=> isset( $options['greenhouse_job_board_orderby'] ) ? $options['greenhouse_job_board_orderby'] : '',
+	        'order'				=> isset( $options['greenhouse_job_board_order'] ) ? $options['greenhouse_job_board_order'] : 'DESC',
 	        'display'			=> isset( $options['display'] ) ? $options['display'] : 'description',
 	    ), $atts );
 
@@ -247,17 +249,18 @@ class Greenhouse_Job_Board_Public {
 			data-id="{{id}}" 
 			data-departments="{{departments}}">
 				<div class="job_single">
-		 	    	<h1 class="job_title">{{title}}</h1>
-		 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-		 	    	<div class="job_description job_description_{{id}}">
-	    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
-	    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
-	    	 	    	{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
-		 	    			{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
-		 	    	</div>
-		 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
 		 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-	 	    	</div>
+					<h1 class="job_title">{{title}}</h1>
+					{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
+		 			<div class="job_description job_description_{{id}}">
+						{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
+			 			{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
+			 			{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
+		 					{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
+		 			</div>
+		 			{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
+		 			<p><a href="#" class="return">' . $atts['back'] . '</a></p>
+	 			</div>
 	 	</div>
 </script>';
 		}
@@ -299,6 +302,12 @@ class Greenhouse_Job_Board_Public {
 		}
 		if ( $atts['sticky'] !== '') {
 			$ghjb_html .=	' data-sticky="' . $atts['sticky'] . '" ';
+		}
+		if ( $atts['order'] !== '') {
+			$ghjb_html .=	' data-order="' . $atts['order'] . '" ';
+		}
+		if ( $atts['orderby'] !== '') {
+			$ghjb_html .=	' data-orderby="' . $atts['orderby'] . '" ';
 		}
 		$ghjb_html .= '>
 			</div>';
