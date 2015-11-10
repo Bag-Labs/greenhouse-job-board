@@ -79,11 +79,27 @@ function greenhouse_job_board_form_type_render(  ) {
 	if ( !isset( $options['greenhouse_job_board_form_type'] ) ) {
 		$options['greenhouse_job_board_form_type'] = 'iframe';
 	}
-	
+	$allow_inline = false;
+	if ( isset( $options['greenhouse_job_board_api_key'] ) &&
+		 $options['greenhouse_job_board_api_key'] !== '' ) {
+		$allow_inline = true;
+	}
 	?>
 	<select name='greenhouse_job_board_settings[greenhouse_job_board_form_type]' class='regular-text'>
-		<option value="iframe" <?php if ( $options['greenhouse_job_board_form_type'] == 'iframe' ) { echo 'selected'; } ?>>IFrame</option>
-		<option value="inline" <?php if ( $options['greenhouse_job_board_form_type'] == 'inline' ) { echo 'selected'; } ?>>Inline</option>
+		<option value="iframe" <?php 
+		if ( $options['greenhouse_job_board_form_type'] == 'iframe' ) { 
+			echo 'selected'; 
+		} ?>>IFrame</option>
+		<option value="inline" <?php 
+		if ( $options['greenhouse_job_board_form_type'] == 'inline' ) { 
+			echo 'selected'; 
+		} ?> <?php 
+		if ( $allow_inline === false ) { 
+			echo 'disabled'; 
+		} ?>>Inline<?php 
+		if ( $allow_inline === false ) {
+			echo ' (requires API key)';	
+		} ?></option>
 	</select>
 	<div class="helper">Select the type of forms you would like to display on your site by default.</div>
 	<?php
