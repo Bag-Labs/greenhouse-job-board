@@ -303,10 +303,12 @@ class Greenhouse_Job_Board_Public {
 		if ( $atts['sticky'] !== '') {
 			$ghjb_html .=	' data-sticky="' . $atts['sticky'] . '" ';
 		}
-		if ( $atts['order'] !== '') {
+		if ( $atts['order'] === 'ASC') {
+			//orderby: DESC (default) or ASC
 			$ghjb_html .=	' data-order="' . $atts['order'] . '" ';
 		}
 		if ( $atts['orderby'] !== '') {
+			//order can be: none, title, date, id, random, location, department, location or office
 			$ghjb_html .=	' data-orderby="' . $atts['orderby'] . '" ';
 		}
 		$ghjb_html .= '>

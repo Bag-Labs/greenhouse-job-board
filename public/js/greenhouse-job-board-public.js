@@ -442,29 +442,60 @@ function greenhouse_jobs(json, jbid){
 	 	slide_html_template = Handlebars.compile(slide_html);
  	}
  	
- 	//sort jobs and factor sticky option
+ 	//sorting defaults
+ 	var orderby = 'none';
+ 	var sort_order = 1; //desc. asc = -1
+ 	var sticky = ['x',0];
+ 	//read sorting settings from data attributes
+ 	if ( jQuery(jbid + ' .jobs').attr('data-orderby') ) {
+	 	orderby = jQuery(jbid + ' .jobs').attr('data-orderby');
+	}
+	if ( jQuery(jbid + ' .jobs').attr('data-order') === 'ASC' ) {
+		sort_order = -1;
+	}
  	if ( jQuery(jbid + ' .jobs').attr('data-sticky') ) {
  		sticky = jQuery(jbid + ' .jobs').attr('data-sticky').split('|');
  		// console.log(sticky[0], sticky[1]);
- 		json.jobs.sort(function(a, b){
- 			if ( sticky[0] == 'bottom' ) {
- 				if ( sticky[1] == a.id ) return 1;	
- 				if ( sticky[1] == b.id ) return -1;
- 			}
- 			
- 			if ( sticky[0] == 'top' ) {
- 				if ( sticky[1] == a.id ) return -1;	
- 				if ( sticky[1] == b.id ) return 1;
- 			}
- 			
- 			//alphabetically sort
- 			if ( a.title < b.title ) return -1;
-		    if ( a.title > b.title ) return 1;
- 			
- 			//do nothing
- 			return 0;
- 		});
  	}
+ 	//sort this sucker
+	json.jobs.sort(function(a, b){
+		if ( sticky[0] == 'bottom' ) {
+			if ( sticky[1] == a.id ) return 1;	
+			if ( sticky[1] == b.id ) return -1;
+		}
+		
+		if ( sticky[0] == 'top' ) {
+			if ( sticky[1] == a.id ) return -1;	
+			if ( sticky[1] == b.id ) return 1;
+		}
+		
+		//sort depending on orderby value
+		if ( orderby === 'title' ) {
+			if ( a.title < b.title ) return -1 * sort_order;
+			if ( a.title > b.title ) return 1 * sort_order;
+		} else if ( orderby === 'date' ) {
+			if ( a.updated_at < b.updated_at ) return -1 * sort_order;
+			if ( a.updated_at > b.updated_at ) return 1 * sort_order;
+		} else if ( orderby === 'id' ) {
+			if ( a.id < b.id ) return -1 * sort_order;
+			if ( a.id > b.id ) return 1 * sort_order;
+		} else if ( orderby === 'department' ) {
+			if ( a.departments[0].name < b.departments[0].name ) return -1 * sort_order;
+			if ( a.departments[0].name > b.departments[0].name ) return 1 * sort_order;
+		} else if ( orderby === 'office' ) {
+			if ( a.offices[0].name < b.offices[0].name ) return -1 * sort_order;
+			if ( a.offices[0].name > b.offices[0].name ) return 1 * sort_order;
+		} else if ( orderby === 'location' ) {
+			if ( a.location.name < b.location.name ) return -1 * sort_order;
+			if ( a.location.name > b.location.name ) return 1 * sort_order;
+		} else if ( orderby === 'random' ) {
+			return Math.round( Math.random() ) - 0.5;
+		}
+		
+		
+		//do nothing
+		return 0;
+	});
  	
  	
  	//list all jobs
