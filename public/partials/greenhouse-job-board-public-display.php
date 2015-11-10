@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       http://example.com
- * @since      1.7.0
+ * @since      1.9.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public/partials
@@ -19,7 +19,6 @@
 
 * Add select field that pulls office location via API and allows user to select default
 * Add select field that pulls departments via API and allows user to select default
-* Add textarea for custom CSS
 
 */
 
@@ -306,6 +305,53 @@ function greenhouse_job_board_thanks_headline_render(  ) {
 
 }
 
+function greenhouse_job_board_cache_expiry_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_board_cache_expiry'] ) ) {
+		$options['greenhouse_job_board_cache_expiry'] = '3600';
+	}
+	?>
+
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_cache_expiry]' class='regular-text'>
+	<option value="0"      <?php if ( $options['greenhouse_job_board_cache_expiry'] === '0'      ) { echo 'selected'; } ?>>No Cache (not recommended, except for testing)</option>
+	<option value="3600"   <?php if ( $options['greenhouse_job_board_cache_expiry'] === '3600'   ) { echo 'selected'; } ?>>1 Hour</option>
+	<option value="7200"   <?php if ( $options['greenhouse_job_board_cache_expiry'] === '7200'   ) { echo 'selected'; } ?>>2 Hours</option>
+	<option value="21600"  <?php if ( $options['greenhouse_job_board_cache_expiry'] === '21600'  ) { echo 'selected'; } ?>>6 Hours</option>
+	<option value="43200"  <?php if ( $options['greenhouse_job_board_cache_expiry'] === '43200'  ) { echo 'selected'; } ?>>12 Hours</option>
+	<option value="86400"  <?php if ( $options['greenhouse_job_board_cache_expiry'] === '86400'  ) { echo 'selected'; } ?>>1 Day (24 Hours)</option>
+	<option value="172800" <?php if ( $options['greenhouse_job_board_cache_expiry'] === '172800' ) { echo 'selected'; } ?>>2 Days (48 Hours)</option>
+	<option value="604800" <?php if ( $options['greenhouse_job_board_cache_expiry'] === '604800' ) { echo 'selected'; } ?>>7 Days (168 Hours)</option>
+	</select>
+	<div class="helper">Cache expiration time for the greenhouse API data.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_clear_cache_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( isset( $options['greenhouse_job_board_clear_cache'] ) && 
+		 $options['greenhouse_job_board_clear_cache'] === '1' 
+	) {
+		delete_transient( 'ghjb_json' );
+		delete_transient( 'ghjb_jobs' );
+		echo '<div class="updated settings-error notice is-dismissible"><p>Cache cleared successfully.</p></div>';
+	}
+	else {
+		$options['greenhouse_job_board_clear_cache'] = '0';
+	}
+	
+	
+	?>
+	<label class="helper"><input type='checkbox' name='greenhouse_job_board_settings[greenhouse_job_board_clear_cache]' value='1' <?php if ( $options['greenhouse_job_board_clear_cache'] === '1' ) { echo 'checked'; } ?> >
+	To clear Greenhouse API data from this site's cache (<a href="https://codex.wordpress.org/Transients_API" target="_blank">Transients</a>), check this box and save changes.</label>
+	<?php
+
+}
+
 function greenhouse_job_board_thanks_body_render(  ) {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
@@ -358,9 +404,14 @@ function greenhouse_job_board_inline_form_template_render(  ) {
 }
 
 
-function greenhouse_job_board_settings_section_callback(  ) { 
+function greenhouse_job_board_gh_settings_section_callback(  ) { 
 
-	echo __( 'Update with settings from your Greenhouse account. These will be the defaults across the entire website. You can still use the shortcode attributes to override these defaults if you wish.', 'greenhouse_job_board' );
+	echo __( 'Configure to your Greenhouse account. These settings will be the defaults across this website. You may use the shortcode attributes to override these defaults if you wish.', 'greenhouse_job_board' );
+
+}
+function greenhouse_job_board_jb_settings_section_callback(  ) { 
+
+	echo __( 'Update with settings for your job board. These will be the defaults across the entire website. You may use the shortcode attributes to override these defaults if you wish.', 'greenhouse_job_board' );
 
 }
 

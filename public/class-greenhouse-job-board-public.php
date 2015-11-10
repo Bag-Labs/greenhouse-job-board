@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link	  http://example.com
  * @since      1.7.0
  *
  * @package    Greenhouse_Job_Board
@@ -352,14 +352,14 @@ class Greenhouse_Job_Board_Public {
 		// Get any existing copy of our transient data
 		// transients can be saved for multiple shortcode uses since it stores the full api return and nothing is filtered until it hits our js.
 		// http://www.tailored4wp.com/get-a-better-performance-with-wordpress-transients-api-501/
-		// delete_transient( 'ghjb_json' );
-		// delete_transient( 'ghjb_jobs' );
+		// delete_transient( 'ghjb_json' ); //json is the main object that stores the whole job board
+		// delete_transient( 'ghjb_jobs' ); //jobs is the object that stores the details (form fields) for each job, which must be loaded individually
 		if ( false === ( $ghjb_json = get_transient( 'ghjb_json' ) ) ) {
 			// It wasn't there, so regenerate the data and save the transient
 			// api call to get jobs with callback
 			$ghjb_json = wp_remote_retrieve_body( wp_remote_get('https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true'));
 			//save json data to transient
-			set_transient( 'ghjb_json', $ghjb_json, HOUR_IN_SECONDS );
+			set_transient( 'ghjb_json', $ghjb_json, $options['greenhouse_job_board_cache_expiry'] );
 		}
 		if ( false === ( $ghjb_jobs = get_transient( 'ghjb_jobs' ) ) ) {
 			// It wasn't there, so regenerate the data and save the transient
@@ -373,7 +373,7 @@ class Greenhouse_Job_Board_Public {
 				$ghjb_jobs .= $job_json . ',';
 			}
 			$ghjb_jobs = '[' . $ghjb_jobs . ']';
-			set_transient( 'ghjb_jobs', $ghjb_jobs, HOUR_IN_SECONDS );
+			set_transient( 'ghjb_jobs', $ghjb_jobs, $options['greenhouse_job_board_cache_expiry'] );
 
 		}
 		$ghjb_html .= '<script type="text/javascript">';
@@ -381,7 +381,9 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html .=  $ghjb_jobs;
 		$ghjb_html .= ';ghjb_json = ';
 		$ghjb_html .=  $ghjb_json;
-		$ghjb_html .= ';greenhouse_jobs(ghjb_json, "#greenhouse-job-board_' . $jbid . '");</script>';
+		$ghjb_html .= ';';
+		// $ghjb_html .= 'greenhouse_jobs(ghjb_json, "#greenhouse-job-board_' . $jbid . '");';
+		$ghjb_html .= '</script>';
 		
 		
 		
@@ -396,20 +398,26 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the settings page.
 	 *
-	 * @since    1.7.0
+	 * @since	1.9.0
 	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
 		add_options_page( 'Greenhouse Job Board Settings', 'Greenhouse', 'manage_options', 'greenhouse_job_board', 'greenhouse_job_board_options_page' );
 	}
-	
 	function greenhouse_job_board_settings_init(  ) { 
 		register_setting( 'greenhouse_settings', 'greenhouse_job_board_settings' );
 
 		add_settings_section(
 			'greenhouse_job_board_greenhouse_settings_section', 
 			__( 'Greenhouse Account', 'greenhouse_job_board' ), 
-			'greenhouse_job_board_settings_section_callback', 
+			'greenhouse_job_board_gh_settings_section_callback', 
+			'greenhouse_settings'
+		);
+		
+		add_settings_section(
+			'greenhouse_job_board_jobboard_settings_section', 
+			__( 'Job Board Settings', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_jb_settings_section_callback', 
 			'greenhouse_settings'
 		);
 		
@@ -431,11 +439,27 @@ class Greenhouse_Job_Board_Public {
 		);
 
 		add_settings_field( 
+			'greenhouse_job_board_cache_expiry', 
+			__( 'Cache Expiration', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_cache_expiry_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_clear_cache', 
+			__( 'Clear Cache Now', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_clear_cache_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_greenhouse_settings_section' 
+		);
+
+		add_settings_field( 
 			'greenhouse_job_board_type', 
 			__( 'Type', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_type_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -443,7 +467,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Back Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_back_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -451,7 +475,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Apply Now Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_apply_now_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -459,7 +483,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Apply Now Cancel Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_apply_now_cancel_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -467,7 +491,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Read Full Description Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_read_full_desc_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -475,7 +499,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Hide Full Description Text', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_hide_full_desc_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 		
 		add_settings_field( 
@@ -483,7 +507,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Form Type', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_form_type_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 		
 		add_settings_field( 
@@ -491,7 +515,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Form Fields', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_form_fields_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -499,7 +523,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Location Label', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_location_label_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -507,7 +531,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Office Label', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_office_label_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -515,7 +539,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Department Label', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_department_label_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -523,7 +547,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Description Label', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_description_label_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -531,7 +555,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Apply Headline', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_apply_headline_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -539,7 +563,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Thank You Headline', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_thanks_headline_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -547,7 +571,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Thank You Body', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_thanks_body_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
 		add_settings_field( 
@@ -555,7 +579,7 @@ class Greenhouse_Job_Board_Public {
 			__( 'Custom CSS', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_custom_css_render', 
 			'greenhouse_settings', 
-			'greenhouse_job_board_greenhouse_settings_section' 
+			'greenhouse_job_board_jobboard_settings_section' 
 		);
 		
 	}
