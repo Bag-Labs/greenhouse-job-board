@@ -49,7 +49,11 @@
 				office_filter,
 				job_filter,
 				form_type,
-				form_fields;
+				form_fields,
+				sort_order,
+				sort_orderby,
+				sticky_position,
+				sticky_id;
 			var scope = '#TB_window ';
 			
 			
@@ -164,6 +168,25 @@
 			location_filter = $( scope + '#location_filter').val();
 			if (location_filter) {
 				shortcode += ' location_filter="' + location_filter + '"';
+			}
+			
+			//sort order
+			if ( $( scope + '#custom_order:checked').length > 0 ) {
+				sort_orderby = $( scope + '#board_orderby option:selected').val();
+				shortcode += ' orderby="' + sort_orderby + '"';
+				
+				sort_order = $( scope + '#board_order option:selected').val();
+				if (sort_order === 'ASC') {
+					shortcode += ' order="ASC"';	
+				}
+								
+			}
+			if ( $( scope + '#include_sticky:checked').length > 0 ) {
+				sticky_position = $( scope + '#sticky_position option:selected').val();
+				sticky_id = $( scope + '#sticky_id').val();
+				if ( sticky_id ) {
+					shortcode += ' sticky="' + sticky_position + '|' + sticky_id + '"';
+				}
 			}
 			
 			shortcode += ']';

@@ -301,6 +301,59 @@ class Greenhouse_Job_Board_Admin {
 						</div>
 					</div>
 				</div>
+				
+				<div class="section">
+					<label>
+						<input type="checkbox" id="custom_order" class="include" data-include="custom_order" />Customize job order?
+					</label>
+				
+					<div class="section section_custom_order" style="display:none;">
+						<div class="section">
+							<label>Order by: 
+								<select id="board_orderby">
+									<option value="title">Title</option>
+									<option value="date">Date</option>
+									<option value="id">Job ID</option>
+									<option value="department">Department</option>
+									<option value="location">Location</option>
+									<option value="office">Office</option>
+									<option value="random">Random</option>
+								</select>
+							</label>
+						</div>
+						<div class="section">
+							<label>Order: 
+								<select id="board_order">
+									<option value="">Descending (default)</option>
+									<option value="ASC">Ascending</option>
+								</select>
+							</label>
+						</div>
+						<div class="section">
+							<label>
+								<input type="checkbox" id="include_sticky" class="include" data-include="sticky" />Sticky job?
+							</label>
+							<div class="help_text">Force a job to 'stick' to the top or bottom of the job board no matter the sorting order.</div>
+
+							<div class="section section_sticky" style="display:none;">
+								<label>Stick position: 
+									<select id="sticky_position">
+										<option value="top">Top</option>
+										<option value="bottom">Bottom</option>
+									</select>
+								</label>
+							</div>
+							
+							<div class="section section_sticky" style="display:none;">
+								<label for="sticky_id">Sticky job ID
+									<input id="sticky_id" type="text" />
+								</label>
+								<div class="help_text">Enter the job id for the sticky job.</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
 			</div>
 			
 			<div class="media-frame-toolbar">

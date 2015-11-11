@@ -25,7 +25,7 @@ if ( isset( $_FILES['cover_letter'] ) ) {
 	$cover_filetype = $_FILES['cover_letter']['type'];
 }
 
-//for PHP 5.5 with 
+//for PHP 5.5+ with curlfile 
 if ( function_exists('curl_file_create') ) {
 	//CURLFile curl_file_create ( string $filename [, string $mimetype [, string $postname ]] )
 	if ( $resume_path ) {
@@ -35,7 +35,7 @@ if ( function_exists('curl_file_create') ) {
 		$_POST['cover_letter'] = new CURLFile($cover_path, $cover_filetype, $cover_filename );
 	}
 }
-//for PHP 5.4 and lower
+//for PHP 5.5-
 else {
 	if ( $resume_path ) {
 		$_POST['resume'] = '@' . $resume_path . ';filename=' . $resume_filename . ';type=' . $resume_filetype;
@@ -53,7 +53,6 @@ curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false); // allow depreciated @
 // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
 // curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($_POST));

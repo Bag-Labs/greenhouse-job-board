@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
 Tested up to: 4.2.4
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,15 +69,27 @@ Hiding Forms
 *	If you don't want application forms to display and simply want to display listings, just add the `hide_forms` attribute
 *	ex. `[greenhouse hide_forms="true"]`
 
+Sort Jobs
+
+*	Want to sort the jobs listed in your job board? 
+*	Add the orderby attribute to the shortcode.
+*	Values allowed:	title, date, id, department, office, location and random.
+*	For example: `[greenhouse orderby="title"]`
+*	Need to customize the order more? 
+*	There is an order attribute as well, supported values: DESC (default) and ASC.
+*	There is a sticky option as well, force a single job to the top or bottom of the board.
+*	Sticky attribute format: 'top' or 'bottom' followed by a pipe '|' and then the id for the job to stick.
+*	For example: `[greenhouse orderby="department" order="ASC" sticky="top|18590"]`
+
+
 == Coming Soon ==
 
 Roadmap
 
-*	Job board sorting and grouping options
-*	Templating for your own layout
-*	Caching options
+*	Job board grouping options
 *	Cleaner, smarter interface
 *	Widget
+*	Templating for your own layout
 
 
 == Installation ==
@@ -91,6 +103,15 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 1.9 =
+* Load assets (css &  js) conditionally - only on pages with the job board shortcode. (props - bsteinlo)
+* Check if cycle2 js library is already loaded and only load it if it's needed still.
+* Add sorting options to job board.
+* Add sticky option to have jobs stick to top or bottom when sorting.
+* Ensure to only allow inline forms after API key is entered.
+* Set cache expiration limits and clear cached data from Greenhouse API.
+* Minor code clean up and documnetation updates.
 
 = 1.8 =
 * Fix minor bug in shortcode wizard for form type setting.
@@ -158,3 +179,7 @@ If you desire inline forms rather than iframe forms, to submit applications to t
 = Can I add my own styles? =
 
 Yes, you can add your own custom CSS on the plugin options page.
+
+= I made edits in my Greenhouse account, but I'm not seeing those edits on my website, what gives? =
+
+This plugin connects to Greenhouse to retreive data and saves it locally in your WordPress database for a while so your site will load faster and not have to wait for Greenhouse API everytime your job board loads. Go to the settings page and check your cache expiration setting to see how long this temporary or transient data will be stored locally, and also notice the checkbox option to clear the cache. To force fresh data to your site, check this box and save changes.
