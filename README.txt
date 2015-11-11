@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
 Tested up to: 4.2.4
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,19 @@ Hiding Forms
 
 *	If you don't want application forms to display and simply want to display listings, just add the `hide_forms` attribute
 *	ex. `[greenhouse hide_forms="true"]`
+
+Sort Jobs
+
+*	Want to sort the jobs listed in your job board? 
+*	Add the orderby attribute to the shortcode.
+*	Values allowed:	title, date, id, department, office, location and random.
+*	For example: `[greenhouse orderby="title"]`
+*	Need to customize the order more? 
+*	There is an order attribute as well, supported values: DESC (default) and ASC.
+*	There is a sticky option as well, force a single job to the top or bottom of the board.
+*	Sticky attribute format: 'top' or 'bottom' followed by a pipe '|' and then the id for the job to stick.
+*	For example: `[greenhouse orderby="department" order="ASC" sticky="top|18590"]`
+
 
 == Coming Soon ==
 
