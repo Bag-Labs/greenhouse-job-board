@@ -72,6 +72,24 @@ function greenhouse_job_board_type_render(  ) {
 
 }
 
+function greenhouse_job_board_debug_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_board_debug'] ) ) {
+		$options['greenhouse_job_board_debug'] = 'false';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_debug]' class='regular-text'>
+		<option value="true" <?php if ( $options['greenhouse_job_board_debug'] == 'true' ) { echo 'selected'; } ?>>Debug On</option>
+		<option value="false" <?php if ( $options['greenhouse_job_board_debug'] == 'false' ) { echo 'selected'; } ?>>Debug Off</option>
+	</select>
+	<div class="helper">Debug mode will turn on extra logs.</div>
+	<?php
+
+}
+
 function greenhouse_job_board_form_type_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );
