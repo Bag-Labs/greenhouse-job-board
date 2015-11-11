@@ -356,14 +356,16 @@ jQuery(document).ready(function($) {
 	        mimeType: 'multipart/form-data', 
 	        formid: formid,
 		    success: function(data, textStatus, jqXHR) {
-		    	console.log('success', textStatus, data, jqXHR, this.formid);
+		    	console.log(textStatus, data);
+		    	// console.log('success', textStatus, data, jqXHR, this.formid);
 		    	thanks_message(this.formid);
 		    },
 		    error: function(jqXHR, textStatus, errorThrown) {
-		    	console.log('error', textStatus, errorThrown, jqXHR);
+		    	console.log(textStatus, errorThrown);
+			    // console.log('error', textStatus, errorThrown, jqXHR);
 		    },
 		    complete: function(jqXHR, textStatus) {
-		    	console.log('complete', textStatus, jqXHR);
+		    	// console.log('complete', textStatus, jqXHR);
 		    	// if (redirect != null && redirect != undefined) {
 			    // 	window.location.href = redirect;
 			    // }
@@ -427,7 +429,7 @@ function get_excerpt_from_content(content, limit){
 }
 
 function greenhouse_jobs(json, jbid){
- 	console.log(json);
+ 	// console.log(json);
  	// console.log(jbid);
  	
  	var board_type = jQuery(jbid).data('type');
@@ -445,7 +447,7 @@ function greenhouse_jobs(json, jbid){
  	//sorting defaults
  	var orderby = 'none';
  	var sort_order = 1; //desc. asc = -1
- 	var sticky = ['x',0];
+ 	var sticky = ['',0];
  	//read sorting settings from data attributes
  	if ( jQuery(jbid + ' .jobs').attr('data-orderby') ) {
 	 	orderby = jQuery(jbid + ' .jobs').attr('data-orderby');
