@@ -126,7 +126,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.9.0
+	 * @since    2.0.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		
@@ -250,7 +250,10 @@ class Greenhouse_Job_Board_Public {
 			data-departments="{{departments}}">
 				<div class="job_single">
 		 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-					<h1 class="job_title">{{title}}</h1>
+					<h1 class="job_title">{{title}}</h1>';
+		//http://code.tutsplus.com/tutorials/writing-extensible-plugins-with-actions-and-filters--wp-26759
+					$ghjb_html = apply_filters( 'ghjb_single_job_template_after_title', $ghjb_html );
+		$ghjb_html .= '
 					{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
 		 			<div class="job_description job_description_{{id}}">
 						{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
