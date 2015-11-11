@@ -1,13 +1,16 @@
-jQuery(document).ready(function($) {
+/**
+ * @since      2.0.0
+ */
+ jQuery(document).ready(function($) {
 	'use strict';
 	
 	if ( $('.greenhouse-job-board').length ){
-		// console.log(ghjb_json);
+		if (ghjb_d) console.log(ghjb_json);
 		$('.greenhouse-job-board').each( function(){
 			greenhouse_jobs( ghjb_json, '#' + $(this).attr('id') );
 		});
 	} else {
-		console.log('none found');
+		if (ghjb_d) console.log('no job board data found');
 	}
 
 	 
@@ -15,7 +18,7 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
+		if (ghjb_d) console.log(this_id);
 		
 		var job_id = $(this).parents('.job').data('id');
 		if ( $(this).hasClass('open') ) {
@@ -36,7 +39,11 @@ jQuery(document).ready(function($) {
 	$('.greenhouse-job-board').on('click', '.job_apply', function(e){
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
+		//get job id to build form
+		var jobid = $(this).parents('.job').data('id');
+		if (ghjb_d) console.log('apply', jobid);
+		if (ghjb_a) ga('send', 'event', 'job', 'apply_form', jobid );
+
 		
 		e.preventDefault();
 		
@@ -68,8 +75,8 @@ jQuery(document).ready(function($) {
 
 					$(this).parent().append( $(this_id + ' #grnhse_app') ); 
 					$(this_id + ' #grnhse_app').addClass('open');
-					var jid = $(this).parents('.job').data('id');
-				 	// console.log(jid);
+					
+				 	// if (ghjb_d) console.log(jid);
 				 	// Loads job with ID 5555555 with a source tracking token taken 
 				 	// from the gh_src querystring parameter. NOTE: this is what you
 				 	// want to do to ensure source tracking works (i.e., tracking
@@ -77,7 +84,7 @@ jQuery(document).ready(function($) {
 				 	// Grnhse.Iframe.load(jid, 'abc123');
 
 				 	// Loads job with ID 5555555 with no source tracking token
-				 	Grnhse.Iframe.load(jid);
+				 	Grnhse.Iframe.load(jobid);
 
 				 	// Loads the job board (not a specific application)
 				 	// Grnhse.Iframe.load();	 });
@@ -113,9 +120,7 @@ jQuery(document).ready(function($) {
 					//move form to this job in the DOM
 					$(this_id + ' .apply_jobs').insertAfter( $(this).parents('.job') );
 					
-					//get job id to build form
-					var jobid = $(this).parents('.job').data('id');
-					// console.log(jobid);
+					// if (ghjb_d) console.log(jobid);
 					update_form_per_position(null, jobid, this_id);
 					
 				}		
@@ -151,7 +156,7 @@ jQuery(document).ready(function($) {
 					$(this).parent().append( $('#grnhse_app') ); 
 					$(this_id + ' #grnhse_app').addClass('open');
 					var jid = $(this).parents('.job').data('id');
-				 	// console.log(jid);
+				 	// if (ghjb_d) console.log(jid);
 				 	// Loads job with ID 5555555 with a source tracking token taken 
 				 	// from the gh_src querystring parameter. NOTE: this is what you
 				 	// want to do to ensure source tracking works (i.e., tracking
@@ -176,7 +181,7 @@ jQuery(document).ready(function($) {
 				
 				//pre select positions select
 				var jobid = $(this).parents('.job').data('id');
-				// console.log(jobid);
+				// if (ghjb_d) console.log(jobid);
 				update_form_per_position(null, jobid, this_id);
 				
 				$(this_id + '[data-type="cycle"] .all_jobs').cycle('goto', 1 );
@@ -195,7 +200,10 @@ jQuery(document).ready(function($) {
 	function thanks_message(formid){
 		//get ghjb id
 		var this_id = '#' + $(formid).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
+		var jobid = $('#hidden_id').val();
+		// if (ghjb_d) console.log(this_id);
+		if (ghjb_a) ga('send', 'event', 'job', 'apply_thanks', jobid );
+
 		
 		//cycle
 		if ( $(this_id).data('type') === 'cycle' ) {
@@ -240,7 +248,7 @@ jQuery(document).ready(function($) {
 		for ( var i = 0; i < job_questions.length; i++){
 			
 			//check that the field is listed if form fields are specified
-			// console.log(form_fields, job_questions[i].fields[0].name, job_questions[i].label);
+			// if (ghjb_d) console.log(form_fields, job_questions[i].fields[0].name, job_questions[i].label);
 			if ( form_fields[0] === '*' ||
 				 jQuery.inArray( job_questions[i].fields[0].name, form_fields ) >= 0 ||
 				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0  ) {
@@ -281,7 +289,7 @@ jQuery(document).ready(function($) {
 	function jobs_scroll_top(this_caller){
 		//get ghjb id
 		var this_id = '#' + $(this_caller).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
+		// if (ghjb_d) console.log(this_id);
 		
 		//scroll to top of section
 		$('html, body').animate({
@@ -294,10 +302,12 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
 		
 		//find correct slide by data-id
 		var jobid = parseInt( $(this).parents('.job').data('id') );
+		if (ghjb_d) console.log('navigating to job', jobid);
+		if (ghjb_a) ga('send', 'event', 'job', 'click', jobid );
+		
 		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index();
 		
 		jobs_scroll_top(this);
@@ -310,8 +320,8 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
-		
+		if (ghjb_d) console.log('return to list');
+
 		$(this_id + '[data-type="cycle"] .all_jobs').cycle('goto', 0 );
 		jobs_scroll_top(this);
 	});
@@ -322,12 +332,15 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		// console.log(this_id);
-		
+		var jobid = $('#hidden_id').val();
+		if (ghjb_d) console.log('form button click', jobid);
+		if (ghjb_a) ga('send', 'event', 'job', 'apply_submit', jobid );
+
 		var form_id = this_id + ' #apply_form';
 		
 		//if not valid, display the html5 validation messages (by clicking the temp submit button)
 		if ( !$(form_id)[0].checkValidity() ) {
+			if (ghjb_d) console.log('form validation error');
 			// $(form_id).find(':submit').click();
 			$('<input type="submit">').hide().appendTo( $(form_id) ).click().remove();
 			return false;
@@ -335,7 +348,7 @@ jQuery(document).ready(function($) {
 		
 		//if all html5 validates then submit via ajax
 		else if ( $(form_id)[0].checkValidity() ) {
-			// console.log('submitting form');
+			if (ghjb_d) console.log('validates, submitting form');
 			ajax_submit( form_id, null);
 		}
 		
@@ -356,16 +369,14 @@ jQuery(document).ready(function($) {
 	        mimeType: 'multipart/form-data', 
 	        formid: formid,
 		    success: function(data, textStatus, jqXHR) {
-		    	console.log(textStatus, data);
-		    	// console.log('success', textStatus, data, jqXHR, this.formid);
+		    	if (ghjb_d) console.log('success', textStatus, data, jqXHR, this.formid);
 		    	thanks_message(this.formid);
 		    },
 		    error: function(jqXHR, textStatus, errorThrown) {
-		    	console.log(textStatus, errorThrown);
-			    // console.log('error', textStatus, errorThrown, jqXHR);
+			    if (ghjb_d) console.log('error', textStatus, errorThrown, jqXHR);
 		    },
 		    complete: function(jqXHR, textStatus) {
-		    	// console.log('complete', textStatus, jqXHR);
+		    	if (ghjb_d) console.log('complete', textStatus, jqXHR);
 		    	// if (redirect != null && redirect != undefined) {
 			    // 	window.location.href = redirect;
 			    // }
@@ -429,8 +440,8 @@ function get_excerpt_from_content(content, limit){
 }
 
 function greenhouse_jobs(json, jbid){
- 	// console.log(json);
- 	// console.log(jbid);
+ 	if (ghjb_d) console.log(json);
+ 	if (ghjb_d) console.log(jbid);
  	
  	var board_type = jQuery(jbid).data('type');
  	
@@ -457,7 +468,7 @@ function greenhouse_jobs(json, jbid){
 	}
  	if ( jQuery(jbid + ' .jobs').attr('data-sticky') ) {
  		sticky = jQuery(jbid + ' .jobs').attr('data-sticky').split('|');
- 		// console.log(sticky[0], sticky[1]);
+ 		// if (ghjb_d) console.log(sticky[0], sticky[1]);
  	}
  	//sort this sucker
 	json.jobs.sort(function(a, b){
@@ -502,7 +513,7 @@ function greenhouse_jobs(json, jbid){
  	
  	//list all jobs
     for (var i = 0; i < json.jobs.length; i++){
-     	// console.log( json.jobs[i].id);
+     	// if (ghjb_d) console.log( json.jobs[i].id);
      	
      	//hide_forms val
      	var hide_forms = jQuery(jbid + ' .jobs').attr('data-hide_forms');
@@ -548,7 +559,7 @@ function greenhouse_jobs(json, jbid){
 	     			department_filter_pass = true;
 	     		}
 	     	}
-	     	// console.log('department filter:', department_filter, 'pass=', department_filter_pass);
+	     	// if (ghjb_d) console.log('department filter:', department_filter, 'pass=', department_filter_pass);
      	}
      	
      	    	
@@ -579,7 +590,7 @@ function greenhouse_jobs(json, jbid){
 	    			office_filter_pass = true;
 	    		}
 	    	}
-	    	// console.log('office filter:', office_filter, 'pass=', office_filter_pass);
+	    	// if (ghjb_d) console.log('office filter:', office_filter, 'pass=', office_filter_pass);
      	}
      	
      	    	
@@ -606,7 +617,7 @@ function greenhouse_jobs(json, jbid){
 						jQuery.inArray( '-'+json.jobs[i].location.name, location_filter ) == -1 ) {
 				location_filter_pass = true;
 			}
-	    	// console.log('location filter:', location_filter, 'pass=', location_filter_pass);
+	    	// if (ghjb_d) console.log('location filter:', location_filter, 'pass=', location_filter_pass);
      	}
      	
      	
@@ -635,7 +646,7 @@ function greenhouse_jobs(json, jbid){
 	 					jQuery.inArray( '-'+json.jobs[i].title, job_filter ) == -1 ) {
 	 			job_filter_pass = true;
 	 		}
-	     	// console.log('job filter:', job_filter, 'pass=', job_filter_pass);
+	     	// if (ghjb_d) console.log('job filter:', job_filter, 'pass=', job_filter_pass);
      	}
      	
      	//display val
@@ -735,6 +746,13 @@ function greenhouse_jobs(json, jbid){
      		log: false
      	});
      	
+    }
+    
+    
+    //if google analytics not on page
+    if (typeof ga != 'function') { 
+		console.log('google analytics tracking code not found');
+		ghjb_a = false;
     }
      
 }

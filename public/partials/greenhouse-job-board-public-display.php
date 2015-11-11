@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       http://example.com
- * @since      1.9.0
+ * @since      2.0.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public/partials
@@ -86,6 +86,24 @@ function greenhouse_job_board_debug_render(  ) {
 		<option value="false" <?php if ( $options['greenhouse_job_board_debug'] == 'false' ) { echo 'selected'; } ?>>Debug Off</option>
 	</select>
 	<div class="helper">Debug mode will turn on extra logs.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_analytics_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_board_analytics'] ) ) {
+		$options['greenhouse_job_board_analytics'] = 'false';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_board_analytics]' class='regular-text'>
+		<option value="true" <?php if ( $options['greenhouse_job_board_analytics'] == 'true' ) { echo 'selected'; } ?>>Add Analytics</option>
+		<option value="false" <?php if ( $options['greenhouse_job_board_analytics'] == 'false' ) { echo 'selected'; } ?>>No Analytics</option>
+	</select>
+	<div class="helper">Track job views as page views in googl analytics.</div>
 	<?php
 
 }
@@ -446,6 +464,11 @@ function greenhouse_job_board_gh_settings_section_callback(  ) {
 function greenhouse_job_board_jb_settings_section_callback(  ) { 
 
 	echo __( 'Update with settings for your job board. These will be the defaults across the entire website. You may use the shortcode attributes to override these defaults if you wish.', 'greenhouse_job_board' );
+
+}
+function greenhouse_job_board_p_settings_section_callback(  ) { 
+
+	// echo __( 'Plugin settings.', 'greenhouse_job_board' );
 
 }
 

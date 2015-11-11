@@ -1,8 +1,15 @@
 <?php
+/**
+ * @since      2.0.0
+ */
+
 require('../../../../../wp-blog-header.php');
 $options = get_option( 'greenhouse_job_board_settings' );
 // echo $options['greenhouse_job_board_api_key'];
-
+$ghjb_d = false;
+if ( $options['greenhouse_job_board_debug'] === 'true' ) {
+	$ghjb_d = true;	
+}
 // print_r($_POST);
 // print_r($_FILES);
 
@@ -65,21 +72,25 @@ curl_setopt($ch, CURLOPT_UNRESTRICTED_AUTH, 1);
 // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 $response = curl_exec($ch);
 
-if ($response === FALSE) {
-    // echo "curl error: " . curl_error($ch);
-	// echo '-end error-';
-	// print_r($ch);
-	// echo 'curl error num: ' . curl_errno($ch);
+if ($response === FALSE && $ghjb_d) {
+    echo "curl error: " . curl_error($ch);
+	echo '-end error-';
+	print_r($ch);
+	echo 'curl error num: ' . curl_errno($ch);
 	$info = curl_getinfo($ch);
-	// print_r($info);
+	print_r($info);
+}
+if ( $ghjb_d ){
+	echo '-RESPONSE-';
+	print_r($response);
+	echo '-RESPONSE END-';
+	
+	//versions
+	echo 'php version: '.phpversion();
+	echo 'curl version: '.curl_version();
 }
 
-// echo 'RESPONSE: ';
-print_r($response);
 curl_close($ch);
-// echo '-end response-';
-
-
 
 // phpinfo();
 

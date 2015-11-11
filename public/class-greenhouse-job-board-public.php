@@ -395,6 +395,13 @@ class Greenhouse_Job_Board_Public {
 
 		}
 		$ghjb_html .= '<script type="text/javascript">';
+		
+		if ( $options['greenhouse_job_board_debug'] === 'true' ) {
+			$ghjb_html .= 'ghjb_d=true;';	
+		}
+		if ( $options['greenhouse_job_board_analytics'] === 'true' ) {
+			$ghjb_html .= 'ghjb_a=true;';	
+		}
 		$ghjb_html .= 'ghjb_jobs = ';
 		$ghjb_html .=  $ghjb_jobs;
 		$ghjb_html .= ';ghjb_json = ';
@@ -416,7 +423,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the settings page.
 	 *
-	 * @since	1.9.0
+	 * @since	2.0.0
 	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
@@ -436,6 +443,13 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_jobboard_settings_section', 
 			__( 'Job Board Settings', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_jb_settings_section_callback', 
+			'greenhouse_settings'
+		);
+		
+		add_settings_section(
+			'greenhouse_job_board_plugin_settings_section', 
+			__( 'Plugin Settings', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_p_settings_section_callback', 
 			'greenhouse_settings'
 		);
 		
@@ -600,13 +614,21 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
-		// add_settings_field( 
-		// 	'greenhouse_job_board_debug', 
-		// 	__( 'Debug', 'greenhouse_job_board' ), 
-		// 	'greenhouse_job_board_debug_render', 
-		// 	'greenhouse_settings', 
-		// 	'greenhouse_job_board_jobboard_settings_section' 
-		// );
+		add_settings_field( 
+			'greenhouse_job_board_debug', 
+			__( 'Debug', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_debug_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_plugin_settings_section' 
+		);
+		
+		add_settings_field( 
+			'greenhouse_job_board_analytics', 
+			__( 'Add Analytics', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_analytics_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_plugin_settings_section' 
+		);
 		
 	}
 

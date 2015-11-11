@@ -104,6 +104,11 @@ e.g.
 
 == Changelog ==
 
+= 2.0 =
+* Add filter for single job template. (ghjb_single_job_template_after_title)
+* Adds google analytics integration
+* Adds debugging option
+
 = 1.9 =
 * Load assets (css &  js) conditionally - only on pages with the job board shortcode. (props - bsteinlo)
 * Check if cycle2 js library is already loaded and only load it if it's needed still.
