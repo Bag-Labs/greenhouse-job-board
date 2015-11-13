@@ -57,7 +57,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.7.0
+	 * @since    2.0.1
 	 */
 	public function enqueue_styles() {
 
@@ -73,11 +73,11 @@ class Greenhouse_Job_Board_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'css/greenhouse-job-board-public.css', array(), $this->version, 'all' );
-		
+		wp_register_style( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'css/greenhouse-job-board-public.css', array(), $this->version, 'all' );
 		
 		$options = get_option( 'greenhouse_job_board_settings' );
-		if ( isset( $options['greenhouse_job_board_custom_css'] ) ) {
+		if ( isset( $options['greenhouse_job_board_custom_css'] ) && 
+			 $options['greenhouse_job_board_custom_css'] !== '' ) {
 			$custom_css = $options['greenhouse_job_board_custom_css'];		
 			wp_add_inline_style( $this->greenhouse_job_board, $custom_css );
 		}
@@ -101,8 +101,12 @@ class Greenhouse_Job_Board_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		
-		
+		$options = get_option( 'greenhouse_job_board_settings' );
+		$v = $this->version;
+		if ( isset( $options['greenhouse_job_board_debug'] ) &&
+			 $options['greenhouse_job_board_debug'] === 'true' ) {
+			$v .= '_' . time();	
+		}
 		
 		if ( !wp_script_is( 'handlebars', 'registered' ) ) {
 			wp_register_script( 'handlebars', plugin_dir_url( __FILE__ ) . 'js/handlebars-v3.0.0.js', array( 'jquery' ), null, false );
@@ -110,7 +114,7 @@ class Greenhouse_Job_Board_Public {
 		if ( !wp_script_is( 'jquery.cycle2', 'registered' ) ) {
 			wp_register_script( 'jquery.cycle2', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.min.js', array( 'jquery' ), '20141007', false );
 		}
-		wp_register_script( 'ghjbp', plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery', 'handlebars' ), '1.8.0', false );
+		wp_register_script( 'ghjbp', plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery', 'handlebars' ), $v, false );
 		
 	}
 	
@@ -126,10 +130,11 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    1.9.0
+	 * @since    2.0.1
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		
+		wp_enqueue_style($this->greenhouse_job_board);
 		wp_enqueue_script('ghjbp');
 		
 		$options = get_option( 'greenhouse_job_board_settings' );
@@ -250,7 +255,10 @@ class Greenhouse_Job_Board_Public {
 			data-departments="{{departments}}">
 				<div class="job_single">
 		 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-					<h1 class="job_title">{{title}}</h1>
+					<h1 class="job_title">{{title}}</h1>';
+		//http://code.tutsplus.com/tutorials/writing-extensible-plugins-with-actions-and-filters--wp-26759
+					$ghjb_html = apply_filters( 'ghjb_single_job_template_after_title', $ghjb_html );
+		$ghjb_html .= '
 					{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
 		 			<div class="job_description job_description_{{id}}">
 						{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
@@ -392,7 +400,19 @@ class Greenhouse_Job_Board_Public {
 
 		}
 		$ghjb_html .= '<script type="text/javascript">';
-		$ghjb_html .= 'ghjb_jobs = ';
+		$ghjb_html .= 'ghjb_d=';	
+		if ( $options['greenhouse_job_board_debug'] === 'true' ) {
+			$ghjb_html .= 'true';
+		} else {
+			$ghjb_html .= '0';
+		}
+		$ghjb_html .= ';ghjb_a=';
+		if ( $options['greenhouse_job_board_analytics'] === 'true' ) {
+			$ghjb_html .= 'true';
+		} else {
+			$ghjb_html .= '0';
+		}
+		$ghjb_html .= ';ghjb_jobs = ';
 		$ghjb_html .=  $ghjb_jobs;
 		$ghjb_html .= ';ghjb_json = ';
 		$ghjb_html .=  $ghjb_json;
@@ -413,7 +433,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the settings page.
 	 *
-	 * @since	1.9.0
+	 * @since	2.0.0
 	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
@@ -433,6 +453,13 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_jobboard_settings_section', 
 			__( 'Job Board Settings', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_jb_settings_section_callback', 
+			'greenhouse_settings'
+		);
+		
+		add_settings_section(
+			'greenhouse_job_board_plugin_settings_section', 
+			__( 'Plugin Settings', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_p_settings_section_callback', 
 			'greenhouse_settings'
 		);
 		
@@ -597,13 +624,21 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_jobboard_settings_section' 
 		);
 
-		// add_settings_field( 
-		// 	'greenhouse_job_board_debug', 
-		// 	__( 'Debug', 'greenhouse_job_board' ), 
-		// 	'greenhouse_job_board_debug_render', 
-		// 	'greenhouse_settings', 
-		// 	'greenhouse_job_board_jobboard_settings_section' 
-		// );
+		add_settings_field( 
+			'greenhouse_job_board_debug', 
+			__( 'Debug', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_debug_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_plugin_settings_section' 
+		);
+		
+		add_settings_field( 
+			'greenhouse_job_board_analytics', 
+			__( 'Add Analytics', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_analytics_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_plugin_settings_section' 
+		);
 		
 	}
 
