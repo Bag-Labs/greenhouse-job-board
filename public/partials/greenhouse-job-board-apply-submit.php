@@ -3,7 +3,7 @@
  * @since      2.0.0
  */
 
-require('../../../../../wp-blog-header.php');
+require_once('../../../../../wp-load.php');
 $options = get_option( 'greenhouse_job_board_settings' );
 // echo $options['greenhouse_job_board_api_key'];
 $ghjb_d = false;
