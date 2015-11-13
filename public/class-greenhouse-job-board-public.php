@@ -401,13 +401,15 @@ class Greenhouse_Job_Board_Public {
 		}
 		$ghjb_html .= '<script type="text/javascript">';
 		$ghjb_html .= 'ghjb_d=';	
-		if ( $options['greenhouse_job_board_debug'] === 'true' ) {
+		if ( isset($options['greenhouse_job_board_debug']) &&
+			 $options['greenhouse_job_board_debug'] === 'true' ) {
 			$ghjb_html .= 'true';
 		} else {
 			$ghjb_html .= '0';
 		}
 		$ghjb_html .= ';ghjb_a=';
-		if ( $options['greenhouse_job_board_analytics'] === 'true' ) {
+		if ( isset($options['greenhouse_job_board_analytics']) &&
+			 $options['greenhouse_job_board_analytics'] === 'true' ) {
 			$ghjb_html .= 'true';
 		} else {
 			$ghjb_html .= '0';
