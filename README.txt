@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
 Tested up to: 4.2.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,10 +104,14 @@ e.g.
 
 == Changelog ==
 
+= 2.0.1 =
+* Load css conditionally - only on pages with the job board shortcode. (props - bsteinlo)
+
 = 2.0 =
 * Add filter for single job template. (ghjb_single_job_template_after_title)
-* Adds google analytics integration
-* Adds debugging option
+* Add google analytics integration
+* Add debugging option
+* Update inline job submission script to be more compatible with current WordPress best practices. (props - bsteinlo)
 
 = 1.9 =
 * Load assets (css &  js) conditionally - only on pages with the job board shortcode. (props - bsteinlo)

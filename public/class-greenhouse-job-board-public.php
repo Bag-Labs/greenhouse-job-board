@@ -57,7 +57,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.7.0
+	 * @since    2.0.1
 	 */
 	public function enqueue_styles() {
 
@@ -73,11 +73,11 @@ class Greenhouse_Job_Board_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'css/greenhouse-job-board-public.css', array(), $this->version, 'all' );
-		
+		wp_register_style( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'css/greenhouse-job-board-public.css', array(), $this->version, 'all' );
 		
 		$options = get_option( 'greenhouse_job_board_settings' );
-		if ( isset( $options['greenhouse_job_board_custom_css'] ) ) {
+		if ( isset( $options['greenhouse_job_board_custom_css'] ) && 
+			 $options['greenhouse_job_board_custom_css'] !== '' ) {
 			$custom_css = $options['greenhouse_job_board_custom_css'];		
 			wp_add_inline_style( $this->greenhouse_job_board, $custom_css );
 		}
@@ -130,10 +130,11 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    2.0.0
+	 * @since    2.0.1
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		
+		wp_enqueue_style($this->greenhouse_job_board);
 		wp_enqueue_script('ghjbp');
 		
 		$options = get_option( 'greenhouse_job_board_settings' );
