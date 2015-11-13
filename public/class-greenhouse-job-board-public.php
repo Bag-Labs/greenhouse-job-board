@@ -101,8 +101,12 @@ class Greenhouse_Job_Board_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		
-		
+		$options = get_option( 'greenhouse_job_board_settings' );
+		$v = $this->version;
+		if ( isset( $options['greenhouse_job_board_debug'] ) &&
+			 $options['greenhouse_job_board_debug'] === 'true' ) {
+			$v .= '_' . time();	
+		}
 		
 		if ( !wp_script_is( 'handlebars', 'registered' ) ) {
 			wp_register_script( 'handlebars', plugin_dir_url( __FILE__ ) . 'js/handlebars-v3.0.0.js', array( 'jquery' ), null, false );
@@ -110,7 +114,7 @@ class Greenhouse_Job_Board_Public {
 		if ( !wp_script_is( 'jquery.cycle2', 'registered' ) ) {
 			wp_register_script( 'jquery.cycle2', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.min.js', array( 'jquery' ), '20141007', false );
 		}
-		wp_register_script( 'ghjbp', plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery', 'handlebars' ), '1.8.0', false );
+		wp_register_script( 'ghjbp', plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-public.js', array( 'jquery', 'handlebars' ), $v, false );
 		
 	}
 	
@@ -395,14 +399,19 @@ class Greenhouse_Job_Board_Public {
 
 		}
 		$ghjb_html .= '<script type="text/javascript">';
-		
+		$ghjb_html .= 'ghjb_d=';	
 		if ( $options['greenhouse_job_board_debug'] === 'true' ) {
-			$ghjb_html .= 'ghjb_d=true;';	
+			$ghjb_html .= 'true';
+		} else {
+			$ghjb_html .= '0';
 		}
+		$ghjb_html .= ';ghjb_a=';
 		if ( $options['greenhouse_job_board_analytics'] === 'true' ) {
-			$ghjb_html .= 'ghjb_a=true;';	
+			$ghjb_html .= 'true';
+		} else {
+			$ghjb_html .= '0';
 		}
-		$ghjb_html .= 'ghjb_jobs = ';
+		$ghjb_html .= ';ghjb_jobs = ';
 		$ghjb_html .=  $ghjb_jobs;
 		$ghjb_html .= ';ghjb_json = ';
 		$ghjb_html .=  $ghjb_json;

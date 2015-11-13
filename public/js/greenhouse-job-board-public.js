@@ -5,7 +5,7 @@
 	'use strict';
 	
 	if ( $('.greenhouse-job-board').length ){
-		if (ghjb_d) console.log(ghjb_json);
+		if (ghjb_d) console.log('job board loading', ghjb_json);
 		$('.greenhouse-job-board').each( function(){
 			greenhouse_jobs( ghjb_json, '#' + $(this).attr('id') );
 		});
@@ -42,7 +42,7 @@
 		//get job id to build form
 		var jobid = $(this).parents('.job').data('id');
 		if (ghjb_d) console.log('apply', jobid);
-		if (ghjb_a) ga('send', 'event', 'job', 'apply_form', jobid );
+		if (ghjb_a) ghjb_analytics('job', 'apply_form', jobid );
 
 		
 		e.preventDefault();
@@ -197,13 +197,21 @@
 		$(this_id + ' .all_jobs').height( $(this_id + ' .cycle-slide-active').height() );
 	}
 
-	function thanks_message(formid){
+	function thanks_message(formid, textStatus){
 		//get ghjb id
 		var this_id = '#' + $(formid).parents('.greenhouse-job-board').attr('id');
 		var jobid = $('#hidden_id').val();
-		// if (ghjb_d) console.log(this_id);
-		if (ghjb_a) ga('send', 'event', 'job', 'apply_thanks', jobid );
+		if (ghjb_d) console.log('submission complete', textStatus, jobid, this_id);
+		if (ghjb_a) ghjb_analytics('job', 'apply_thanks', jobid );
 
+		if (textStatus === 'error' ){
+			if (ghjb_d) console.log('submission error', textStatus, jobid, this_id);
+			$(this_id + ' .apply_ty h2').text('Oh No!');
+			$(this_id + ' .apply_ty p').text('We\'ve experienced an error, this submission may have failed, please try again or contact us for help!');
+		}
+		else if (textStatus === 'success'){
+			if (ghjb_d) console.log('submission success', textStatus, jobid, this_id);
+		}
 		
 		//cycle
 		if ( $(this_id).data('type') === 'cycle' ) {
@@ -306,7 +314,7 @@
 		//find correct slide by data-id
 		var jobid = parseInt( $(this).parents('.job').data('id') );
 		if (ghjb_d) console.log('navigating to job', jobid);
-		if (ghjb_a) ga('send', 'event', 'job', 'click', jobid );
+		if (ghjb_a) ghjb_analytics('job', 'click', jobid );
 		
 		var slideindex = $('.cycle-slide[data-id="' + jobid + '"]').index();
 		
@@ -320,7 +328,12 @@
 		e.preventDefault();
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
+		var jobid = parseInt( $(this).parents('.job').data('id') );
+		if ( isNaN( jobid ) ) {
+			jobid = $('#hidden_id').val();
+		}
 		if (ghjb_d) console.log('return to list');
+		if (ghjb_a) ghjb_analytics('job', 'board', jobid );
 
 		$(this_id + '[data-type="cycle"] .all_jobs').cycle('goto', 0 );
 		jobs_scroll_top(this);
@@ -334,7 +347,7 @@
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
 		var jobid = $('#hidden_id').val();
 		if (ghjb_d) console.log('form button click', jobid);
-		if (ghjb_a) ga('send', 'event', 'job', 'apply_submit', jobid );
+		if (ghjb_a) ghjb_analytics('job', 'apply_submit', jobid );
 
 		var form_id = this_id + ' #apply_form';
 		
@@ -370,13 +383,14 @@
 	        formid: formid,
 		    success: function(data, textStatus, jqXHR) {
 		    	if (ghjb_d) console.log('success', textStatus, data, jqXHR, this.formid);
-		    	thanks_message(this.formid);
+		    	// thanks_message(this.formid);
 		    },
 		    error: function(jqXHR, textStatus, errorThrown) {
 			    if (ghjb_d) console.log('error', textStatus, errorThrown, jqXHR);
 		    },
 		    complete: function(jqXHR, textStatus) {
 		    	if (ghjb_d) console.log('complete', textStatus, jqXHR);
+		    	thanks_message(this.formid, textStatus);
 		    	// if (redirect != null && redirect != undefined) {
 			    // 	window.location.href = redirect;
 			    // }
@@ -749,13 +763,36 @@ function greenhouse_jobs(json, jbid){
     }
     
     
-    //if google analytics not on page
+    //if default google analytics not on page
     if (typeof ga != 'function') { 
-		console.log('google analytics tracking code not found');
+		if (ghjb_d) console.log('standard google analytics tracking code not found');
 		ghjb_a = false;
+		
+		//Google Analytics by Yoast
+		if (typeof __gaTracker == 'function') {
+			if (ghjb_d) console.log('custom google analytics tracking code found');
+			ghjb_a = '__gaTracker';
+		}
+		
+    } else {
+    	//set to default google analytics object
+    	ghjb_a = 'ga';
     }
      
 }
+
+function ghjb_analytics(eventCategory, eventAction, eventLabel ){
+	
+	if (ghjb_a == 'ga') {
+		ga( 'send', 'event', eventCategory, eventAction, eventLabel );
+	} else if (ghjb_a == '__gaTracker') {
+		__gaTracker( 'send', 'event', eventCategory, eventAction, eventLabel );
+	}
+	
+	if (ghjb_d) console.log('event tracked:', eventCategory, eventAction, eventLabel);
+	
+}
+
 Handlebars.registerHelper('ifeq', function (a, b, options) {
 	if (a == b) { return options.fn(this); }
 });
