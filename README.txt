@@ -3,8 +3,8 @@ Contributors: brownbagmarketing
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
-Stable tag: 2.0.1
 Tested up to: 4.3.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,10 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 2.0.2 =
+* Update compatability notice.
+* Check that new debug and analytics values are set properly.
 
 = 2.0.1 =
 * Load css conditionally - only on pages with the job board shortcode. (props - bsteinlo)
