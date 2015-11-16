@@ -41,7 +41,7 @@
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
 		//get job id to build form
 		var jobid = $(this).parents('.job').data('id');
-		if (ghjb_d) console.log('apply', jobid);
+		if (ghjb_d) console.log('apply', this_id, jobid);
 		if (ghjb_a) ghjb_analytics('job', 'apply_form', jobid );
 
 		
@@ -163,7 +163,7 @@
 				 	// where a candidate came from)
 				 	// Grnhse.Iframe.load(jid, 'abc123');
 				 	
-				 	// stop pdefault page scrolling behavior
+				 	// stop default page scrolling behavior
 				 	Grnhse.Settings['scrollOnLoad'] = false;
 				 	
 				 	// Loads job with ID 5555555 with no source tracking token

@@ -215,64 +215,69 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html .= '</p>';
 		*/
 		
-		//accordion template
-		if ( $atts['board_type'] == 'accordion' ) {
-		// handlebars template for returned job
-		$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
-		<div class="job" 
-			data-id="{{id}}" 
-			data-departments="{{departments}}">
-	 	    	<h2 class="job_title">{{title}}</h2>
-	 	    	<p><a href="#" class="job_read_full" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
-	 	    	<div class="job_description job_description_{{id}}">
-    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
-    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
-    	 	    	{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
-	 	    			{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
-	 	    	</div>
-	 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-	 	</div>
-</script>';
-		}
-		
-		
-		// cycle template
-		else if ( $atts['board_type'] == 'cycle') {
+		//only print templates and scripts if first shortcode on page
+		if ( $shortcode_id === 1 ) {
 			
-			wp_enqueue_script('jquery.cycle2');
-		// handlebars template for returned job
-		$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
-		<div class="job job_{{id}}" 
-			data-id="{{id}}" 
-			data-departments="{{departments}}">
-	 	    	<h3 class="job_title">{{title}}</h3>
-	 	    	<div class="job_excerpt">{{{excerpt}}}<br />
-	 	    	<a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></div>
-	 	</div>
-</script>';
-		$ghjb_html .= '<script id="job-slide-template" type="text/x-handlebars-template">
-		<div class="job cycle-slide" 
-			data-cycle-hash="{{id}}"
-			data-id="{{id}}" 
-			data-departments="{{departments}}">
-				<div class="job_single">
-		 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-					<h1 class="job_title">{{title}}</h1>';
-		//http://code.tutsplus.com/tutorials/writing-extensible-plugins-with-actions-and-filters--wp-26759
-					$ghjb_html = apply_filters( 'ghjb_single_job_template_after_title', $ghjb_html );
-		$ghjb_html .= '
-					{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-		 			<div class="job_description job_description_{{id}}">
-						{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
-			 			{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
-			 			{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
-		 					{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
+			//accordion template
+			if ( $atts['board_type'] == 'accordion' ) {
+			// handlebars template for returned job
+			$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
+			<div class="job" 
+				data-id="{{id}}" 
+				data-departments="{{departments}}">
+		 	    	<h2 class="job_title">{{title}}</h2>
+		 	    	<p><a href="#" class="job_read_full" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
+		 	    	<div class="job_description job_description_{{id}}">
+	    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
+	    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
+	    	 	    	{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
+		 	    			{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
+		 	    	</div>
+		 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
+		 	</div>
+	</script>';
+			}
+			
+			
+			// cycle template
+			else if ( $atts['board_type'] == 'cycle') {
+				
+				wp_enqueue_script('jquery.cycle2');
+				
+			// handlebars template for returned job
+			$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
+			<div class="job job_{{id}}" 
+				data-id="{{id}}" 
+				data-departments="{{departments}}">
+		 	    	<h3 class="job_title">{{title}}</h3>
+		 	    	<div class="job_excerpt">{{{excerpt}}}<br />
+		 	    	<a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></div>
+		 	</div>
+	</script>';
+			$ghjb_html .= '<script id="job-slide-template" type="text/x-handlebars-template">
+			<div class="job cycle-slide" 
+				data-cycle-hash="{{id}}"
+				data-id="{{id}}" 
+				data-departments="{{departments}}">
+					<div class="job_single">
+			 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
+						<h1 class="job_title">{{title}}</h1>';
+			//http://code.tutsplus.com/tutorials/writing-extensible-plugins-with-actions-and-filters--wp-26759
+						$ghjb_html = apply_filters( 'ghjb_single_job_template_after_title', $ghjb_html );
+			$ghjb_html .= '
+						{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
+			 			<div class="job_description job_description_{{id}}">
+							{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
+				 			{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
+				 			{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
+			 					{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
+			 			</div>
+			 			{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
+			 			<p><a href="#" class="return">' . $atts['back'] . '</a></p>
 		 			</div>
-		 			{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-		 			<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-	 			</div>
-	 	</div>
-</script>';
+		 	</div>
+	</script>';
+			}
 		}
 		
 		// html container
@@ -286,36 +291,36 @@ class Greenhouse_Job_Board_Public {
 		
 		// fill in attributes as applicable
 		if ( $atts['department_filter'] !== '') {
-			$ghjb_html .=	' data-department_filter="' . $atts['department_filter'] . '" ';
+			$ghjb_html .= ' data-department_filter="' . $atts['department_filter'] . '" ';
 		}
 		if ( $atts['job_filter'] !== '') {
-			$ghjb_html .=	' data-job_filter="' . $atts['job_filter'] . '" ';
+			$ghjb_html .= ' data-job_filter="' . $atts['job_filter'] . '" ';
 		}
 		if ( $atts['office_filter'] !== '') {
-			$ghjb_html .=	' data-office_filter="' . $atts['office_filter'] . '" ';
+			$ghjb_html .= ' data-office_filter="' . $atts['office_filter'] . '" ';
 		}
 		if ( $atts['location_filter'] !== '') {
 			$ghjb_html .= ' data-location_filter="' . $atts['location_filter'] . '" ';
 		}
 		if ( $atts['hide_forms'] !== '') {
-			$ghjb_html .=	' data-hide_forms="' . $atts['hide_forms'] . '" ';
+			$ghjb_html .= ' data-hide_forms="' . $atts['hide_forms'] . '" ';
 		}
 		if ( $atts['form_type'] !== '' ) {
-			$ghjb_html .=	' data-form_type="' . $atts['form_type'] . '" ';
+			$ghjb_html .= ' data-form_type="' . $atts['form_type'] . '" ';
 		}
 		if ( $atts['form_fields'] != '' && 
 			 $atts['form_type'] === 'inline' ) {
-			$ghjb_html .=	' data-form_fields="' . $atts['form_fields'] . '" ';
+			$ghjb_html .= ' data-form_fields="' . $atts['form_fields'] . '" ';
 		}
 		if ( $atts['display'] !== '') {
-			$ghjb_html .=	' data-display="' . $atts['display'] . '" ';
+			$ghjb_html .= ' data-display="' . $atts['display'] . '" ';
 		}
 		if ( $atts['sticky'] !== '') {
-			$ghjb_html .=	' data-sticky="' . $atts['sticky'] . '" ';
+			$ghjb_html .= ' data-sticky="' . $atts['sticky'] . '" ';
 		}
 		if ( $atts['order'] === 'ASC') {
 			//orderby: DESC (default) or ASC
-			$ghjb_html .=	' data-order="' . $atts['order'] . '" ';
+			$ghjb_html .= ' data-order="' . $atts['order'] . '" ';
 		}
 		if ( $atts['orderby'] !== '') {
 			//order can be: none, title, date, id, random, department, location or office
@@ -333,17 +338,19 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html .= '>
 			</div>';
 		
-		// cycle inline
+		// cycle 
 		if ( $atts['hide_forms'] !== 'true' &&
 			 $atts['board_type'] === 'cycle'
 			) {
 			$ghjb_html .= '<div class="cycle-slide"><div class="apply_jobs">
 					<h1>' . $options['greenhouse_job_board_apply_headline'] . '</h1>';
+					//cycle iframe
 					if ( $atts['form_type'] === 'iframe' ) {
 						
 						$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe
 						$ghjb_html .= '<script src="https://app.greenhouse.io/embed/job_board/js?for=' . $atts['url_token'] . '"></script>';
 					}
+					//cycle inline
 					elseif ($atts['form_type'] === 'inline') {
 						$ghjb_html .= '<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
 						</form>';
@@ -372,7 +379,7 @@ class Greenhouse_Job_Board_Public {
 					</div>
 				</div>';
 		} 
-		// iframe form
+		// accordion iframe form
 		elseif ( $atts['hide_forms'] !== 'true' &&
 				 $atts['form_type'] === 'iframe' &&
 			 		$atts['board_type'] === 'accordion'
@@ -410,28 +417,30 @@ class Greenhouse_Job_Board_Public {
 			set_transient( 'ghjb_jobs', $ghjb_jobs, $options['greenhouse_job_board_cache_expiry'] );
 
 		}
-		$ghjb_html .= '<script type="text/javascript">';
-		$ghjb_html .= 'ghjb_d=';	
-		if ( isset($options['greenhouse_job_board_debug']) &&
-			 $options['greenhouse_job_board_debug'] === 'true' ) {
-			$ghjb_html .= 'true';
-		} else {
-			$ghjb_html .= '0';
+		if ( $shortcode_id === 1 ) {
+			$ghjb_html .= '<script type="text/javascript">';
+			$ghjb_html .= 'ghjb_d=';	
+			if ( isset($options['greenhouse_job_board_debug']) &&
+				 $options['greenhouse_job_board_debug'] === 'true' ) {
+				$ghjb_html .= 'true';
+			} else {
+				$ghjb_html .= '0';
+			}
+			$ghjb_html .= ';ghjb_a=';
+			if ( isset($options['greenhouse_job_board_analytics']) &&
+				 $options['greenhouse_job_board_analytics'] === 'true' ) {
+				$ghjb_html .= 'true';
+			} else {
+				$ghjb_html .= '0';
+			}
+			$ghjb_html .= ';ghjb_jobs = ';
+			$ghjb_html .=  $ghjb_jobs;
+			$ghjb_html .= ';ghjb_json = ';
+			$ghjb_html .=  $ghjb_json;
+			$ghjb_html .= ';';
+			// $ghjb_html .= 'greenhouse_jobs(ghjb_json, "#greenhouse-job-board_' . $jbid . '");';
+			$ghjb_html .= '</script>';
 		}
-		$ghjb_html .= ';ghjb_a=';
-		if ( isset($options['greenhouse_job_board_analytics']) &&
-			 $options['greenhouse_job_board_analytics'] === 'true' ) {
-			$ghjb_html .= 'true';
-		} else {
-			$ghjb_html .= '0';
-		}
-		$ghjb_html .= ';ghjb_jobs = ';
-		$ghjb_html .=  $ghjb_jobs;
-		$ghjb_html .= ';ghjb_json = ';
-		$ghjb_html .=  $ghjb_json;
-		$ghjb_html .= ';';
-		// $ghjb_html .= 'greenhouse_jobs(ghjb_json, "#greenhouse-job-board_' . $jbid . '");';
-		$ghjb_html .= '</script>';
 		
 		
 		
