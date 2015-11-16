@@ -113,6 +113,10 @@ e.g.
 
 == Changelog ==
 
+= 2.1.0 =
+* Add grouping and grouping headling options.
+* General code cleanup.
+
 = 2.0.2 =
 * Update compatability notice.
 * Check that new debug and analytics values are set properly.
