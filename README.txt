@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
 Tested up to: 4.3.1
-Stable tag: 2.0.2
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,12 +81,21 @@ Sort Jobs
 *	Sticky attribute format: 'top' or 'bottom' followed by a pipe '|' and then the id for the job to stick.
 *	For example: `[greenhouse orderby="department" order="ASC" sticky="top|18590"]`
 
+Group Jobs
+
+*	Want to group the jobs listed in your job board by department, office or location?
+*	Add the group attribute to the shortcode.
+*	Values accepted: department, office or location.
+*	By default the group name will be used as a headline to seperate each group.
+*	To omit group headlines, include shortcode attribute: group_headline="false".
+*	For example: `[greenhouse group="department" group_headline="false"`
+
 
 == Coming Soon ==
 
 Roadmap
 
-*	Job board grouping options
+*	Add filter hooks for customizing output
 *	Cleaner, smarter interface
 *	Widget
 *	Templating for your own layout

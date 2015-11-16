@@ -105,7 +105,7 @@ class Greenhouse_Job_Board_Admin {
 	/**
 	 * Add the shortcodes media button.
 	 *
-	 * @since    1.8.0
+	 * @since    2.1.0
 	 */
 	public function greenhouse_add_shortcode_media_button() {
 		add_thickbox();
@@ -350,6 +350,32 @@ class Greenhouse_Job_Board_Admin {
 								</label>
 								<div class="help_text">Enter the job id for the sticky job.</div>
 							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="section">
+					<label>
+						<input type="checkbox" id="custom_group" class="include" data-include="custom_group" />Group jobs?
+					</label>
+				
+					<div class="section section_custom_group" style="display:none;">
+						<div class="section">
+							<label>Group by: 
+								<select id="grouping">
+									<option value="department">Department</option>
+									<option value="location">Location</option>
+									<option value="office">Office</option>
+								</select>
+							</label>
+						</div>
+						<div class="section">
+							<label>Dislpay Group Headline: 
+								<select id="group_headline">
+									<option value="">Yes (default)</option>
+									<option value="false">Don't Display Headline</option>
+								</select>
+							</label>
 						</div>
 					</div>
 				</div>

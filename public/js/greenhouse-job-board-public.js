@@ -1,5 +1,5 @@
 /**
- * @since      2.0.0
+ * @since      2.1.0
  */
  jQuery(document).ready(function($) {
 	'use strict';
@@ -523,8 +523,39 @@ function greenhouse_jobs(json, jbid){
 		//do nothing
 		return 0;
 	});
+
  	
+ 	//grouping
+ 	//grouping defaults
+ 	var group = '';
+ 	var group_headline = true;
+ 	//read grouping settings from data attributes
+ 	if ( jQuery(jbid + ' .jobs').attr('data-group') ) {
+	 	group = jQuery(jbid + ' .jobs').attr('data-group');
+	}
+	if ( jQuery(jbid + ' .jobs').attr('data-group_headline') === 'false' ) {
+		group_headline = false;
+	}
+
+ 	//group/sort this sucker
+	json.jobs.sort(function(a, b){
+		//sort depending on group value
+		if ( group === 'department' ) {
+			if ( a.departments[0].name < b.departments[0].name ) return -1;
+			if ( a.departments[0].name > b.departments[0].name ) return 1;
+		} else if ( group === 'office' ) {
+			if ( a.offices[0].name < b.offices[0].name ) return -1;
+			if ( a.offices[0].name > b.offices[0].name ) return 1;
+		} else if ( group === 'location' ) {
+			if ( a.location.name < b.location.name ) return -1;
+			if ( a.location.name > b.location.name ) return 1;
+		}		
+		//do nothing
+		return 0;
+	});
+	
  	
+ 	var current_group = this_group = '';
  	//list all jobs
     for (var i = 0; i < json.jobs.length; i++){
      	// if (ghjb_d) console.log( json.jobs[i].id);
@@ -704,6 +735,23 @@ function greenhouse_jobs(json, jbid){
      			office_filter_pass &&
      			location_filter_pass ){
      	
+     	
+     		if ( group_headline ) {
+     			//get this group headline
+     			if ( group === 'department' ) {
+     				this_group = json.jobs[i].departments[0].name;
+     			} else if ( group === 'office' ) {
+     				this_group = json.jobs[i].offices[0].name;
+     			} else if ( group === 'location' ) {
+     				this_group = json.jobs[i].location.name;
+     			}
+     			//if new group print headline
+     			if ( this_group != current_group ){
+     				current_group = this_group;
+     				jQuery(jbid + ' .all_jobs .jobs').append( '<h2 class="group_headline">' + current_group + '</h2>' );
+     			}
+		    }
+		    
 	     	
 	     	if ( board_type == "accordion" ) {
 	     		var jobshtml = job_html_template({

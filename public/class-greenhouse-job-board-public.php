@@ -130,7 +130,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    2.0.2
+	 * @since    2.1.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		
@@ -163,6 +163,8 @@ class Greenhouse_Job_Board_Public {
 	        'sticky'			=> isset( $options['greenhouse_job_board_sticky'] ) ? $options['greenhouse_job_board_sticky'] : '',
 	        'orderby'			=> isset( $options['greenhouse_job_board_orderby'] ) ? $options['greenhouse_job_board_orderby'] : '',
 	        'order'				=> isset( $options['greenhouse_job_board_order'] ) ? $options['greenhouse_job_board_order'] : 'DESC',
+	        'group'				=> isset( $options['greenhouse_job_board_group'] ) ? $options['greenhouse_job_board_group'] : '',
+	        'group_headline'	=> isset( $options['greenhouse_job_board_group_headline'] ) ? $options['greenhouse_job_board_group_headline'] : '',
 	        'display'			=> isset( $options['display'] ) ? $options['display'] : 'description',
 	    ), $atts );
 
@@ -316,8 +318,17 @@ class Greenhouse_Job_Board_Public {
 			$ghjb_html .=	' data-order="' . $atts['order'] . '" ';
 		}
 		if ( $atts['orderby'] !== '') {
-			//order can be: none, title, date, id, random, location, department, location or office
-			$ghjb_html .=	' data-orderby="' . $atts['orderby'] . '" ';
+			//order can be: none, title, date, id, random, department, location or office
+			$ghjb_html .= ' data-orderby="' . $atts['orderby'] . '" ';
+		}
+		if ( $atts['group'] !== '') {
+			//group can be: department, location or office
+			$ghjb_html .= ' data-group="' . $atts['group'] . '" ';
+			
+			if ( $atts['group_headline'] === 'false' ) {
+				//group_headline: true (default) or false
+				$ghjb_html .= ' data-group_headline="false" ';
+			}
 		}
 		$ghjb_html .= '>
 			</div>';
