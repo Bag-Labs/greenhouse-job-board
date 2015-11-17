@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: brownbagmarketing
+Contributors: brownbagmarketing, circlecube
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
