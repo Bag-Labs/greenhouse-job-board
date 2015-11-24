@@ -453,6 +453,14 @@ function get_excerpt_from_content(content, limit){
 	return short_content;
 }
 
+function slugme(slugit) {
+	//all lowercase
+	return slugit.toString().toLowerCase().trim()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+}
+
 function greenhouse_jobs(json, jbid){
  	if (ghjb_d) console.log(json);
  	if (ghjb_d) console.log(jbid);
@@ -728,6 +736,9 @@ function greenhouse_jobs(json, jbid){
      	if ( jQuery.inArray( 'description', display ) >= 0 ) {
 	     	display_description = true;
      	}
+
+     	//slug
+     	json.jobs[i].slug = slugme(json.jobs[i].title);
      	
      	// if filters pass
      	if ( 	department_filter_pass &&
@@ -757,6 +768,7 @@ function greenhouse_jobs(json, jbid){
 	     		var jobshtml = job_html_template({
 		 			index: i,
 		 			id: json.jobs[i].id,
+		 			slug: json.jobs[i].slug,
 		 			title: json.jobs[i].title,
 		 			content: decodeHtml( json.jobs[i].content ),
 		 			hide_forms: hide_forms,
@@ -771,6 +783,7 @@ function greenhouse_jobs(json, jbid){
 	     		var jobshtml = job_html_template({
 		 			index: i,
 		 			id: json.jobs[i].id,
+		 			slug: json.jobs[i].slug,
 		 			title: json.jobs[i].title,
 		 			excerpt: get_excerpt_from_content( json.jobs[i].content ),
 		 			hide_forms: hide_forms,
@@ -784,6 +797,7 @@ function greenhouse_jobs(json, jbid){
 	     		var slidehtml = slide_html_template({
 		 			index: i,
 		 			id: json.jobs[i].id,
+		 			slug: json.jobs[i].slug,
 		 			title: json.jobs[i].title,
 		 			content: decodeHtml( json.jobs[i].content ),
 		 			hide_forms: hide_forms,

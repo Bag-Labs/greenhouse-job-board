@@ -222,8 +222,9 @@ class Greenhouse_Job_Board_Public {
 			if ( $atts['board_type'] == 'accordion' ) {
 			// handlebars template for returned job
 			$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
-			<div class="job" 
+			<div class="job job_{{id}} job_{{slug}}" 
 				data-id="{{id}}" 
+				id="{{slug}}" 
 				data-departments="{{departments}}">
 		 	    	<h2 class="job_title">{{title}}</h2>
 		 	    	<p><a href="#" class="job_read_full" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
@@ -246,8 +247,9 @@ class Greenhouse_Job_Board_Public {
 				
 			// handlebars template for returned job
 			$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
-			<div class="job job_{{id}}" 
+			<div class="job job_{{id}} job_{{slug}}" 
 				data-id="{{id}}" 
+				data-slug="{{slug}}" 
 				data-departments="{{departments}}">
 		 	    	<h3 class="job_title">{{title}}</h3>
 		 	    	<div class="job_excerpt">{{{excerpt}}}<br />
@@ -255,9 +257,11 @@ class Greenhouse_Job_Board_Public {
 		 	</div>
 	</script>';
 			$ghjb_html .= '<script id="job-slide-template" type="text/x-handlebars-template">
-			<div class="job cycle-slide" 
-				data-cycle-hash="{{id}}"
+			<div class="job cycle-slide job_{{id}} job_{{slug}}" 
+				data-cycle-hash="{{slug}}"
 				data-id="{{id}}" 
+				data-slug="{{slug}}" 
+				id="{{slug}}" 
 				data-departments="{{departments}}">
 					<div class="job_single">
 			 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
