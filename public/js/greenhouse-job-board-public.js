@@ -810,22 +810,24 @@ function greenhouse_jobs(json, jbid){
      	
     }
     
-    
-    //if default google analytics not on page
-    if (typeof ga != 'function') { 
-		if (ghjb_d) console.log('standard google analytics tracking code not found');
-		ghjb_a = false;
-		
-		//Google Analytics by Yoast
-		if (typeof __gaTracker == 'function') {
-			if (ghjb_d) console.log('custom google analytics tracking code found');
-			ghjb_a = '__gaTracker';
-		}
-		
-    } else {
-    	//set to default google analytics object
-    	ghjb_a = 'ga';
-    }
+    //if analytics active check for custom tracking functions
+    if ( ghjb_a ) {
+	    //if default google analytics not on page
+	    if (typeof ga != 'function') { 
+			if (ghjb_d) console.log('standard google analytics tracking code not found');
+			ghjb_a = false;
+			
+			//Google Analytics by Yoast
+			if (typeof __gaTracker == 'function') {
+				if (ghjb_d) console.log('custom google analytics tracking code found');
+				ghjb_a = '__gaTracker';
+			}
+			
+	    } else {
+	    	//set to default google analytics object
+	    	ghjb_a = 'ga';
+	    }
+	}
      
 }
 
