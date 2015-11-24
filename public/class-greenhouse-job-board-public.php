@@ -130,7 +130,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    2.1.0
+	 * @since    2.2.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		
@@ -364,7 +364,7 @@ class Greenhouse_Job_Board_Public {
 					<div class="cycle-slide">
 						<div class="apply_ty">
 							<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
-							<p>' . $options['greenhouse_job_board_thanks_body'] . '</p>
+							<p>' . wpautop( $options['greenhouse_job_board_thanks_body'] ) . '</p>
 						</div>
 					</div>';
 		} 
