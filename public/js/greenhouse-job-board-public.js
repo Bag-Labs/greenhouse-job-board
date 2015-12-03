@@ -432,26 +432,39 @@ function get_excerpt_from_content(content, limit){
 	//strip tags
 	this_content = strip_tags(this_content);
 	
-	//start at 0
-	var short_content_start = 0;
-	var content_length = this_content.length;
-	
-	//get the full content if total length is less than the limit
-	if ( content_length <= limit) {
-		short_content_end = content_length;
+	//filter for customizing excerpt 
+	//check if custom filter function exists
+	// since v2.2.0
+	if (typeof ghjb_excerpt_filter == 'function') { 
+		//if so use it
+		content = ghjb_excerpt_filter( content );
+	} else {
+		//if not use default below
+
+		//start at 0
+		var short_content_start = 0;
+		var content_length = this_content.length;
+		
+		//get the full content if total length is less than the limit
+		if ( content_length <= limit) {
+			short_content_end = content_length;
+		}
+		else {
+			//get the first full sentence 
+			var short_content_end = this_content.indexOf(".", short_content_start);
+		}
+		
+		var short_content = this_content.slice(short_content_start, short_content_end + 1);
+		if (short_content_start < 0){
+			short_content = this_content.slice(0, short_content_end + 1);
+		}
+
+		content = short_content;
 	}
-	else {
-		//get the first full sentence 
-		var short_content_end = this_content.indexOf(".", short_content_start);
-	}
 	
-	var short_content = this_content.slice(short_content_start, short_content_end + 1);
-	if (short_content_start < 0){
-		short_content = this_content.slice(0, short_content_end + 1);
-	}
-	
-	return short_content;
+	return content;
 }
+
 
 function slugme(slugit) {
 	//all lowercase
