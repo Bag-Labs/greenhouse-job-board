@@ -251,7 +251,13 @@
 		$(jbid + " #apply_form").append(hidden_field);
 		hidden_field = "<input type='hidden' id='hidden_mapped_url_token' name='mapped_url_token' value='" + this_job[0].absolute_url + "' />";
 		$(jbid + " #apply_form").append(hidden_field);
-		
+
+		//filter for customizing job questions 
+		//check if custom filter function exists
+		if (typeof ghjb_questions_filter == 'function') { 
+			//if so use it
+			job_questions = ghjb_questions_filter( job_questions );
+		}
 		
 		for ( var i = 0; i < job_questions.length; i++){
 			
