@@ -116,6 +116,8 @@ e.g.
 = 2.2.0 =
 * Use job title rather than id when possible (in the hash linking)
 * Allow paragraphs and line breaks in thank you message.
+* Add filter for job questions (js).
+* Add filter for job excerpts (js).
 * Minor bug fixes
 
 = 2.1.0 =
