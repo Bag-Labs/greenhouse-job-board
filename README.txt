@@ -118,7 +118,8 @@ e.g.
 * Allow paragraphs and line breaks in thank you message.
 * Add filter for job questions (js).
 * Add filter for job excerpts (js).
-* Minor bug fixes
+* Add more classes to form elements for easier styling.
+* Minor bug fixes.
 
 = 2.1.0 =
 * Add grouping and grouping headling options.
