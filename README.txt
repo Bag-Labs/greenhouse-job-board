@@ -3,7 +3,7 @@ Contributors: brownbagmarketing, circlecube
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
-Tested up to: 4.3.1
+Tested up to: 4.4
 Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -217,3 +217,68 @@ Yes, you can add your own custom CSS on the plugin options page.
 = I made edits in my Greenhouse account, but I'm not seeing those edits on my website, what gives? =
 
 This plugin connects to Greenhouse to retreive data and saves it locally in your WordPress database for a while so your site will load faster and not have to wait for Greenhouse API everytime your job board loads. Go to the settings page and check your cache expiration setting to see how long this temporary or transient data will be stored locally, and also notice the checkbox option to clear the cache. To force fresh data to your site, check this box and save changes.
+
+= Can I add social share links or something relative to the job listing? =
+
+Yes, there is a php filter in place for after the job title on the full job listing template. It is called: `ghjb_single_job_template_after_title`.  Place a function with this name into your theme functions file or your theme plugin php and you may add content following the title of each job. Note that this refers to the full job display and not the job list display. Here's a simple example usage:
+`add_action('ghjb_single_job_template_after_title', 'add_note_to_single_job_template', 10, 1);
+
+function add_note_to_single_job_template ($html){
+	$html .= '<h2>Job Subtitle</h2>';
+	$html .= '<a href="#facebook-share-url">Share this job with friends</a>';
+	return $html;
+}`
+
+= Can I customize the job board job excerpts? =
+
+You can add your own content or edit the job excerpt on the job board via a javascript hook. This works much in the same way as a <a href="http://codex.wordpress.org/Plugin_API/Hooks" target="_blank">WordPress hook</a>, but it's javascript based rather than php. Simply add a javascript function to your site named: `ghjb_excerpt_filter` and it will automatically be called and executed as the plugin creates the job board list. Here's an example use to trim the excerpt to 100 characters and add an ellipsis.:
+`//greenhouse job board plugin js filters
+function ghjb_excerpt_filter(content) {
+
+	var short_content_start = 0;
+	var short_content_end = 100;
+
+	var new_content = content.substring(short_content_start, short_content_end) + ' &hellip;';
+	
+	return new_content;
+}
+`
+
+= Can I customize the fields in use on my forms? =
+
+You can customize the inline forms, but not the iframe forms. There is a hook available for use via javascript to filter the fields on inline forms called `ghjb_questions_filter`. Call it in your theme or plugin javascript. It will receive as parameter the array of questions as returned by the greenhouse api for each job and your filter must return a similarly formatted array of questions, but you may rearrange the fields or change labels field types, etc. Here's an example use that customizes some fields:
+`function ghjb_questions_filter( questions ) {
+	
+	//find field indexes
+	var remove_index, coverletter_index, resume_index;
+	for ( var i = 0; i < questions.length; i++){
+		if ( questions[i].label === 'Resume' ) {
+			resume_index = i;
+		}
+		if ( questions[i].label === 'Cover Letter' ) {
+			coverletter_index = i;
+		}
+		if ( questions[i].label === 'Remove Me' ) {
+			remove_index = i;
+		}
+	}
+
+	//remove field
+	questions.splice(remove_index,1);
+	
+	//set default file_input type to textarea rather than file upload
+	questions[coverletter_index].fields.reverse();
+
+	//change label
+	questions[coverletter_index].label = "Updated Cover Letter Label";
+		
+	//move to last field
+	var coverletter_question = questions.splice(coverletter_index, 1);
+	questions.push ( coverletter_question[0] );
+	var resume_question = questions.splice(resume_index, 1);
+	questions.push ( resume_question[0] );
+
+	//return customized questions array
+	return questions;
+}
+`
