@@ -1,5 +1,5 @@
 /**
- * @since      2.2.0
+ * @since      2.3.0
  */
  jQuery(document).ready(function($) {
 	'use strict';
@@ -278,18 +278,26 @@
 				field_wrap += "' >";
 				//write label for field
 				field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
-				
+				field_wrap += "<div class='input_container'>";
 				//detect input type and write proper html for correct type
 				if ( job_questions[i].fields[0].type === 'input_text' ) {
-					field_wrap += "<div class='input_container'><input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required + " /></div>"
+					field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
 				else if ( job_questions[i].fields[0].type === 'textarea' ) {
-					field_wrap += "<div class='input_container'><textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required + " /></div>"
+					field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
 				else if ( job_questions[i].fields[0].type === 'input_file' ) {
-					field_wrap += "<div class='input_container'><input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required + " /></div>"
+					field_wrap += "<input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
-				
+				else {
+					field_wrap += "<input type='" + job_questions[i].fields[0].type + "' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+				}
+				if ( job_questions[i].fields[0].atts &&
+					 job_questions[i].fields[0].atts !== '' ) {
+					field_wrap += job_questions[i].fields[0].atts;
+				}
+				field_wrap += " /></div>";
+
 				$(jbid + " #apply_form").append(field_wrap);
 			}
 			
@@ -298,6 +306,13 @@
 		var submit_button = "<div class='field_wrap field_submit'><input type='button' class='submit button' value='Submit Application' /></div></div>";
 		
 		$(jbid + " #apply_form").append(submit_button);
+
+		//hook for after apply form loaded
+		//check if custom filter function exists
+		if (typeof ghjb_apply_form_loaded == 'function') { 
+			//if so, call it
+			ghjb_apply_form_loaded(true);
+		}
 	}
 	
 	function jobs_scroll_top(this_caller){
@@ -833,7 +848,7 @@ function greenhouse_jobs(json, jbid){
      
     if (board_type == 'cycle' ) {
      	
-     	jQuery('.all_jobs').cycle({
+     	jQuery(jbid + ' .all_jobs').cycle({
      		fx: 'fade',
      		slides: '.cycle-slide',
      		timeout: 0,

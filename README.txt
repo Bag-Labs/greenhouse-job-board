@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
 Tested up to: 4.4
-Stable tag: 2.2.0
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,12 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 2.3.0 =
+* Adding a js hook for after apply form is build.
+* Add optional attribute value for form inputs on job questions.
+* Allow for html5 form field types.
+* Bugfix for multiple boards on one page.
 
 = 2.2.0 =
 * Use job title rather than id when possible (in the hash linking)
