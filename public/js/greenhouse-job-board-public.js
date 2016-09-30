@@ -1,5 +1,5 @@
 /**
- * @since      2.3.0
+ * @since      2.3.0.1
  */
  jQuery(document).ready(function($) {
 	'use strict';
@@ -619,21 +619,22 @@ function greenhouse_jobs(json, jbid){
      	// Department Filter - can a single job have multiple departments? 
      	//
      	var department_filter = false;
-     	if ( jQuery('.jobs').attr('data-department_filter') ) {
+     	if (ghjb_d) 
+     		console.log( 'read department filter:', jQuery(jbid + ' .jobs').attr('data-department_filter') );
+     	if ( jQuery(jbid + ' .jobs').attr('data-department_filter') ) {
      		department_filter = jQuery(jbid + ' .jobs').attr('data-department_filter').split('|');
+     		if (ghjb_d) 
+     			console.log('set department_filter: ', department_filter );
      		if ( department_filter[0].charAt(0) == '-' ) {
      			// condition met for exclude flag, set dept filter to look for excludes
      			department_filter_exclude = true;
      		}
      		department_filter_pass = false;
-	     	
+     		// if (ghjb_d) console.log('department_filter_exclude: ', department_filter_exclude );
+     		// if (ghjb_d) console.log('department_filter_pass: ', department_filter_pass );
+
 	     	//read job department(s) and test against filter
-	     	// var departments = [];
 	     	for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
-	     		//add to array of departments
-	     		// departments.push( json.jobs[i].departments[j].name );
-	     		// departments.push( json.jobs[i].departments[j].id );
-	     		//if not excluding check if department matches any department filter
 	     		if ( 	!department_filter_exclude &&
 	     				(jQuery.inArray( json.jobs[i].departments[j].name, department_filter ) >= 0 ||
 	 					 jQuery.inArray( json.jobs[i].departments[j].id + '', department_filter ) >= 0 )) {
@@ -646,7 +647,8 @@ function greenhouse_jobs(json, jbid){
 	     			department_filter_pass = true;
 	     		}
 	     	}
-	     	// if (ghjb_d) console.log('department filter:', department_filter, 'pass=', department_filter_pass);
+	     	if (ghjb_d) 
+	     		console.log(json.jobs[i].title, 'job. department filter:', department_filter, '. display =', department_filter_pass);
      	}
      	
      	    	
