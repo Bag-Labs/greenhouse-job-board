@@ -1,5 +1,5 @@
 /**
- * @since      2.3.0.1
+ * @since      2.4.0
  */
  jQuery(document).ready(function($) {
 	'use strict';
@@ -259,10 +259,13 @@
 			job_questions = ghjb_questions_filter( job_questions );
 		}
 		
+		if (ghjb_d) console.log( job_questions );
+
 		for ( var i = 0; i < job_questions.length; i++){
 			
 			//check that the field is listed if form fields are specified
 			// if (ghjb_d) console.log(form_fields, job_questions[i].fields[0].name, job_questions[i].label);
+
 			if ( form_fields[0] === '*' ||
 				 jQuery.inArray( job_questions[i].fields[0].name, form_fields ) >= 0 ||
 				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0  ) {
@@ -270,6 +273,8 @@
 				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name ;
 				field_wrap += ' field_' + job_questions[i].fields[0].type;
 				var required = '';
+				var simple_field = true; //true for text,textarea,file
+										//false for checkboxe,select
 				if (job_questions[i].required === true) {
 					required = ' required="true" ';
 					field_wrap += " field_required ";
@@ -283,11 +288,23 @@
 				if ( job_questions[i].fields[0].type === 'input_text' ) {
 					field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
+				//textarea
 				else if ( job_questions[i].fields[0].type === 'textarea' ) {
 					field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
+				//file
 				else if ( job_questions[i].fields[0].type === 'input_file' ) {
 					field_wrap += "<input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+				}
+				//select and Yes-No fields
+				else if ( job_questions[i].fields[0].type === 'multi_value_single_select' ) {
+					simple_field = false;
+					field_wrap += "<select name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+				}
+				//multiselect checkboxes
+				else if ( job_questions[i].fields[0].type === 'multi_value_multi_select' ) {
+					simple_field = false;
+					field_wrap += "<select name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
 				else {
 					field_wrap += "<input type='" + job_questions[i].fields[0].type + "' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
@@ -296,8 +313,25 @@
 					 job_questions[i].fields[0].atts !== '' ) {
 					field_wrap += job_questions[i].fields[0].atts;
 				}
-				field_wrap += " /></div>";
 
+				//finish non simple fields
+					//select
+				if ( !simple_field ) {
+					if ( job_questions[i].fields[0].type === 'multi_value_multi_select' ) {
+						field_wrap += 'multiple';
+					}
+					field_wrap += ">";
+					for (var j=0; j < job_questions[i].fields[0].values.length; j++){
+						field_wrap += "<option value='"+job_questions[i].fields[0].values[j].value+"'>"+job_questions[i].fields[0].values[j].label+"</option>";
+					}
+					field_wrap += "</select></div>";
+
+				}
+				// back to simple fields 
+				else {
+					field_wrap += " />";
+					field_wrap += "</div>";
+				}
 				$(jbid + " #apply_form").append(field_wrap);
 			}
 			
