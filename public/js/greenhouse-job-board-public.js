@@ -198,6 +198,7 @@
 	}
 
 	function thanks_message(formid, textStatus){
+
 		//get ghjb id
 		var this_id = '#' + $(formid).parents('.greenhouse-job-board').attr('id');
 		var jobid = $('#hidden_id').val();
@@ -224,6 +225,12 @@
 			//hide form, display ty message in place
 			$(this_id + ' #apply_form').toggle(false);
 			$(this_id + ' .apply_ty').toggle(true);
+		}
+
+
+		if (typeof ghjb_after_thanks == 'function') { 
+			//if so use it
+			ghjb_after_thanks( formid, textStatus );
 		}
 	}
 
@@ -654,7 +661,7 @@ function greenhouse_jobs(json, jbid){
      	//
      	var department_filter = false;
      	if (ghjb_d) 
-     		console.log( 'read department filter:', jQuery(jbid + ' .jobs').attr('data-department_filter') );
+     		// console.log( 'read department filter:', jQuery(jbid + ' .jobs').attr('data-department_filter') );
      	if ( jQuery(jbid + ' .jobs').attr('data-department_filter') ) {
      		department_filter = jQuery(jbid + ' .jobs').attr('data-department_filter').split('|');
      		if (ghjb_d) 
