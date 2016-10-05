@@ -281,7 +281,7 @@
 				field_wrap += ' field_' + job_questions[i].fields[0].type;
 				var required = '';
 				var simple_field = true; //true for text,textarea,file
-										//false for checkboxe,select
+										//false for checkboxs,select
 				if (job_questions[i].required === true) {
 					required = ' required="true" ';
 					field_wrap += " field_required ";
@@ -311,7 +311,9 @@
 				//multiselect checkboxes
 				else if ( job_questions[i].fields[0].type === 'multi_value_multi_select' ) {
 					simple_field = false;
-					field_wrap += "<select name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+					// field_wrap += "<select name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+					// field_wrap += "<input type='checkbox' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+					field_wrap += "<div class='checkboxes' " + required;
 				}
 				else {
 					field_wrap += "<input type='" + job_questions[i].fields[0].type + "' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
@@ -325,14 +327,22 @@
 					//select
 				if ( !simple_field ) {
 					if ( job_questions[i].fields[0].type === 'multi_value_multi_select' ) {
-						field_wrap += 'multiple';
-					}
-					field_wrap += ">";
-					for (var j=0; j < job_questions[i].fields[0].values.length; j++){
-						field_wrap += "<option value='"+job_questions[i].fields[0].values[j].value+"'>"+job_questions[i].fields[0].values[j].label+"</option>";
-					}
-					field_wrap += "</select></div>";
+						field_wrap += '>';
+						for (var j=0; j < job_questions[i].fields[0].values.length; j++){
+							field_wrap += '<label>';
+							field_wrap += "<input type='checkbox' value='"+job_questions[i].fields[0].values[j].value+"' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].fields[0].values[j].label  + "' >";
+							field_wrap += job_questions[i].fields[0].values[j].label + '</label>';
+						}
+						field_wrap += '</div>';
 
+					}
+					else if ( job_questions[i].fields[0].type === 'multi_value_single_select' ) {
+						field_wrap += ">";
+						for (var j=0; j < job_questions[i].fields[0].values.length; j++){
+							field_wrap += "<option value='"+job_questions[i].fields[0].values[j].value+"'>"+job_questions[i].fields[0].values[j].label+"</option>";
+						}
+						field_wrap += "</select></div>";
+					}
 				}
 				// back to simple fields 
 				else {
