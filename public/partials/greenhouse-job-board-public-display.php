@@ -111,6 +111,24 @@ function greenhouse_job_board_debug_render(  ) {
 
 }
 
+function greenhouse_job_board_allow_track(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_allow_track'] ) ) {
+		$options['greenhouse_job_allow_track'] = 'false';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_allow_track]' class='regular-text'>
+		<option value="true" <?php if ( $options['greenhouse_job_allow_track'] == 'true' ) { echo 'selected'; } ?>>Allow Tracking</option>
+		<option value="false" <?php if ( $options['greenhouse_job_allow_track'] == 'false' ) { echo 'selected'; } ?>>No Tracking</option>
+	</select>
+	<div class="helper">Allow this plugin to track usage data to improve the plugin usability, functionality and performance.</div>
+	<?php
+
+}
+
 function greenhouse_job_board_log_errors_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );
@@ -142,7 +160,7 @@ function greenhouse_job_board_analytics_render(  ) {
 		<option value="true" <?php if ( $options['greenhouse_job_board_analytics'] == 'true' ) { echo 'selected'; } ?>>Add Analytics</option>
 		<option value="false" <?php if ( $options['greenhouse_job_board_analytics'] == 'false' ) { echo 'selected'; } ?>>No Analytics</option>
 	</select>
-	<div class="helper">Track job views as page views in googl analytics.</div>
+	<div class="helper">Track job views as page views in google analytics. This assumes you have google analytics tracking code already installed on your site. It will only add page tracking to the on page job board navigation.</div>
 	<?php
 
 }
