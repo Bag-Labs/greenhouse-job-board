@@ -144,6 +144,7 @@ class Greenhouse_Job_Board_Public {
 	        'url_token' 		=> isset( $options['greenhouse_job_board_url_token'] ) ? $options['greenhouse_job_board_url_token'] : '',
 	        'api_key' 			=> isset( $options['greenhouse_job_board_api_key'] ) ? $options['greenhouse_job_board_api_key'] : '',
 	        'board_type' 		=> isset( $options['greenhouse_job_board_type'] ) ? $options['greenhouse_job_board_type'] : 'accordion',
+	        'cycle_fx' 			=> isset( $options['greenhouse_job_cycle_fx'] ) ? $options['greenhouse_job_cycle_fx'] : 'fade',
 	        'back'				=> isset( $options['greenhouse_job_board_back'] ) ? $options['greenhouse_job_board_back'] : 'Back',
 	        'apply_now'			=> isset( $options['greenhouse_job_board_apply_now'] ) ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
 	        'apply_now_cancel'	=> isset( $options['greenhouse_job_board_apply_now_cancel'] ) ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
@@ -285,12 +286,12 @@ class Greenhouse_Job_Board_Public {
 		}
 		
 		// html container
-		$ghjb_html .= '<div class="all_jobs">';
-		if ( $atts['board_type'] !== 'cycle') {
-			$ghjb_html .= '<div class="jobs" ';
+		$ghjb_html .= '<div class="all_jobs" ';
+		if ( $atts['board_type'] !== 'cycle') { //accordian
+			$ghjb_html .= '><div class="jobs" ';
 		}
-		elseif ( $atts['board_type'] === 'cycle') {
-			$ghjb_html .= '<div class="jobs cycle-slide" data-cycle-hash="#" ';	
+		elseif ( $atts['board_type'] === 'cycle') { //cycle
+			$ghjb_html .= 'data-cycle-fx="'. $atts['cycle_fx'] .'" style="overflow:hidden;"><div class="jobs cycle-slide" data-cycle-hash="#" ';
 		}
 		
 		// fill in attributes as applicable
@@ -526,6 +527,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_type', 
 			__( 'Type', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_type_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_jobboard_settings_section' 
+		);
+		
+		add_settings_field( 
+			'greenhouse_job_board_cycle_fx', 
+			__( 'Cycle Transition', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_cycle_fx_render', 
 			'greenhouse_settings', 
 			'greenhouse_job_board_jobboard_settings_section' 
 		);

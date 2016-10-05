@@ -288,3 +288,7 @@ You can customize the inline forms, but not the iframe forms. There is a hook av
 	return questions;
 }
 `
+
+= Can I have some custom tracking when the form a successful submission completes? =
+
+There is a javascript hook you can add to your theme code that will work here. The function is `ghjb_after_thanks` and is called after the thank you message is processed and displayed on the page.

@@ -885,7 +885,8 @@ function greenhouse_jobs(json, jbid){
     if (board_type == 'cycle' ) {
      	
      	jQuery(jbid + ' .all_jobs').cycle({
-     		fx: 'fade',
+     		//fx: fade, fadeout, none, and scrollHorz
+     		fx: jQuery(jbid + ' .all_jobs').attr('data-cycle-fx'),
      		slides: '.cycle-slide',
      		timeout: 0,
      		autoHeight: 'container',

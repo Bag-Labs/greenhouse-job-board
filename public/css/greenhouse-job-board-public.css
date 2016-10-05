@@ -13,6 +13,10 @@
 	display: none;	
 }
 
+.greenhouse-job-board[data-type="cycle"] .all_jobs {
+	overflow: hidden;
+}
+
 .greenhouse-job-board .field_wrap {
 	margin: 0 0 1em;
 }

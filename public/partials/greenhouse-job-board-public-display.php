@@ -72,6 +72,27 @@ function greenhouse_job_board_type_render(  ) {
 
 }
 
+
+function greenhouse_job_board_cycle_fx_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_cycle_fx'] ) ) {
+		$options['greenhouse_job_cycle_fx'] = 'fade';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_cycle_fx]' class='regular-text'>
+		<option value="fade" <?php if ( $options['greenhouse_job_cycle_fx'] == 'fade' ) { echo 'selected'; } ?>>Fade</option>
+		<option value="fadeout" <?php if ( $options['greenhouse_job_cycle_fx'] == 'fadeout' ) { echo 'selected'; } ?>>Fade Out</option>
+		<option value="scrollHorz" <?php if ( $options['greenhouse_job_cycle_fx'] == 'scrollHorz' ) { echo 'selected'; } ?>>Scroll Horizontally</option>
+		<option value="none" <?php if ( $options['greenhouse_job_cycle_fx'] == 'none' ) { echo 'selected'; } ?>>None</option>
+	</select>
+	<div class="helper">Select the transition type for the job board when the type is set to cycle (above). This will be ignored with the accordion job board.</div>
+	<?php
+
+}
+
 function greenhouse_job_board_debug_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );
