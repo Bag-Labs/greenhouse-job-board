@@ -385,10 +385,18 @@ function greenhouse_job_board_cache_expiry_render(  ) {
 	if ( !isset( $options['greenhouse_job_board_cache_expiry'] ) ) {
 		$options['greenhouse_job_board_cache_expiry'] = '3600';
 	}
+
+	//if set to no cache, delete any transient data that is currently cached.
+	if ( isset( $options['greenhouse_job_board_cache_expiry'] ) && 
+		 $options['greenhouse_job_board_cache_expiry'] === '1' 
+	) {
+		delete_transient( 'ghjb_json' );
+		delete_transient( 'ghjb_jobs' );
+	}
 	?>
 
 	<select name='greenhouse_job_board_settings[greenhouse_job_board_cache_expiry]' class='regular-text'>
-	<option value="0"      <?php if ( $options['greenhouse_job_board_cache_expiry'] === '0'      ) { echo 'selected'; } ?>>No Cache (not recommended, except for testing)</option>
+	<option value="1"      <?php if ( $options['greenhouse_job_board_cache_expiry'] === '1'      ) { echo 'selected'; } ?>>No Cache (not recommended, except for testing)</option>
 	<option value="3600"   <?php if ( $options['greenhouse_job_board_cache_expiry'] === '3600'   ) { echo 'selected'; } ?>>1 Hour</option>
 	<option value="7200"   <?php if ( $options['greenhouse_job_board_cache_expiry'] === '7200'   ) { echo 'selected'; } ?>>2 Hours</option>
 	<option value="21600"  <?php if ( $options['greenhouse_job_board_cache_expiry'] === '21600'  ) { echo 'selected'; } ?>>6 Hours</option>

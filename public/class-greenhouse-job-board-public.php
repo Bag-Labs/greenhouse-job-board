@@ -167,6 +167,7 @@ class Greenhouse_Job_Board_Public {
 	        'group'				=> isset( $options['greenhouse_job_board_group'] ) ? $options['greenhouse_job_board_group'] : '',
 	        'group_headline'	=> isset( $options['greenhouse_job_board_group_headline'] ) ? $options['greenhouse_job_board_group_headline'] : '',
 	        'display'			=> isset( $options['display'] ) ? $options['display'] : 'description',
+	    	'cache_expiry'		=> isset( $options['greenhouse_job_board_cache_expiry'] ) ?  $options['greenhouse_job_board_cache_expiry'] : 0
 	    ), $atts );
 
 		STATIC $shortcode_id = 0;
@@ -405,7 +406,7 @@ class Greenhouse_Job_Board_Public {
 			// api call to get jobs with callback
 			$ghjb_json = wp_remote_retrieve_body( wp_remote_get('https://api.greenhouse.io/v1/boards/' . $atts['url_token'] . '/embed/jobs?content=true'));
 			//save json data to transient
-			set_transient( 'ghjb_json', $ghjb_json, $options['greenhouse_job_board_cache_expiry'] );
+			set_transient( 'ghjb_json', $ghjb_json, $atts['cache_expiry'] );
 		}
 		if ( false === ( $ghjb_jobs = get_transient( 'ghjb_jobs' ) ) ) {
 			// It wasn't there, so regenerate the data and save the transient
@@ -419,7 +420,7 @@ class Greenhouse_Job_Board_Public {
 				$ghjb_jobs .= $job_json . ',';
 			}
 			$ghjb_jobs = '[' . $ghjb_jobs . ']';
-			set_transient( 'ghjb_jobs', $ghjb_jobs, $options['greenhouse_job_board_cache_expiry'] );
+			set_transient( 'ghjb_jobs', $ghjb_jobs, $atts['cache_expiry'] );
 
 		}
 		if ( $shortcode_id === 1 ) {
