@@ -312,7 +312,6 @@
 				else if ( job_questions[i].fields[0].type === 'multi_value_multi_select' ) {
 					simple_field = false;
 					// field_wrap += "<select name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
-					// field_wrap += "<input type='checkbox' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 					field_wrap += "<div class='checkboxes' " + required;
 				}
 				else {
@@ -327,13 +326,15 @@
 					//select
 				if ( !simple_field ) {
 					if ( job_questions[i].fields[0].type === 'multi_value_multi_select' ) {
+						// field_wrap += ' multiple ';
+						
 						field_wrap += '>';
 						for (var j=0; j < job_questions[i].fields[0].values.length; j++){
 							field_wrap += '<label>';
-							field_wrap += "<input type='checkbox' value='"+job_questions[i].fields[0].values[j].value+"' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].fields[0].values[j].label  + "' >";
-							field_wrap += job_questions[i].fields[0].values[j].label + '</label>';
+							field_wrap += "<input type='checkbox' value='"+job_questions[i].fields[0].values[j].value+"' name='" + job_questions[i].fields[0].name + "' >";
+							field_wrap += job_questions[i].fields[0].values[j].label + '</label><br/>';
 						}
-						field_wrap += '</div>';
+						field_wrap += '</div></div>';
 
 					}
 					else if ( job_questions[i].fields[0].type === 'multi_value_single_select' ) {
