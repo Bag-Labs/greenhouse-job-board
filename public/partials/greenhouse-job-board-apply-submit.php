@@ -10,6 +10,59 @@ $ghjb_d = false;
 if ( $options['greenhouse_job_board_debug'] === 'true' ) {
 	$ghjb_d = true;	
 }
+$ghjb_e = false;
+if ( $options['greenhouse_job_log_errors'] === 'true' ) {
+	$ghjb_e = true;	
+}
+
+//load json job questions to double-check required fields
+
+// if ( false === ( $ghjb_jobs = get_transient( 'ghjb_jobs' ) ) ) {
+// 	// It wasn't there, so regenerate the data and save the transient
+// 	//read job ids from json data
+// 	$ghjb_json_php = json_decode($ghjb_json);
+// 	//retreive json object for each job and save into transient
+// 	$ghjb_jobs = '';//$ghjb_json_php->jobs[0]->id;
+// 	foreach ( $ghjb_json_php->jobs as $job) {
+// 		$job_json = wp_remote_retrieve_body( wp_remote_get('https://api.greenhouse.io/v1/boards/' . $options['greenhouse_job_board_url_token'] . '/embed/job?id=' . $job->id . '&questions=true'));
+		
+// 		$ghjb_jobs .= $job_json . ',';
+// 	}
+// 	$ghjb_jobs = '[' . $ghjb_jobs . ']';
+// 	set_transient( 'ghjb_jobs', $ghjb_jobs, $options['greenhouse_job_board_cache_expiry'] );
+
+// }
+// 57463 - mobile dev id
+// echo $ghjb_jobs;
+if ( $ghjb_e &&
+	 $_POST['id'] ) {
+	$job = wp_remote_retrieve_body( wp_remote_get('https://api.greenhouse.io/v1/boards/' . $options['greenhouse_job_board_url_token'] . '/embed/job?id=' . $_POST['id'] . '&questions=true'));
+	 
+	$job_json = json_decode($job);
+	$errors = array();
+	?><script>console.log(<?php echo $job; ?>);</script><?php
+	// print_r( $job_json->questions );
+	// check each question that's required and make sure it's included in the post object
+	foreach ( $job_json->questions as $question ) {
+		// echo '. field ' . $question->fields[0]->name;
+		// echo ' required: '.$question->required;
+		if ( $question->required ) {
+			if ( !isset( $_POST[ $question->fields[0]->name ] ) ||
+				!isset( $_FILES[ $question->fields[0]->name ] ) ){
+				$errors[] = $question->fields[0]->name;
+			}
+		}
+	}
+	//if any errors print to log
+	if ( count($errors) > 0 ) {
+		// echo 'ERROR- required fields missing: ';
+		error_log( date("Y.m.d H:i:s") . ' -ERROR- required fields missing: ' . json_encode($errors) . '. post: ' . json_encode($_POST) . '.
+', 3, dirname(__FILE__).'/errors.log' );
+		// print_r($errors);
+	}
+}
+
+
 // print_r($_POST);
 // print_r($_FILES);
 

@@ -111,6 +111,24 @@ function greenhouse_job_board_debug_render(  ) {
 
 }
 
+function greenhouse_job_board_log_errors_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	
+	if ( !isset( $options['greenhouse_job_log_errors'] ) ) {
+		$options['greenhouse_job_log_errors'] = 'false';
+	}
+	
+	?>
+	<select name='greenhouse_job_board_settings[greenhouse_job_log_errors]' class='regular-text'>
+		<option value="true" <?php if ( $options['greenhouse_job_log_errors'] == 'true' ) { echo 'selected'; } ?>>Log Errors</option>
+		<option value="false" <?php if ( $options['greenhouse_job_log_errors'] == 'false' ) { echo 'selected'; } ?>>No Logging</option>
+	</select>
+	<div class="helper">Allow this plugin to log errors to a log file. It can come in handy when debugging.</div>
+	<?php
+
+}
+
 function greenhouse_job_board_analytics_render(  ) { 
 
 	$options = get_option( 'greenhouse_job_board_settings' );

@@ -676,6 +676,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_plugin_settings_section' 
 		);
 		
+		add_settings_field( 
+			'greenhouse_job_board_log_errors', 
+			__( 'Log Errors', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_log_errors_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_plugin_settings_section' 
+		);
+		
 	}
 
 
