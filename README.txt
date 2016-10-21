@@ -3,8 +3,8 @@ Contributors: brownbagmarketing, circlecube
 Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
-Tested up to: 4.4
-Stable tag: 2.3.0
+Tested up to: 4.6.1
+Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,14 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 2.4.0 =
+* Add js hook for after thanks is displayed
+* Fix bug with department filter
+* Add support for new custom question field types: Yes/No & Single Select
+* Expose the cycle transition type on the options page
+* Better error logging
+* Fix bug with no cache option
 
 = 2.3.0 =
 * Adding a js hook for after apply form is build.

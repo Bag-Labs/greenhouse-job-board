@@ -130,7 +130,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    2.2.0
+	 * @since    2.4.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		
@@ -461,7 +461,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Register the settings page.
 	 *
-	 * @since	2.0.0
+	 * @since	2.4.0
 	 */
 	//http://wpsettingsapi.jeroensormani.com/settings-generator
 	function greenhouse_job_board_add_admin_menu(  ) { 
