@@ -1,5 +1,5 @@
 /**
- * @since      2.4.0
+ * @since      2.5.0
  */
  jQuery(document).ready(function($) {
 	'use strict';
@@ -442,36 +442,47 @@
 		
 		return false;
 	});
-	
+	var ajaxing = false;
 	function ajax_submit(formid, redirect){
-		var formData = new FormData( $(formid)[0]);
-		$.ajax({
-		    type: $(formid).attr('method'),
-		    url: $(formid).attr('action'),
-		    data: formData,
-		    async: false,
-	        cache: false,
-	        contentType: false,
-	        processData: false,
-	        enctype: 'multipart/form-data',
-	        mimeType: 'multipart/form-data', 
-	        formid: formid,
-		    success: function(data, textStatus, jqXHR) {
-		    	if (ghjb_d) console.log('success', textStatus, data, jqXHR, this.formid);
-		    	// thanks_message(this.formid);
-		    },
-		    error: function(jqXHR, textStatus, errorThrown) {
-			    if (ghjb_d) console.log('error', textStatus, errorThrown, jqXHR);
-		    },
-		    complete: function(jqXHR, textStatus) {
-		    	if (ghjb_d) console.log('complete', textStatus, jqXHR);
-		    	thanks_message(this.formid, textStatus);
-		    	// if (redirect != null && redirect != undefined) {
-			    // 	window.location.href = redirect;
-			    // }
-		    },
+		//when submitting set a flag so it doesn't resubmit
+		//and disable the button so the user vsually understands it's inactive
+		//on complete, renable the button.
+		if ( ! ajaxing ) {
+			ajaxing = true;
+			$(formid).find('.submit').attr('disabled', 'disabled');
 
-		});
+			var formData = new FormData( $(formid)[0]);
+			$.ajax({
+			    type: $(formid).attr('method'),
+			    url: $(formid).attr('action'),
+			    data: formData,
+			    async: false,
+		        cache: false,
+		        contentType: false,
+		        processData: false,
+		        enctype: 'multipart/form-data',
+		        mimeType: 'multipart/form-data', 
+		        formid: formid,
+			    success: function(data, textStatus, jqXHR) {
+			    	if (ghjb_d) console.log('success', textStatus, data, jqXHR, this.formid);
+			    	// thanks_message(this.formid);
+			    },
+			    error: function(jqXHR, textStatus, errorThrown) {
+				    if (ghjb_d) console.log('error', textStatus, errorThrown, jqXHR);
+			    },
+			    complete: function(jqXHR, textStatus) {
+			    	ajaxing = false;
+			    	$(formData).find('.submit').removeAttr('disabled');
+			    	if (ghjb_d) console.log('complete', textStatus, jqXHR);
+			    	thanks_message(this.formid, textStatus);
+			    	// if (redirect != null && redirect != undefined) {
+				    // 	window.location.href = redirect;
+				    // }
+			    },
+
+			});
+
+		}
 		return false;
 	}
 	
