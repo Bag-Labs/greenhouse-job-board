@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter
 Requires at least: 3.0
 Tested up to: 4.7
-Stable tag: 2.5.0
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,11 @@ e.g.
 1. Place `[greenhouse url_token="your_url_token"]` in your page or post.
 
 == Changelog ==
+
+= 2.6.0 =
+* Update validation script to work better on older browsers.
+* Added js hook for when form validation fails: `ghjb_form_validate_fail`
+* Add css border to fields when they fail validation: `#apply_form.invalid .field_required input:invalid`, easy to override in your theme styles.
 
 = 2.5.0 =
 * Update ajax submit to only allow one submission if response is slow. Disables submit button on submit.

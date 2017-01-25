@@ -1,6 +1,8 @@
 /**
  * All of the CSS for your public-facing functionality should be
  * included in this file.
+ *
+ * @since      2.6.0
  */
 
 .job_read_full {
@@ -26,4 +28,8 @@
 }
 .greenhouse-job-board .field_wrap.field_required label:after {
 	content: ' *';
+}
+
+#apply_form.invalid .field_required input:invalid {
+	border: 1px solid red;
 }

@@ -1,5 +1,5 @@
 /**
- * @since      2.5.0
+ * @since      2.6.0
  */
  jQuery(document).ready(function($) {
 	'use strict';
@@ -414,7 +414,9 @@
 		jobs_scroll_top(this);
 	});
 	
-	
+	function hasHtml5Validation () {
+	  return typeof document.createElement('input').checkValidity === 'function';
+	}
 
 	$('.all_jobs').on('click', '.apply_jobs .submit', function(e){
 		e.preventDefault();
@@ -426,20 +428,26 @@
 
 		var form_id = this_id + ' #apply_form';
 		
-		//if not valid, display the html5 validation messages (by clicking the temp submit button)
-		if ( !$(form_id)[0].checkValidity() ) {
-			if (ghjb_d) console.log('form validation error');
-			// $(form_id).find(':submit').click();
-			$('<input type="submit">').hide().appendTo( $(form_id) ).click().remove();
-			return false;
+		if ( hasHtml5Validation() ) {
+			//if not valid don't submit
+			if ( !$(form_id)[0].checkValidity() ) {
+				if (ghjb_d) console.log('form validation error');
+				e.preventDefault();
+				$(form_id).addClass('invalid');
+				// is there any custom validation fail function?
+				if (typeof ghjb_form_validate_fail == 'function') { 
+					//if so, call it and pass in the form_id
+					ghjb_form_validate_fail(form_id);
+				}
+				return false;
+			} else { //if valid submit via ajax
+				$(form_id).removeClass('invalid');
+				if (ghjb_d) console.log('validates, submitting form');
+				ajax_submit( form_id, null);
+			}
+			
 		}
-		
-		//if all html5 validates then submit via ajax
-		else if ( $(form_id)[0].checkValidity() ) {
-			if (ghjb_d) console.log('validates, submitting form');
-			ajax_submit( form_id, null);
-		}
-		
+
 		return false;
 	});
 	var ajaxing = false;
