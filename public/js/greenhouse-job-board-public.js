@@ -76,7 +76,7 @@
 					$(this).parent().append( $(this_id + ' #grnhse_app') ); 
 					$(this_id + ' #grnhse_app').addClass('open');
 					
-				 	// if (ghjb_d) console.log(jid);
+				 	if (ghjb_d) console.log('loading iframe for job:', jobid);
 				 	// Loads job with ID 5555555 with a source tracking token taken 
 				 	// from the gh_src querystring parameter. NOTE: this is what you
 				 	// want to do to ensure source tracking works (i.e., tracking
@@ -84,6 +84,9 @@
 				 	// Grnhse.Iframe.load(jid, 'abc123');
 
 				 	// Loads job with ID 5555555 with no source tracking token
+
+				 	//force the Grnhse.scrollOnLoad value to false?
+				 	Grnhse.Settings.scrollOnLoad = false;
 				 	Grnhse.Iframe.load(jobid);
 
 				 	// Loads the job board (not a specific application)
