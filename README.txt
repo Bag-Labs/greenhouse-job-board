@@ -7,6 +7,9 @@ Tested up to: 4.7
 Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+GitHub Plugin URI: https://github.com/Bag-Labs/greenhouse-job-board
+Plugin URI: https://github.com/Bag-Labs/greenhouse-job-board
+
 
 Plugin to pull a job board from greenhouse.io via their API.
 
