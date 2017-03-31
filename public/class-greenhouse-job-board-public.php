@@ -130,7 +130,7 @@ class Greenhouse_Job_Board_Public {
 	/**
 	 * Handle the main [greenhouse] shortcode.
 	 *
-	 * @since    2.4.0
+	 * @since    2.7.0
 	 */
 	public function greenhouse_shortcode_function( $atts, $content = null ) {
 		

@@ -64,12 +64,12 @@ class Greenhouse_Job_Board {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    2.6.1
+	 * @since    2.7.0
 	 */
 	public function __construct() {
 
 		$this->greenhouse_job_board = 'greenhouse-job-board';
-		$this->version = '2.6.1';
+		$this->version = '2.7.0';
 
 		$this->load_dependencies();
 		$this->set_locale();

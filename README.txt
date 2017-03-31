@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: brownbagmarketing, circlecube
 Donate link: https://www.brownbagmarketing.com/
-Tags: greenhouse, job board, api, resume, careers, hr, recruiter
+Tags: greenhouse, job board, api, resume, careers, hr, recruiter, job, hire, hiring, wanted
 Requires at least: 3.0
-Tested up to: 4.7
-Stable tag: 2.6.1
+Tested up to: 4.7.3
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,7 +114,7 @@ e.g.
 == Changelog ==
 
 = 2.7.0 =
-* Add new setting ofr a custom error message when an application submission fails.
+* Add new setting for a custom error message when an application submission fails.
 * Adding support for hidden input fields in inline forms.
 * Better support for js thank you hook.
 
