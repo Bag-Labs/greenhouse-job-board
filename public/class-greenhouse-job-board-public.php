@@ -366,7 +366,11 @@ class Greenhouse_Job_Board_Public {
 					<div class="cycle-slide">
 						<div class="apply_ty">
 							<h2>' . $options['greenhouse_job_board_thanks_headline'] . '</h2>
-							<p>' . wpautop( $options['greenhouse_job_board_thanks_body'] ) . '</p>
+							<div>' . wpautop( $options['greenhouse_job_board_thanks_body'] ) . '</div>
+						</div>
+						<div class="apply_error">
+							<h2>' . $options['greenhouse_job_board_error_headline'] . '</h2>
+							<div>' . wpautop( $options['greenhouse_job_board_error_body'] ) . '</div>
 						</div>
 					</div>';
 		} 
@@ -653,6 +657,22 @@ class Greenhouse_Job_Board_Public {
 		);
 
 		add_settings_field( 
+			'greenhouse_job_board_error_headline', 
+			__( 'Error Headline', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_error_headline_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_jobboard_settings_section' 
+		);
+
+		add_settings_field( 
+			'greenhouse_job_board_error_body', 
+			__( 'Error Body', 'greenhouse_job_board' ), 
+			'greenhouse_job_board_error_body_render', 
+			'greenhouse_settings', 
+			'greenhouse_job_board_jobboard_settings_section' 
+		);
+
+		add_settings_field( 
 			'greenhouse_job_board_custom_css', 
 			__( 'Custom CSS', 'greenhouse_job_board' ), 
 			'greenhouse_job_board_custom_css_render', 
@@ -697,4 +717,4 @@ class Greenhouse_Job_Board_Public {
 	}
 
 
-}
+} ?>

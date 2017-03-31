@@ -113,6 +113,11 @@ e.g.
 
 == Changelog ==
 
+= 2.7.0 =
+* Add new setting ofr a custom error message when an application submission fails.
+* Adding support for hidden input fields in inline forms.
+* Better support for js thank you hook.
+
 = 2.6.1 =
 * Fix a bug that jumped to the top of the page when using iframe forms.
 

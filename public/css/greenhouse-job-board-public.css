@@ -33,3 +33,10 @@
 #apply_form.invalid .field_required input:invalid {
 	border: 1px solid red;
 }
+.apply_ty,
+.apply_error {
+	display: none;
+}
+.cycle-slide-active .apply_ty {
+	display:block;
+}

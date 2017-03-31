@@ -206,15 +206,20 @@
 		var this_id = '#' + $(formid).parents('.greenhouse-job-board').attr('id');
 		var jobid = $('#hidden_id').val();
 		if (ghjb_d) console.log('submission complete', textStatus, jobid, this_id);
-		if (ghjb_a) ghjb_analytics('job', 'apply_thanks', jobid );
 
 		if (textStatus === 'error' ){
 			if (ghjb_d) console.log('submission error', textStatus, jobid, this_id);
-			$(this_id + ' .apply_ty h2').text('Oh No!');
-			$(this_id + ' .apply_ty p').text('We\'ve experienced an error, this submission may have failed, please try again or contact us for help!');
+			if (ghjb_a) ghjb_analytics('job', 'apply_error', jobid );
+			//toggle apply_ty div and apply_error divs
+			$('.apply_ty').hide();
+			$('.apply_error').show();
+
 		}
 		else if (textStatus === 'success'){
 			if (ghjb_d) console.log('submission success', textStatus, jobid, this_id);
+			if (ghjb_a) ghjb_analytics('job', 'apply_thanks', jobid );
+			$('.apply_ty').show();
+			$('.apply_error').hide();
 		}
 		
 		//cycle
@@ -233,7 +238,7 @@
 
 		if (typeof ghjb_after_thanks == 'function') { 
 			//if so use it
-			ghjb_after_thanks( formid, textStatus );
+			ghjb_after_thanks( formid, textStatus, jobid );
 		}
 	}
 
@@ -279,21 +284,27 @@
 			if ( form_fields[0] === '*' ||
 				 jQuery.inArray( job_questions[i].fields[0].name, form_fields ) >= 0 ||
 				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0  ) {
-			
+				
 				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name ;
 				field_wrap += ' field_' + job_questions[i].fields[0].type;
 				var required = '';
+				var hidden = false;
 				var simple_field = true; //true for text,textarea,file
 										//false for checkboxs,select
 				if (job_questions[i].required === true) {
 					required = ' required="true" ';
 					field_wrap += " field_required ";
 				}
+				if ( job_questions[i].fields[0].type === 'hidden' ) {
+					hidden = true;
+				}
 				
 				field_wrap += "' >";
 				//write label for field
-				field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
-				field_wrap += "<div class='input_container'>";
+				if ( !hidden ) { //but only if not hidden field
+					field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
+					field_wrap += "<div class='input_container'>";
+				}
 				//detect input type and write proper html for correct type
 				if ( job_questions[i].fields[0].type === 'input_text' ) {
 					field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
@@ -301,6 +312,10 @@
 				//textarea
 				else if ( job_questions[i].fields[0].type === 'textarea' ) {
 					field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
+				}
+				//textarea
+				else if ( job_questions[i].fields[0].type === 'hidden' ) {
+					field_wrap += "<input type='hidden' name='" + job_questions[i].fields[0].name + "' value='" + job_questions[i].fields[0].values[0] + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
 				//file
 				else if ( job_questions[i].fields[0].type === 'input_file' ) {
@@ -353,7 +368,9 @@
 				// back to simple fields 
 				else {
 					field_wrap += " />";
-					field_wrap += "</div>";
+					if ( !hidden ) {
+						field_wrap += "</div>";
+					}
 				}
 				$(jbid + " #apply_form").append(field_wrap);
 			}
