@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       http://example.com
- * @since      2.0.0
+ * @since      2.7.0
  *
  * @package    Greenhouse_Job_Board
  * @subpackage Greenhouse_Job_Board/public/partials
@@ -392,7 +392,7 @@ function greenhouse_job_board_apply_headline_render(  ) {
 		echo $options['greenhouse_job_board_apply_headline']; 
 	}
 	?>' class="regular-text">
-	<div class="helper">Set the headline for your application form. Note, this is only displayed when the inline form type. Default is 'Apply'.</div>
+	<div class="helper">Set the headline for your application form. Note, this is only displayed with the inline form type. Default is 'Apply'.</div>
 	<?php
 
 }
@@ -409,7 +409,58 @@ function greenhouse_job_board_thanks_headline_render(  ) {
 		echo $options['greenhouse_job_board_thanks_headline']; 
 	}
 	?>' class="regular-text">
-	<div class="helper">Set the headline for your thank you messaging. Note, this is only displayed when the inline form type after successful application submission. Default is 'Thank you for your interest'.</div>
+	<div class="helper">Set the headline for your thank you messaging. Note, this is only displayed with the inline form type after successful application submission. Default is "Thank you for your interest".</div>
+	<?php
+
+}
+
+function greenhouse_job_board_thanks_body_render(  ) {
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_thanks_body]' class="large-text"><?php 
+	if ( !isset( $options['greenhouse_job_board_thanks_body'] ) ) { // Nothing yet saved
+		echo ''; 
+	}
+	else {
+		echo $options['greenhouse_job_board_thanks_body']; 
+	}
+	?></textarea>
+	<div class="helper">Set the text for your thank you messaging. Note, this is only displayed with the inline form type after successful application submission.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_error_headline_render(  ) { 
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_error_headline]' value='<?php 
+	if ( !isset( $options['greenhouse_job_board_error_headline'] ) ) { // Nothing yet saved
+		echo "Uh Oh, Something went wrong."; 
+	}
+	else {
+		echo $options['greenhouse_job_board_error_headline']; 
+	}
+	?>' class="regular-text">
+	<div class="helper">Set the headline for your error messaging. Note, this is only displayed with the inline form type after an unsuccessful application submission.</div>
+	<?php
+
+}
+
+function greenhouse_job_board_error_body_render(  ) {
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	?>
+	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_error_body]' class="large-text"><?php 
+	if ( !isset( $options['greenhouse_job_board_error_body'] ) ) { // Nothing yet saved
+		echo ''; 
+	}
+	else {
+		echo $options['greenhouse_job_board_error_body']; 
+	}
+	?></textarea>
+	<div class="helper">Set the text for your thank you messaging. Note, this is only displayed with the inline form type after an unsuccessful application submission.</div>
 	<?php
 
 }
@@ -465,23 +516,6 @@ function greenhouse_job_board_clear_cache_render(  ) {
 	?>
 	<label class="helper"><input type='checkbox' name='greenhouse_job_board_settings[greenhouse_job_board_clear_cache]' value='1' <?php if ( $options['greenhouse_job_board_clear_cache'] === '1' ) { echo 'checked'; } ?> >
 	To clear Greenhouse API data from this site's cache (<a href="https://codex.wordpress.org/Transients_API" target="_blank">Transients</a>), check this box and save changes.</label>
-	<?php
-
-}
-
-function greenhouse_job_board_thanks_body_render(  ) {
-
-	$options = get_option( 'greenhouse_job_board_settings' );
-	?>
-	<textarea name='greenhouse_job_board_settings[greenhouse_job_board_thanks_body]' class="large-text"><?php 
-	if ( !isset( $options['greenhouse_job_board_thanks_body'] ) ) { // Nothing yet saved
-		echo ''; 
-	}
-	else {
-		echo $options['greenhouse_job_board_thanks_body']; 
-	}
-	?></textarea>
-	<div class="helper">Set the text for your thank you messaging. Note, this is only displayed when the inline form type after successful application submission.</div>
 	<?php
 
 }
