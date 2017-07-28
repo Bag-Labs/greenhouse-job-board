@@ -1,5 +1,5 @@
 /**
- * @since      2.7.0
+ * @since      2.7.1
  */
  jQuery(document).ready(function($) {
 	'use strict';
