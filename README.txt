@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter, job, hire, hiring, wanted
 Requires at least: 3.0
 Tested up to: 4.8
-Stable tag: 2.7.1
+Stable tag: 2.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/Bag-Labs/greenhouse-job-board
@@ -116,7 +116,7 @@ e.g.
 
 == Changelog ==
 
-= 2.7.1 =
+= 2.7.2 =
 * Fix bug with department filter not firing properly when not in debug mode.
 
 = 2.7.0 =
