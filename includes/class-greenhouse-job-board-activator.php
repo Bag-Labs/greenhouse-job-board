@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin activation
  *
@@ -30,8 +29,7 @@ class Greenhouse_Job_Board_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		// logging for error - unexpected output
-		// file_put_contents(__DIR__.'/my_loggg.txt', ob_get_contents());
+
 	}
 
 }

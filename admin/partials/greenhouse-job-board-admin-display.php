@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the plugin
  *
@@ -12,6 +11,6 @@
  * @subpackage Greenhouse_Job_Board/admin/partials
  */
 
-
-/** This file should primarily consist of HTML with a little bit of PHP. */
-?>
+/**
+ * This file should primarily consist of HTML with a little bit of PHP.
+ */

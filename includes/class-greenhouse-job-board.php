@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -69,7 +68,7 @@ class Greenhouse_Job_Board {
 	public function __construct() {
 
 		$this->greenhouse_job_board = 'greenhouse-job-board';
-		$this->version = '2.7.2';
+		$this->version              = '2.7.2';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -135,7 +134,7 @@ class Greenhouse_Job_Board {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Greenhouse_Job_Board_i18n();
+		$plugin_i18n = new Greenhouse_Job_Board_I18n();
 		$plugin_i18n->set_domain( $this->get_greenhouse_job_board() );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
@@ -155,8 +154,8 @@ class Greenhouse_Job_Board {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		
-		$this->loader->add_action( 'media_buttons', $plugin_admin, 'greenhouse_add_shortcode_media_button', 20);
+
+		$this->loader->add_action( 'media_buttons', $plugin_admin, 'greenhouse_add_shortcode_media_button', 20 );
 
 	}
 
@@ -175,8 +174,7 @@ class Greenhouse_Job_Board {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
-		
-		
+
 		$this->loader->add_action( 'admin_menu', $plugin_public, 'greenhouse_job_board_add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_public, 'greenhouse_job_board_settings_init' );
 	}

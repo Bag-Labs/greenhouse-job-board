@@ -2,7 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- 
+
 .greenhouse-wizard {
 	position: absolute;
 	background: #FCFCFC;
@@ -31,7 +31,7 @@
 	padding: 12px;
 }
 .greenhouse-wizard .section {
- 	padding: 1em 0 0 1em;
+	padding: 1em 0 0 1em;
 }
 .greenhouse-wizard .section .section{
 	padding: .5em 0 0 1.5em;
