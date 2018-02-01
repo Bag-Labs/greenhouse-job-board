@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -44,13 +43,13 @@ class Greenhouse_Job_Board_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $greenhouse_job_board       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $greenhouse_job_board The name of this plugin.
+	 * @param      string $version The version of this plugin.
 	 */
 	public function __construct( $greenhouse_job_board, $version ) {
 
 		$this->greenhouse_job_board = $greenhouse_job_board;
-		$this->version = $version;
+		$this->version              = $version;
 
 	}
 
@@ -99,9 +98,7 @@ class Greenhouse_Job_Board_Admin {
 		wp_enqueue_script( $this->greenhouse_job_board, plugin_dir_url( __FILE__ ) . 'js/greenhouse-job-board-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-	
-	
-	
+
 	/**
 	 * Add the shortcodes media button.
 	 *
@@ -109,9 +106,9 @@ class Greenhouse_Job_Board_Admin {
 	 */
 	public function greenhouse_add_shortcode_media_button() {
 		add_thickbox();
-		
-		$greenhouse_settings_url = admin_url('options-general.php?page=greenhouse_job_board' );
-		echo <<<HTML
+
+		$greenhouse_settings_url = admin_url( 'options-general.php?page=greenhouse_job_board' );
+		$output                  = <<<HTML
 		
 <a href="#TB_inline?width=600&height=550&inlineId=add-greenhouse-shortcode-form" id="add-greenhouse-shortcode-button" class="button thickbox">Add Greenhouse Job Board</a>
 <div id="add-greenhouse-shortcode-form" style="display:none;">
@@ -121,39 +118,17 @@ class Greenhouse_Job_Board_Admin {
 				<h1>Greenhouse Job Board</h1>
 				<h2>Shortcode Wizard</h2>
 			</div>
-			
+
 			<div class="media-frame-content">
 				<div class="section">
 					<p>Use these settings to customize your short code settings and then insert your shortcode into your content.</p>
 				</div>
-				
-				<!--<div class="section">
-					<label>
-						<input type="checkbox" class="include" data-include="url_token" />Include URL token to override <a href="$greenhouse_settings_url">plugin settings</a>?
-					</label>
-					<div class="section section_url_token" style="display:none;">
-						<label for="url_token">Url token
-							<input id="url_token" type="text" />
-						</label>
-					</div>
-				</div>-->
-				
-				<!--<div class="section">
-					<label>
-						<input type="checkbox" class="include" data-include="api_key" />Include API Key to override <a href="$greenhouse_settings_url">plugin settings</a>?
-					</label>
-					<div class="section section_api_key" style="display:none;">
-						<label for="api_key">API Key
-							<input id="api_key" type="text" />
-						</label>
-					</div>
-				</div>-->
-				
+
 				<div class="section">
 					<label>
 						<input type="checkbox" class="include" data-include="texts" />Set Text Values to override <a href="$greenhouse_settings_url">plugin settings</a>?
 					</label>
-				
+
 					<div class="section section_texts" style="display:none;">
 						<div class="section">
 							<label for="apply_now">Apply Now Text
@@ -192,12 +167,12 @@ class Greenhouse_Job_Board_Admin {
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="section">
 					<label>
 						<input type="checkbox" id="hide_forms" class="include" checked data-include="display_form" />Display Application Forms?
 					</label>
-				
+
 					<div class="section section_display_form">
 						<label>
 							<select id="form_type">
@@ -206,16 +181,15 @@ class Greenhouse_Job_Board_Admin {
 								<option value="inline">Inline dynamic forms</option>
 							</select>
 						</label>
-					
+
 						<div class="section section_display_form section_form_fields" style="display:none;">
 							<label for="form_fields">Form Fields
 								<input id="form_fields" type="text" />
 							</label>
 							<div class="help_text">Pipe '|' delimeted. For example: First Name|Email (leave blank to display all fields).</div>
 						</div>
-						
+
 					</div>
-					
 				</div>
 				
 				
@@ -223,7 +197,7 @@ class Greenhouse_Job_Board_Admin {
 					<label>
 						<input type="checkbox" id="display_custom_meta" class="include" data-include="display_meta" />Customize Displayed Job Data?
 					</label>
-				
+
 					<div class="section section_display_meta" style="display:none;">
 						<div class="section">
 							<label>
@@ -247,13 +221,12 @@ class Greenhouse_Job_Board_Admin {
 						</div>
 					</div>
 				</div>
-				
-				
+
 				<div class="section">
 					<label>
 						<input type="checkbox" class="include" data-include="filter" />Filter jobs?
 					</label>
-				
+
 					<div class="section section_filter" style="display:none;">
 						<div class="section">
 							<label>
@@ -301,12 +274,12 @@ class Greenhouse_Job_Board_Admin {
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="section">
 					<label>
 						<input type="checkbox" id="custom_order" class="include" data-include="custom_order" />Customize job order?
 					</label>
-				
+
 					<div class="section section_custom_order" style="display:none;">
 						<div class="section">
 							<label>Order by: 
@@ -343,7 +316,7 @@ class Greenhouse_Job_Board_Admin {
 									</select>
 								</label>
 							</div>
-							
+
 							<div class="section section_sticky" style="display:none;">
 								<label for="sticky_id">Sticky job ID
 									<input id="sticky_id" type="text" />
@@ -353,12 +326,12 @@ class Greenhouse_Job_Board_Admin {
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="section">
 					<label>
 						<input type="checkbox" id="custom_group" class="include" data-include="custom_group" />Group jobs?
 					</label>
-				
+
 					<div class="section section_custom_group" style="display:none;">
 						<div class="section">
 							<label>Group by: 
@@ -379,9 +352,9 @@ class Greenhouse_Job_Board_Admin {
 						</div>
 					</div>
 				</div>
-			
+
 			</div>
-			
+
 			<div class="media-frame-toolbar">
 				<div class="media-toolbar-secondary">
 					<a style="float: left;" href="#" onclick="tb_remove(); return false;">Cancel</a>		
@@ -395,6 +368,52 @@ class Greenhouse_Job_Board_Admin {
 </div>
 
 HTML;
+		$allowed_tags            = array(
+			'a'      => array(
+				'href'    => array(),
+				'title'   => array(),
+				'class'   => array(),
+				'style'   => array(),
+				'onclick' => array(),
+				'id'      => array(),
+			),
+			'div'    => array(
+				'id'    => array(),
+				'class' => array(),
+				'style' => array(),
+			),
+			'h1'     => array(),
+			'h2'     => array(),
+			'p'      => array(),
+			'label'  => array(
+				'for' => array(),
+			),
+			'input'  => array(
+				'id'           => array(),
+				'type'         => array(),
+				'class'        => array(),
+				'checked'      => array(),
+				'data-include' => array(),
+			),
+			'select' => array(
+				'id'    => array(),
+				'class' => array(),
+			),
+			'option' => array(
+				'id'       => array(),
+				'class'    => array(),
+				'value'    => array(),
+				'selected' => array(),
+			),
+		);
+		echo wp_kses( $output, $allowed_tags );
 	}
 
 }
+
+add_filter(
+	'safe_style_css', function( $styles ) {
+		$styles[] = 'display';
+		return $styles;
+	}
+);
