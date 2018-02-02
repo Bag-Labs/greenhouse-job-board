@@ -418,6 +418,11 @@
 	$('.all_jobs').on('change focus blur', '#interactive_filter_departments', function(){
 		handle_interactive_filter_selection( 'departments', $(this).val() );
 	});
+	// interactive locations filter
+	$('.all_jobs').on('change focus blur', '#interactive_filter_locations', function(){
+		handle_interactive_filter_selection( 'locations', $(this).val() );
+	});
+
 	//navigation
 	$('.all_jobs').on('click', '.job_goto', function(e){
 		e.preventDefault();
@@ -749,6 +754,39 @@ function greenhouse_jobs(json, jbid){
 	}
 	departments_select += '</select>';
 	jQuery(jbid + ' .jobs').append(departments_select);
+	
+	/**
+	 * Locations - interactive filter
+	 */
+	//get all locations
+	var all_locations = [];
+	for (var i = 0; i < json.jobs.length; i++){
+		var this_location = {
+			name: json.jobs[i].location.name,
+			id: json.jobs[i].location.name
+		};
+		// if unique, add to the list
+		var unique = true;
+		for ( var k = 0; k < all_locations.length; k++) {
+			if ( this_location.id === all_locations[k].id ) {
+				unique = false;
+			}
+		}
+		if ( unique ) {
+			all_locations.push( this_location );
+		}	
+		// console.log(all_locations);
+	}
+	
+	//output a select list of locations
+	var locations_select = '<select id="interactive_filter_locations"><option value="-1">All Locations</option>';
+	for ( var k = 0; k < all_locations.length; k++) {
+		locations_select += '<option value="' + all_locations[k].id + '">' + all_locations[k].name + '</option>';
+	}
+	locations_select += '</select>';
+	jQuery(jbid + ' .jobs').append(locations_select);
+	 
+	
  	var current_group = this_group = '';
  	//list all jobs
     for (var i = 0; i < json.jobs.length; i++){
@@ -976,6 +1014,7 @@ function greenhouse_jobs(json, jbid){
 		 			display_office: display_office,
 					display_location: display_location,
 					departments: json.jobs[i].departments_attr,
+					locations: json.jobs[i].location.name,
 		 		});
 	     		jQuery(jbid + ' .all_jobs .jobs').append(jobshtml);
 	     	}
@@ -992,6 +1031,7 @@ function greenhouse_jobs(json, jbid){
 		 			display_office: display_office,
 		 			display_location: display_location,
 					departments: json.jobs[i].departments_attr,
+					locations: json.jobs[i].location.name,
 		 		});
 	     		jQuery(jbid + ' .all_jobs .jobs').append(jobshtml);
 	     		

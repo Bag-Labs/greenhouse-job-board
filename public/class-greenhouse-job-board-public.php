@@ -228,7 +228,9 @@ class Greenhouse_Job_Board_Public {
 			<div class="job job_{{id}} job_{{slug}}" 
 				data-id="{{id}}" 
 				id="{{slug}}" 
-				data-departments="{{departments}}">
+				data-departments="{{departments}}"
+				data-locations="{{locations}}"
+			>
 		 	    	<h2 class="job_title">{{title}}</h2>
 		 	    	<p><a href="#" class="job_read_full" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
 		 	    	<div class="job_description job_description_{{id}}">
@@ -250,7 +252,9 @@ class Greenhouse_Job_Board_Public {
 			<div class="job job_{{id}} job_{{slug}}" 
 				data-id="{{id}}" 
 				data-slug="{{slug}}" 
-				data-departments="{{departments}}">
+				data-departments="{{departments}}"
+				data-locations="{{locations}}"
+			>
 		 	    	<h3 class="job_title">{{title}}</h3>
 		 	    	<div class="job_excerpt">{{{excerpt}}}<br />
 		 	    	<a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></div>
@@ -263,7 +267,9 @@ class Greenhouse_Job_Board_Public {
 				data-id="{{id}}" 
 				data-slug="{{slug}}" 
 				id="{{slug}}" 
-				data-departments="{{departments}}">
+				data-departments="{{departments}}"
+				data-locations="{{locations}}"
+			>
 					<div class="job_single">
 			 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
 						<h1 class="job_title">{{title}}</h1>';
