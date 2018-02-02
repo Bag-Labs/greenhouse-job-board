@@ -116,6 +116,13 @@ e.g.
 
 == Changelog ==
 
+= 2.8.0 =
+* Add interactive department and location filter.
+* Update messaging and description text to be more helpful.
+* Clean up codebase more in alignment with WordPress Coding Standards.
+* Ensure sanitizing and escaping input and output from database and api for better security.
+* Add opt-in feature to track usage via anonymous analytics data.
+
 = 2.7.2 =
 * Fix bug with department filter not firing properly when not in debug mode.
 
