@@ -219,7 +219,7 @@ function greenhouse_job_board_allow_track() {
 		});
 		gtag('event', 'feature', {
 			'event_category': 'formtype', 
-			'event_category': '<?php echo esc_attr( $options['greenhouse_job_board_form_type'] ); ?>'
+			'event_label': '<?php echo esc_attr( $options['greenhouse_job_board_form_type'] ); ?>'
 		});
 		</script>
 		<?php
