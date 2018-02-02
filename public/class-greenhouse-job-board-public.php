@@ -463,6 +463,15 @@ class Greenhouse_Job_Board_Public {
 
 
 	/**
+	 * Give the plugin version.
+	 *
+	 * @since   2.8.0
+	 */
+	public function get_version() {
+		return $this->version;
+	}
+
+	/**
 	 * Register the settings page.
 	 *
 	 * @since   2.4.0

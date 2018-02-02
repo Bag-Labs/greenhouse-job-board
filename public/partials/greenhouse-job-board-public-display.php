@@ -180,6 +180,51 @@ function greenhouse_job_board_allow_track() {
 		$ghjb_option_value = 'false';
 	}
 
+	if ( 'true' === $ghjb_option_value ) {
+		// set up plugin object to get version.
+		$plugin = new Greenhouse_Job_Board();
+		// add tracking to page.
+		?>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61962313-2"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-61962313-2');
+		// send tracking call with dimensions.
+		gtag('event', 'id', {
+			'event_category': 'domain',
+			'event_label': '<?php echo esc_attr( $_SERVER['SERVER_NAME'] ); ?>'
+		});
+		gtag('event', 'metric', {
+			'event_category': 'phpversion',
+			'event_label': '<?php echo esc_attr( phpversion() ); ?>'
+		});
+		gtag('event', 'metric', {
+			'event_category': 'wpversion',
+			'event_label': '<?php echo esc_attr( get_bloginfo( 'version' ) ); ?>'
+		});
+		gtag('event', 'metric', {
+			'event_category': 'curlversion', 
+			'event_label': '<?php echo esc_attr( curl_version()['version'] ); ?>'
+		});
+		gtag('event', 'metric', {
+			'event_category': 'pluginversion', 
+			'event_label': '<?php echo esc_attr( $plugin->get_version() ); ?>'
+		});
+		gtag('event', 'feature', {
+			'event_category': 'boardtype', 
+			'event_label': '<?php echo esc_attr( $options['greenhouse_job_board_type'] ); ?>'
+		});
+		gtag('event', 'feature', {
+			'event_category': 'formtype', 
+			'event_category': '<?php echo esc_attr( $options['greenhouse_job_board_form_type'] ); ?>'
+		});
+		</script>
+		<?php
+	}
+
 	$ghjb_option_values = array(
 		'Allow Tracking' => 'true',
 		'No Tracking'    => 'false',
@@ -200,7 +245,7 @@ function greenhouse_job_board_allow_track() {
 		><?php echo esc_attr( $key ); ?></option>
 	<?php } ?>
 	</select>
-	<div class="helper">Allow this plugin to track usage data to improve the plugin usability, functionality and performance.</div>
+	<div class="helper">Allow this plugin to track usage via anonymous data to improve the plugin usability, functionality and performance.</div>
 	<?php
 
 }
@@ -275,7 +320,7 @@ function greenhouse_job_board_analytics_render() {
 		><?php echo esc_attr( $key ); ?></option>
 	<?php } ?>
 	</select>
-	<div class="helper">Track job views as page views in google analytics. This assumes you have google analytics tracking code already installed on your site. It will only add tracking calls to the job board navigation.</div>
+	<div class="helper">Track job views as page views in your google analytics. This assumes you have google analytics tracking code already installed on your site. It will only track user navigation in the job board.</div>
 	<?php
 
 }
