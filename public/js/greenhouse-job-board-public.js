@@ -399,7 +399,25 @@
         	scrollTop: $(this_id).offset().top 
 	    }, 500);
 	}
+
+	function handle_interactive_filter_selection(group, value){
+		if (ghjb_d) { console.log( group, value ); }
+		if ( parseInt( value ) === -1 ) {
+			$('.all_jobs .jobs .job').show();
+		} else {
+			$('.all_jobs .jobs .job').each( function(){
+				$(this).hide();
+				if ( $(this).attr('data-'+group).includes( value ) ) {
+					$(this).show();
+				}
+			});
+		}
+	}
 	
+	// interactive departments filter
+	$('.all_jobs').on('change focus blur', '#interactive_filter_departments', function(){
+		handle_interactive_filter_selection( 'departments', $(this).val() );
+	});
 	//navigation
 	$('.all_jobs').on('click', '.job_goto', function(e){
 		e.preventDefault();
@@ -588,6 +606,14 @@ function slugme(slugit) {
     .replace(/\-\-+/g, '-')         // Replace multiple - with single -
 }
 
+/**
+ * Main greenhouse job board callback.
+ * 
+ * This function creates the job board based on all settings.
+ * 
+ * @param {*} json JSON data from greenhouse api.
+ * @param {*} jbid job board id - to scope any code to this board only.
+ */
 function greenhouse_jobs(json, jbid){
  	if (ghjb_d) { console.log(json); }
  	if (ghjb_d) { console.log(jbid); }
@@ -689,7 +715,40 @@ function greenhouse_jobs(json, jbid){
 		return 0;
 	});
 	
- 	
+
+
+	/**
+	 * Departments - interactive filter
+	 */
+	//get all departments
+	var all_departments = [];
+	for (var i = 0; i < json.jobs.length; i++){
+		for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
+			var this_department= {
+				name: json.jobs[i].departments[j].name,
+				id: json.jobs[i].departments[j].id
+			};
+			// if unique, add to the list
+			var unique = true;
+			for ( var k = 0; k < all_departments.length; k++) {
+				if ( this_department.id === all_departments[k].id ) {
+					unique = false;
+				}
+			}
+			if ( unique ) {
+				all_departments.push( this_department );
+			}	
+		}
+		// console.log(all_departments);
+	}
+	
+	//output a select list of departments
+	var departments_select = '<select id="interactive_filter_departments"><option value="-1">All Departments</option>';
+	for ( var k = 0; k < all_departments.length; k++) {
+		departments_select += '<option value="' + all_departments[k].id + '">' + all_departments[k].name + '</option>';
+	}
+	departments_select += '</select>';
+	jQuery(jbid + ' .jobs').append(departments_select);
  	var current_group = this_group = '';
  	//list all jobs
     for (var i = 0; i < json.jobs.length; i++){
@@ -894,8 +953,16 @@ function greenhouse_jobs(json, jbid){
      				jQuery(jbid + ' .all_jobs .jobs').append( '<h2 class="group_headline">' + current_group + '</h2>' );
      			}
 		    }
-		    
-	     	
+			
+			//set up departments value.
+			json.jobs[i].departments_attr = '';
+			for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
+				json.jobs[i].departments_attr += json.jobs[i].departments[j].name
+				json.jobs[i].departments_attr += ':';
+				json.jobs[i].departments_attr += json.jobs[i].departments[j].id;
+				json.jobs[i].departments_attr += ',';
+			}
+
 	     	if ( board_type == "accordion" ) {
 	     		var jobshtml = job_html_template({
 		 			index: i,
@@ -907,7 +974,8 @@ function greenhouse_jobs(json, jbid){
 		 			display_description: display_description,
 		 			display_department: display_department,
 		 			display_office: display_office,
-		 			display_location: display_location
+					display_location: display_location,
+					departments: json.jobs[i].departments_attr,
 		 		});
 	     		jQuery(jbid + ' .all_jobs .jobs').append(jobshtml);
 	     	}
@@ -922,7 +990,8 @@ function greenhouse_jobs(json, jbid){
 		 			display_description: display_description,
 		 			display_department: display_department,
 		 			display_office: display_office,
-		 			display_location: display_location
+		 			display_location: display_location,
+					departments: json.jobs[i].departments_attr,
 		 		});
 	     		jQuery(jbid + ' .all_jobs .jobs').append(jobshtml);
 	     		
@@ -936,7 +1005,7 @@ function greenhouse_jobs(json, jbid){
 		 			display_description: display_description,
 		 			display_department: display_department,
 		 			display_office: display_office,
-		 			display_location: display_location
+					display_location: display_location,
 	     		});
      			jQuery(jbid + ' .all_jobs').append(slidehtml);
 	     	}	
