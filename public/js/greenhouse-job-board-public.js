@@ -5,6 +5,7 @@
 	'use strict';
 	
 	if ( $('.greenhouse-job-board').length ){
+		if (ghjb_d) { console.log('Greenhouse job board shortcode activated.'); }
 		if (ghjb_d) { console.log('job board loading', ghjb_json); }
 		$('.greenhouse-job-board').each( function(){
 			greenhouse_jobs( ghjb_json, '#' + $(this).attr('id') );
