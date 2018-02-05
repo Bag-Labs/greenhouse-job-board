@@ -170,6 +170,7 @@ class Greenhouse_Job_Board_Public {
 				'group_headline'    => isset( $options['greenhouse_job_board_group_headline'] ) ? $options['greenhouse_job_board_group_headline'] : '',
 				'display'           => isset( $options['display'] ) ? $options['display'] : 'description',
 				'cache_expiry'      => isset( $options['greenhouse_job_board_cache_expiry'] ) ? $options['greenhouse_job_board_cache_expiry'] : 0,
+				'interactive_filter' => isset( $options['greenhouse_job_interactive_filter'] ) ? $options['greenhouse_job_interactive_filter'] : 'none',
 			), $atts
 		);
 
@@ -195,6 +196,7 @@ class Greenhouse_Job_Board_Public {
 		$ghjb_html = '<div class="greenhouse-job-board" 
 			id="greenhouse-job-board_' . $jbid . '" 
 			data-type="' . $atts['board_type'] . '" 
+			data-interactive_filter="' . $atts['interactive_filter'] . '" 
 			data-form_type="' . $atts['form_type'] . '">';
 
 		if ( '' === $atts['url_token'] ) {
@@ -553,6 +555,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_cycle_fx',
 			__( 'Cycle Transition', 'greenhouse_job_board' ),
 			'greenhouse_job_board_cycle_fx_render',
+			'greenhouse_settings',
+			'greenhouse_job_board_jobboard_settings_section'
+		);
+
+		add_settings_field(
+			'greenhouse_job_board_interactive_filter',
+			__( 'Interactive Filters', 'greenhouse_job_board' ),
+			'greenhouse_job_board_interactive_filter_render',
 			'greenhouse_settings',
 			'greenhouse_job_board_jobboard_settings_section'
 		);

@@ -725,67 +725,72 @@ function greenhouse_jobs(json, jbid){
 	/**
 	 * Departments - interactive filter
 	 */
-	//get all departments
-	var all_departments = [];
-	for (var i = 0; i < json.jobs.length; i++){
-		for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
-			var this_department= {
-				name: json.jobs[i].departments[j].name,
-				id: json.jobs[i].departments[j].id
-			};
-			// if unique, add to the list
-			var unique = true;
-			for ( var k = 0; k < all_departments.length; k++) {
-				if ( this_department.id === all_departments[k].id ) {
-					unique = false;
+	//if enabled, display department filter
+	if ( jQuery(jbid).attr('data-interactive_filter').indexOf('department') >= 0 ) {
+		//get all departments
+		var all_departments = [];
+		for (var i = 0; i < json.jobs.length; i++){
+			for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
+				var this_department= {
+					name: json.jobs[i].departments[j].name,
+					id: json.jobs[i].departments[j].id
+				};
+				// if unique, add to the list
+				var unique = true;
+				for ( var k = 0; k < all_departments.length; k++) {
+					if ( this_department.id === all_departments[k].id ) {
+						unique = false;
+					}
 				}
+				if ( unique ) {
+					all_departments.push( this_department );
+				}	
 			}
-			if ( unique ) {
-				all_departments.push( this_department );
-			}	
+			// console.log(all_departments);
 		}
-		// console.log(all_departments);
+		
+		//output a select list of departments
+		var departments_select = '<select id="interactive_filter_departments"><option value="-1">All Departments</option>';
+		for ( var k = 0; k < all_departments.length; k++) {
+			departments_select += '<option value="' + all_departments[k].id + '">' + all_departments[k].name + '</option>';
+		}
+		departments_select += '</select>';
+		jQuery(jbid + ' .jobs').append(departments_select);
 	}
-	
-	//output a select list of departments
-	var departments_select = '<select id="interactive_filter_departments"><option value="-1">All Departments</option>';
-	for ( var k = 0; k < all_departments.length; k++) {
-		departments_select += '<option value="' + all_departments[k].id + '">' + all_departments[k].name + '</option>';
-	}
-	departments_select += '</select>';
-	jQuery(jbid + ' .jobs').append(departments_select);
 	
 	/**
 	 * Locations - interactive filter
 	 */
-	//get all locations
-	var all_locations = [];
-	for (var i = 0; i < json.jobs.length; i++){
-		var this_location = {
-			name: json.jobs[i].location.name,
-			id: json.jobs[i].location.name
-		};
-		// if unique, add to the list
-		var unique = true;
-		for ( var k = 0; k < all_locations.length; k++) {
-			if ( this_location.id === all_locations[k].id ) {
-				unique = false;
+	//if enabled, display location filter
+	if ( jQuery(jbid).attr('data-interactive_filter').indexOf('location') >= 0 ) {
+		//get all locations
+		var all_locations = [];
+		for (var i = 0; i < json.jobs.length; i++){
+			var this_location = {
+				name: json.jobs[i].location.name,
+				id: json.jobs[i].location.name
+			};
+			// if unique, add to the list
+			var unique = true;
+			for ( var k = 0; k < all_locations.length; k++) {
+				if ( this_location.id === all_locations[k].id ) {
+					unique = false;
+				}
 			}
+			if ( unique ) {
+				all_locations.push( this_location );
+			}	
+			// console.log(all_locations);
 		}
-		if ( unique ) {
-			all_locations.push( this_location );
-		}	
-		// console.log(all_locations);
+		
+		//output a select list of locations
+		var locations_select = '<select id="interactive_filter_locations"><option value="-1">All Locations</option>';
+		for ( var k = 0; k < all_locations.length; k++) {
+			locations_select += '<option value="' + all_locations[k].id + '">' + all_locations[k].name + '</option>';
+		}
+		locations_select += '</select>';
+		jQuery(jbid + ' .jobs').append(locations_select);
 	}
-	
-	//output a select list of locations
-	var locations_select = '<select id="interactive_filter_locations"><option value="-1">All Locations</option>';
-	for ( var k = 0; k < all_locations.length; k++) {
-		locations_select += '<option value="' + all_locations[k].id + '">' + all_locations[k].name + '</option>';
-	}
-	locations_select += '</select>';
-	jQuery(jbid + ' .jobs').append(locations_select);
-	 
 	
  	var current_group = this_group = '';
  	//list all jobs

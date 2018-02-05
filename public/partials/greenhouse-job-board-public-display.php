@@ -130,6 +130,45 @@ function greenhouse_job_board_cycle_fx_render() {
 }
 
 /**
+ *  Options page field for interactive filter.
+ */
+function greenhouse_job_board_interactive_filter_render() {
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+
+	if ( isset( $options['greenhouse_job_interactive_filter'] ) ) {
+		$ghjb_option_value = $options['greenhouse_job_interactive_filter'];
+	} else {
+		$ghjb_option_value = 'none';
+	}
+
+	$ghjb_option_values = array(
+		'No Interactive Filter'         => 'none',
+		'Location Filter'               => 'location',
+		'Department Filter'             => 'department',
+		'Location & Department Filters' => 'location and department',
+	);
+	?>
+	<select
+		name='greenhouse_job_board_settings[greenhouse_job_interactive_filter]'
+		class='regular-text'
+	>
+	<?php foreach ( $ghjb_option_values as $key => $value ) { ?>
+		<option value="<?php echo esc_attr( $value ); ?>"
+		<?php
+		if ( $value === $ghjb_option_value ) {
+			echo 'selected';
+		}
+		?>
+		><?php echo esc_attr( $key ); ?></option>
+	<?php } ?>
+	</select>
+	<div class="helper">Select options to display an interactive dropdown filter as part of the job board? and what filtering should be active.</div>
+
+	<?php
+}
+
+/**
  *  Options page field for debug field.
  */
 function greenhouse_job_board_debug_render() {
