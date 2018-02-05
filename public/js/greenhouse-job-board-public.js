@@ -6,7 +6,7 @@
 	
 	if ( $('.greenhouse-job-board').length ){
 		if (ghjb_d) { console.log('Greenhouse job board shortcode activated.'); }
-		if (ghjb_d) { console.log('job board loading', ghjb_json); }
+		// if (ghjb_d) { console.log('job board loading', ghjb_json); }
 		$('.greenhouse-job-board').each( function(){
 			greenhouse_jobs( ghjb_json, '#' + $(this).attr('id') );
 		});
@@ -401,12 +401,12 @@
 	    }, 500);
 	}
 
-	function handle_interactive_filter_selection(group, value){
-		if (ghjb_d) { console.log( group, value ); }
+	function handle_interactive_filter_selection(scope, group, value){
+		if (ghjb_d) { console.log( scope, group, value ); }
 		if ( parseInt( value ) === -1 ) {
-			$('.all_jobs .jobs .job').show();
+			$(scope + ' .all_jobs .jobs .job').show();
 		} else {
-			$('.all_jobs .jobs .job').each( function(){
+			$(scope + ' .all_jobs .jobs .job').each( function(){
 				$(this).hide();
 				if ( $(this).attr('data-'+group).includes( value ) ) {
 					$(this).show();
@@ -417,11 +417,13 @@
 	
 	// interactive departments filter
 	$('.all_jobs').on('change focus blur', '#interactive_filter_departments', function(){
-		handle_interactive_filter_selection( 'departments', $(this).val() );
+		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id');
+		handle_interactive_filter_selection( scope, 'departments', $(this).val() );
 	});
 	// interactive locations filter
 	$('.all_jobs').on('change focus blur', '#interactive_filter_locations', function(){
-		handle_interactive_filter_selection( 'locations', $(this).val() );
+		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id');
+		handle_interactive_filter_selection( scope, 'locations', $(this).val() );
 	});
 
 	//navigation
@@ -815,14 +817,10 @@ function greenhouse_jobs(json, jbid){
      	// Department Filter - can a single job have multiple departments? 
      	//
      	var department_filter = false;
-     	if (ghjb_d) { 
-     		console.log( 'read department filter:', jQuery(jbid + ' .jobs').attr('data-department_filter') );
-     	}
      	if ( jQuery(jbid + ' .jobs').attr('data-department_filter') ) {
+			if (ghjb_d) { console.log( 'read department filter:', jQuery(jbid + ' .jobs').attr('data-department_filter') ); }
      		department_filter = jQuery(jbid + ' .jobs').attr('data-department_filter').split('|');
-     		if (ghjb_d) {
-     			console.log('set department_filter: ', department_filter );
-     		}
+     		if (ghjb_d) { console.log('set department_filter: ', department_filter ); }
      		if ( department_filter[0].charAt(0) == '-' ) {
      			// condition met for exclude flag, set dept filter to look for excludes
      			department_filter_exclude = true;
