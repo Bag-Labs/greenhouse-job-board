@@ -401,29 +401,58 @@
 	    }, 500);
 	}
 
-	function handle_interactive_filter_selection(scope, group, value){
-		if (ghjb_d) { console.log( scope, group, value ); }
-		if ( parseInt( value ) === -1 ) {
-			$(scope + ' .all_jobs .jobs .job').show();
-		} else {
-			$(scope + ' .all_jobs .jobs .job').each( function(){
-				$(this).hide();
-				if ( $(this).attr('data-'+group).includes( value ) ) {
-					$(this).show();
-				}
-			});
+	function handle_interactive_filter_selection(scope){
+		var val_dep = '*';
+		var val_loc = '*';
+
+		//if department filter present read it's value
+		if ( $(scope).attr('data-interactive_filter').indexOf('department') >= 0 ) {
+			//set department value
+			val_dep = $(scope + '#interactive_filter_departments').val();
 		}
+		//if location filter present read it's value
+		if ( $(scope).attr('data-interactive_filter').indexOf('location') >= 0 ) {
+			//set location value
+			val_loc = $(scope + '#interactive_filter_locations').val();
+		}
+
+		if (ghjb_d) { console.log( scope, val_dep, val_loc ); }
+
+		//check each job and determine visibility based on interactive filtre vlues.
+		$(scope + '.all_jobs .jobs .job').each( function(){
+			//default to hide
+			var this_visible = false;
+			// if dep wildcard or match
+			if ( val_dep === '*' ||
+				$(this).attr('data-departments').includes( val_dep ) ) {
+
+				// and if loc wildcard or match
+				if ( val_loc === '*' ||
+					$(this).attr('data-locations').includes( val_loc ) ) {
+						//set to visible
+						this_visible = true;
+					}
+			}
+
+			//actually toggle/control visibility.
+			if ( this_visible ) {
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+		});
+	
 	}
 	
 	// interactive departments filter
 	$('.all_jobs').on('change focus blur', '#interactive_filter_departments', function(){
-		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		handle_interactive_filter_selection( scope, 'departments', $(this).val() );
+		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
+		handle_interactive_filter_selection( scope );
 	});
 	// interactive locations filter
 	$('.all_jobs').on('change focus blur', '#interactive_filter_locations', function(){
-		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		handle_interactive_filter_selection( scope, 'locations', $(this).val() );
+		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
+		handle_interactive_filter_selection( scope );
 	});
 
 	//navigation
@@ -753,7 +782,7 @@ function greenhouse_jobs(json, jbid){
 		}
 		
 		//output a select list of departments
-		var departments_select = '<select id="interactive_filter_departments"><option value="-1">All Departments</option>';
+		var departments_select = '<select id="interactive_filter_departments"><option value="*">All Departments</option>';
 		for ( var k = 0; k < all_departments.length; k++) {
 			departments_select += '<option value="' + all_departments[k].id + '">' + all_departments[k].name + '</option>';
 		}
@@ -787,7 +816,7 @@ function greenhouse_jobs(json, jbid){
 		}
 		
 		//output a select list of locations
-		var locations_select = '<select id="interactive_filter_locations"><option value="-1">All Locations</option>';
+		var locations_select = '<select id="interactive_filter_locations"><option value="*">All Locations</option>';
 		for ( var k = 0; k < all_locations.length; k++) {
 			locations_select += '<option value="' + all_locations[k].id + '">' + all_locations[k].name + '</option>';
 		}
