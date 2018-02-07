@@ -106,8 +106,15 @@ if ( $ghjb_e &&
 	if ( count( $errors ) > 0 ) {
 		// ERROR - required fields missing.
 		error_log(
-			date( 'Y.m.d H:i:s' ) . ' -ERROR- required fields missing: ' . wp_json_encode( $errors ) . '. post: ' . wp_json_encode( $_POST ) . '.
-', 3, dirname( __FILE__ ) . '/errors.log'
+			date( 'Y.m.d H:i:s' ) .
+			' -ERROR- required fields missing: ' .
+			wp_json_encode( $errors ) .
+			'. post: ' .
+			wp_json_encode( $_POST ) .
+			'.
+',
+			3,
+			dirname( __FILE__ ) . '/errors.log'
 		);
 	}
 }

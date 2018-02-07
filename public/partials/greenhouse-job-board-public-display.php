@@ -43,6 +43,8 @@ function greenhouse_job_board_api_key_render() {
 	$options = get_option( 'greenhouse_job_board_settings' );
 	if ( isset( $options['greenhouse_job_board_api_key'] ) ) {
 		$ghjb_option_value = $options['greenhouse_job_board_api_key'];
+	} else {
+		$ghjb_option_value = '';
 	}
 	?>
 	<input type='text' name='greenhouse_job_board_settings[greenhouse_job_board_api_key]' value='<?php echo esc_attr( $ghjb_option_value ); ?>' class="regular-text">
