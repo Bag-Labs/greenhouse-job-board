@@ -99,6 +99,13 @@ class Greenhouse_Job_Board_Admin {
 
 	}
 
+	public function greenhouse_add_action_links( $links ) {
+		$mylinks = array(
+			'<a href="' . admin_url( 'options-general.php?page=greenhouse_job_board' ) . '">Settings</a>',
+		);
+		return array_merge( $links, $mylinks );
+	}
+
 	/**
 	 * Add the shortcodes media button.
 	 *

@@ -155,6 +155,8 @@ class Greenhouse_Job_Board {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		$this->loader->add_filter( 'plugin_action_links_greenhouse-job-board/greenhouse-job-board.php', $plugin_admin, 'greenhouse_add_action_links' );
+
 		$this->loader->add_action( 'media_buttons', $plugin_admin, 'greenhouse_add_shortcode_media_button', 20 );
 
 	}
