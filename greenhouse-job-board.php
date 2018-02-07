@@ -14,6 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       Greenhouse Job Board
  * Plugin URI:        https://wordpress.org/plugins/greenhouse-job-board/
+ * GitHub Plugin URI: https://github.com/Bag-Labs/greenhouse-job-board
  * Description:       Pull a job board from greenhouse.io via API calls.
  * Version:           2.8.0
  * Author:            Brown Bag Marketing
