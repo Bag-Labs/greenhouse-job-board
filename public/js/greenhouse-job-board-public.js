@@ -19,18 +19,18 @@
 		e.preventDefault();
 		//get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
-		if (ghjb_d) { console.log(this_id); }
-		
 		var job_id = $(this).parents('.job').data('id');
+		if (ghjb_d) { console.log(job_id); }
+
 		if ( $(this).hasClass('open') ) {
 			$(this).removeClass('open');
-			$(this).text( $(this).data('closed-text') );
+			$(this).text( ghjb_text.read_full_desc );
 			$(this_id + ' .job_description_' + job_id).toggle(false);
 			$(this_id + ' .job_description_' + job_id).removeClass('open');
 		}
 		else {
 			$(this).addClass('open');
-			$(this).text( $(this).data('opened-text') );
+			$(this).text( ghjb_text.hide_full_desc );
 			$(this_id + ' .job_description_' + job_id).toggle(true);
 			$(this_id + ' .job_description_' + job_id).addClass('open');
 		}
@@ -56,7 +56,7 @@
 				
 				//closing since already open
 				if ( $(this).hasClass('open') ) {
-					$(this).text( $(this).data('closed-text') );
+					$(this).text( ghjb_text.apply_now );
 					$(this).removeClass('open');
 					if ($(this_id + ' #grnhse_app').hasClass('open')) {
 						$(this_id + ' #grnhse_app').empty(); 
@@ -65,14 +65,14 @@
 				}
 				else {
 					$(this_id + ' .job_apply').removeClass('open');
-					$(this_id + ' .job_apply').text( $(this).data('closed-text') );
+					$(this_id + ' .job_apply').text( ghjb_text.apply_now );
 					if ( $(this_id + ' #grnhse_app').hasClass('open') ) {
 						$(this_id + ' #grnhse_app').empty(); 
 						$(this_id + ' #grnhse_app').removeClass('open');
 					}
 					//open this one
 					$(this).addClass('open');
-					$(this).text( $(this).data('opened-text') );
+					$(this).text( ghjb_text.apply_now_cancel );
 
 					$(this).parent().append( $(this_id + ' #grnhse_app') ); 
 					$(this_id + ' #grnhse_app').addClass('open');
@@ -100,7 +100,7 @@
 				
 				//closing since already open
 				if ( $(this).hasClass('open') ) {
-					$(this).text( $(this).data('closed-text') );
+					$(this).text( ghjb_text.apply_now );
 					$(this).removeClass('open');
 					if ( $(this_id + ' .apply_jobs').hasClass('open') ) {
 						$(this_id + ' .apply_jobs').removeClass('open');
@@ -111,7 +111,7 @@
 					$(this_id + ' .job_apply').removeClass('open');
 					$(this_id + ' .job_apply').toggle(true);
 					$(this_id + ' .apply_ty').toggle(false);
-					$(this_id + ' .job_apply').text( $(this).data('closed-text') );
+					$(this_id + ' .job_apply').text( ghjb_text.apply_now );
 					if ( $(this_id + ' .apply_jobs').hasClass('open') ) {
 						$(this_id + ' .apply_jobs').removeClass('open');
 					}
@@ -119,7 +119,7 @@
 					$(this).addClass('open');
 					$(this_id + ' .apply_jobs').addClass('open');
 					$(this_id + ' .apply_jobs').toggle(true);
-					$(this).text( $(this).data('opened-text') );
+					$(this).text( ghjb_text.apply_now_cancel );
 					
 					//move form to this job in the DOM
 					$(this_id + ' .apply_jobs').insertAfter( $(this).parents('.job') );
@@ -139,7 +139,7 @@
 			if ( $(this_id).data('form_type') === 'iframe' ) {
 				//closing since already open
 				if ( $(this).hasClass('open') ) {
-					$(this).text( $(this).data('closed-text') );
+					$(this).text( ghjb_text.apply_now );
 					$(this).removeClass('open');
 					if ($(this_id + ' #grnhse_app').hasClass('open')) {
 						$(this_id + ' #grnhse_app').empty(); 
@@ -148,14 +148,14 @@
 				}
 				else {
 					$(this_id + ' .job_apply').removeClass('open');
-					$(this_id + ' .job_apply').text( $(this).data('closed-text') );
+					$(this_id + ' .job_apply').text( ghjb_text.apply_now );
 					if ($(this_id + ' #grnhse_app').hasClass('open')) {
 						$(this_id + ' #grnhse_app').empty(); 
 						$(this_id + ' #grnhse_app').removeClass('open');
 					}
 					//open this one
 					$(this).addClass('open');
-					$(this).text( $(this).data('opened-text') );
+					$(this).text( ghjb_text.apply_now_cancel );
 
 					$(this).parent().append( $('#grnhse_app') ); 
 					$(this_id + ' #grnhse_app').addClass('open');
@@ -401,7 +401,7 @@
 	    }, 500);
 	}
 
-	function handle_interactive_filter_selection(scope){
+	function interactive_filter_selection(scope){
 		var val_dep = '*';
 		var val_loc = '*';
 
@@ -418,50 +418,76 @@
 
 		if (ghjb_d) { console.log( scope, val_dep, val_loc ); }
 
+		interactive_filter_selection_apply(scope, val_dep, val_loc);
+	}
+
+	
+
+	function interactive_filter_selection_apply(scope, val_dep, val_loc, show){
+		show = (typeof show === 'undefined') ? true : show;
+
 		//check each job and determine visibility based on interactive filtre vlues.
 		$(scope + '.all_jobs .jobs .job').each( function(){
 			//default to hide
 			var this_visible = false;
 			// if dep wildcard or match
 			if ( val_dep === '*' ||
-				$(this).attr('data-departments').includes( val_dep ) ) {
+				$(this).attr('data-department').includes( val_dep ) ) {
 
 				// and if loc wildcard or match
 				if ( val_loc === '*' ||
-					$(this).attr('data-locations').includes( val_loc ) ) {
+					$(this).attr('data-location').includes( val_loc ) ) {
 						//set to visible
 						this_visible = true;
 					}
 			}
 
 			//actually toggle/control visibility.
-			if ( this_visible ) {
+			if ( this_visible && show ) {
 				$(this).show();
 			} else {
 				$(this).hide();
 			}
+
 		});
-	
 	}
 	
 	// interactive departments filter
 	$('.all_jobs').on('change focus blur', '#interactive_filter_departments', function(){
 		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
-		handle_interactive_filter_selection( scope );
+		interactive_filter_selection( scope );
 	});
 	// interactive locations filter
 	$('.all_jobs').on('change focus blur', '#interactive_filter_locations', function(){
 		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
-		handle_interactive_filter_selection( scope );
+		interactive_filter_selection( scope );
 	});
 
-	//navigation
+	// interactive locations filter
+	$('.all_jobs').on('click', '.group_headline', function(){
+		// get values
+		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
+		var group = $(this).data('group');
+		var val = $(this).data(group);
+		var id = $(this).data('group-id');
+		// toggle displays
+		$(this).toggleClass('opened');
+		if ( $(this).hasClass('opened') ) {
+			interactive_filter_selection_apply( scope, val, '*');
+			$('#interactive_filter_departments').val(id).prop('selected', true);
+			$('#interactive_filter_locations').val('*').prop('selected', true);
+		} else {
+			interactive_filter_selection_apply( scope, val, '*', false);
+		}
+	});
+
+	// navigation
 	$('.all_jobs').on('click', '.job_goto', function(e){
 		e.preventDefault();
-		//get ghjb id
+		// get ghjb id
 		var this_id = '#' + $(this).parents('.greenhouse-job-board').attr('id');
 		
-		//find correct slide by data-id
+		// find correct slide by data-id
 		var jobid = parseInt( $(this).parents('.job').data('id') );
 		if (ghjb_d) { console.log('navigating to job', jobid); }
 		if (ghjb_a) { ghjb_analytics('job', 'click', jobid ); }
@@ -824,7 +850,7 @@ function greenhouse_jobs(json, jbid){
 		jQuery(jbid + ' .jobs').append(locations_select);
 	}
 	
- 	var current_group = this_group = '';
+ 	var current_group = this_group = current_group_id = this_group_id = '';
  	//list all jobs
     for (var i = 0; i < json.jobs.length; i++){
      	// if (ghjb_d) { console.log( json.jobs[i].id); }
@@ -1012,16 +1038,20 @@ function greenhouse_jobs(json, jbid){
      		if ( group_headline ) {
      			//get this group headline
      			if ( group === 'department' ) {
-     				this_group = json.jobs[i].departments[0].name;
+					this_group = json.jobs[i].departments[0].name;
+					this_group_id = json.jobs[i].departments[0].id;
      			} else if ( group === 'office' ) {
      				this_group = json.jobs[i].offices[0].name;
+					this_group_id = json.jobs[i].offices[0].id;
      			} else if ( group === 'location' ) {
-     				this_group = json.jobs[i].location.name;
+					this_group = json.jobs[i].location.name;
+					this_group_id = '*'; 
      			}
      			//if new group print headline
      			if ( this_group != current_group ){
-     				current_group = this_group;
-     				jQuery(jbid + ' .all_jobs .jobs').append( '<h2 class="group_headline">' + current_group + '</h2>' );
+					current_group = this_group;
+					current_group_id = this_group_id; 
+     				jQuery(jbid + ' .all_jobs .jobs').append( '<h2 class="group_headline" data-group="' + group + '" data-group-id="' + current_group_id + '" data-' + group + '="' + current_group + '">' + current_group + '</h2>' );
      			}
 		    }
 			
@@ -1033,7 +1063,17 @@ function greenhouse_jobs(json, jbid){
 				json.jobs[i].departments_attr += json.jobs[i].departments[j].id;
 				json.jobs[i].departments_attr += ',';
 			}
-
+			var text = {
+				hide_full_desc: ghjb_text.hide_full_desc,
+				read_full_desc: ghjb_text.read_full_desc,
+				location_label: ghjb_text.location_label,
+				office_label: ghjb_text.office_label,
+				department_label: ghjb_text.department_label,
+				description_label: ghjb_text.description_label,
+				apply_now_cancel: ghjb_text.apply_now_cancel,
+				apply_now: ghjb_text.apply_now,
+				back: ghjb_text.back,
+			};
 	     	if ( board_type == "accordion" ) {
 	     		var jobshtml = job_html_template({
 		 			index: i,
@@ -1041,6 +1081,7 @@ function greenhouse_jobs(json, jbid){
 		 			slug: json.jobs[i].slug,
 		 			title: json.jobs[i].title,
 		 			content: decodeHtml( json.jobs[i].content ),
+		 			excerpt: get_excerpt_from_content( json.jobs[i].content ),
 		 			hide_forms: hide_forms,
 		 			display_description: display_description,
 		 			display_department: display_department,
@@ -1048,6 +1089,7 @@ function greenhouse_jobs(json, jbid){
 					display_location: display_location,
 					departments: json.jobs[i].departments_attr,
 					locations: json.jobs[i].location.name,
+					text: text
 		 		});
 	     		jQuery(jbid + ' .all_jobs .jobs').append(jobshtml);
 	     	}
@@ -1065,6 +1107,7 @@ function greenhouse_jobs(json, jbid){
 		 			display_location: display_location,
 					departments: json.jobs[i].departments_attr,
 					locations: json.jobs[i].location.name,
+					text: text
 		 		});
 	     		jQuery(jbid + ' .all_jobs .jobs').append(jobshtml);
 	     		
@@ -1079,6 +1122,7 @@ function greenhouse_jobs(json, jbid){
 		 			display_department: display_department,
 		 			display_office: display_office,
 					display_location: display_location,
+					text: text
 	     		});
      			jQuery(jbid + ' .all_jobs').append(slidehtml);
 	     	}	

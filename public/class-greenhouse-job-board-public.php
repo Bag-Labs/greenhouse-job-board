@@ -51,6 +51,23 @@ class Greenhouse_Job_Board_Public {
 		$this->greenhouse_job_board = $greenhouse_job_board;
 		$this->version              = $version;
 
+
+		$this->template_accordion = '<div class="job job_{{id}} job_{{slug}}" 
+	data-id="{{id}}" 
+	id="{{slug}}" 
+	data-department="{{departments}}"
+	data-location="{{locations}}"
+>
+	<h2 class="job_title">{{title}}</h2>
+	<p><a href="#" class="job_read_full">{{text.read_full_desc}}</a></p>
+	<div class="job_description job_description_{{id}}">
+	{{#if display_location }}<div class="display_location"><span class="location_label">{{text.location_label}}</span>{{display_location}}</div>{{/if}}
+		{{#if display_office }}<div class="display_office"><span class="office_label">{{text.office_label}}</span>{{display_office}}</div>{{/if}}
+		{{#if display_department }}<div class="display_department"><span class="department_label">{{text.department_label}}</span>{{display_department}}</div>{{/if}}
+			{{#if display_description }}<div class="display_description"><span class="description_label">{{text.description_label}}</span>{{{content}}}</div>{{/if}}
+	</div>
+	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="{{text.apply_now_cancel}}" data-closed-text="{{text.apply_now}}">{{text.apply_now}}</a></p>{{/ifeq}}
+</div>';
 	}
 
 	/**
@@ -171,6 +188,7 @@ class Greenhouse_Job_Board_Public {
 				'group_headline'     => isset( $options['greenhouse_job_board_group_headline'] ) ? $options['greenhouse_job_board_group_headline'] : '',
 				'display'            => isset( $options['display'] ) ? $options['display'] : 'description',
 				'cache_expiry'       => isset( $options['greenhouse_job_board_cache_expiry'] ) ? $options['greenhouse_job_board_cache_expiry'] : 0,
+				'template'           => isset( $options['greenhouse_job_board_template'] ) ? $options['greenhouse_job_board_template'] : '',
 			), $atts
 		);
 
@@ -193,7 +211,73 @@ class Greenhouse_Job_Board_Public {
 			$atts['form_type'] = '';
 		}
 
-		$ghjb_html = '<div class="greenhouse-job-board" 
+		$ghjb_html = '';
+		$ghjb_template = '<script id="job-template" type="text/x-handlebars-template">';
+		// only print templates and scripts if first shortcode on page.
+		if ( 1 === $shortcode_id ) {
+			//custom template
+			if ( 'custom-accordion' === $atts['board_type'] ) {
+				$ghjb_template .= $atts['template'];
+				$atts['board_type'] = 'accordion';
+			// accordion template.
+			} elseif ( 'accordion' === $atts['board_type'] ) {
+				// handlebars template for returned job.
+				$ghjb_template .= $this->template_accordion;
+			} // cycle template.
+			elseif ( 'cycle' === $atts['board_type'] ) {
+
+				wp_enqueue_script( 'jquery.cycle2' );
+
+				// handlebars template for returned job.
+				$ghjb_template .= '
+			<div class="job job_{{id}} job_{{slug}}" 
+				data-id="{{id}}" 
+				data-slug="{{slug}}" 
+				data-departments="{{departments}}"
+				data-locations="{{locations}}"
+			>
+		 	    	<h3 class="job_title">{{title}}</h3>
+		 	    	<div class="job_excerpt">{{{excerpt}}}<br />
+		 	    	<a href="#" class="job_goto">{{text.read_full_desc}}</a></div>
+		 	</div>
+	</script>';
+
+				$ghjb_template .= '<script id="job-slide-template" type="text/x-handlebars-template">
+			<div class="job cycle-slide job_{{id}} job_{{slug}}" 
+				data-cycle-hash="{{slug}}"
+				data-id="{{id}}" 
+				data-slug="{{slug}}" 
+				id="{{slug}}" 
+				data-departments="{{departments}}"
+				data-locations="{{locations}}"
+			>
+					<div class="job_single">
+			 	    	<p><a href="#" class="return">{{text.back}}</a></p>
+						<h1 class="job_title">{{title}}</h1>';
+
+						$ghjb_template = apply_filters( 'ghjb_single_job_template_after_title', $ghjb_template );
+
+						$ghjb_template .= '
+						{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="{{text.apply_now_cancel}}" data-closed-text="{{text.apply_now}}">{{text.apply_now}}</a></p>{{/ifeq}}
+			 			<div class="job_description job_description_{{id}}">
+							{{#if display_location }}<div class="display_location"><span class="location_label">{{text.location_label}}</span>{{display_location}}</div>{{/if}}
+				 			{{#if display_office }}<div class="display_office"><span class="office_label">{{text.office_label}}</span>{{display_office}}</div>{{/if}}
+				 			{{#if display_department }}<div class="display_department"><span class="department_label">{{text.department_label}}</span>{{display_department}}</div>{{/if}}
+			 					{{#if display_description }}<div class="display_description"><span class="description_label">{{text.description_label}}</span>{{{content}}}</div>{{/if}}
+			 			</div>
+			 			{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="{{text.apply_now_cancel}}" data-closed-text="{{text.apply_now}}">{{text.apply_now}}</a></p>{{/ifeq}}
+			 			<p><a href="#" class="return">{{text.back}}</a></p>
+		 			</div>
+		 	</div>
+';
+			}
+			$ghjb_template .= '
+</script>';
+			$ghjb_html .= $ghjb_template;
+		}
+
+
+		$ghjb_html .= '<div class="greenhouse-job-board" 
 			id="greenhouse-job-board_' . $jbid . '" 
 			data-type="' . $atts['board_type'] . '" 
 			data-interactive_filter="' . $atts['interactive_filter'] . '" 
@@ -210,80 +294,7 @@ class Greenhouse_Job_Board_Public {
 			$ghjb_html .= '</div>';
 			return $ghjb_html;
 		}
-
-		// only print templates and scripts if first shortcode on page.
-		if ( 1 === $shortcode_id ) {
-
-			// accordion template.
-			if ( 'accordion' === $atts['board_type'] ) {
-				// handlebars template for returned job.
-				$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
-			<div class="job job_{{id}} job_{{slug}}" 
-				data-id="{{id}}" 
-				id="{{slug}}" 
-				data-departments="{{departments}}"
-				data-locations="{{locations}}"
-			>
-		 	    	<h2 class="job_title">{{title}}</h2>
-		 	    	<p><a href="#" class="job_read_full" data-opened-text="' . $atts['hide_full_desc'] . '" data-closed-text="' . $atts['read_full_desc'] . '">' . $atts['read_full_desc'] . '</a></p>
-		 	    	<div class="job_description job_description_{{id}}">
-	    				{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
-	    	 	    	{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
-	    	 	    	{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
-		 	    			{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
-		 	    	</div>
-		 	    	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-		 	</div>
-	</script>';
-			} // cycle template.
-			elseif ( 'cycle' === $atts['board_type'] ) {
-
-				wp_enqueue_script( 'jquery.cycle2' );
-
-				// handlebars template for returned job.
-				$ghjb_html .= '<script id="job-template" type="text/x-handlebars-template">
-			<div class="job job_{{id}} job_{{slug}}" 
-				data-id="{{id}}" 
-				data-slug="{{slug}}" 
-				data-departments="{{departments}}"
-				data-locations="{{locations}}"
-			>
-		 	    	<h3 class="job_title">{{title}}</h3>
-		 	    	<div class="job_excerpt">{{{excerpt}}}<br />
-		 	    	<a href="#" class="job_goto">' . $atts['read_full_desc'] . '</a></div>
-		 	</div>
-	</script>';
-
-				$ghjb_html .= '<script id="job-slide-template" type="text/x-handlebars-template">
-			<div class="job cycle-slide job_{{id}} job_{{slug}}" 
-				data-cycle-hash="{{slug}}"
-				data-id="{{id}}" 
-				data-slug="{{slug}}" 
-				id="{{slug}}" 
-				data-departments="{{departments}}"
-				data-locations="{{locations}}"
-			>
-					<div class="job_single">
-			 	    	<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-						<h1 class="job_title">{{title}}</h1>';
-
-						$ghjb_html = apply_filters( 'ghjb_single_job_template_after_title', $ghjb_html );
-
-						$ghjb_html .= '
-						{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-			 			<div class="job_description job_description_{{id}}">
-							{{#if display_location }}<div class="display_location"><span class="location_label">' . $atts['location_label'] . '</span>{{display_location}}</div>{{/if}}
-				 			{{#if display_office }}<div class="display_office"><span class="office_label">' . $atts['office_label'] . '</span>{{display_office}}</div>{{/if}}
-				 			{{#if display_department }}<div class="display_department"><span class="department_label">' . $atts['department_label'] . '</span>{{display_department}}</div>{{/if}}
-			 					{{#if display_description }}<div class="display_description"><span class="description_label">' . $atts['description_label'] . '</span>{{{content}}}</div>{{/if}}
-			 			</div>
-			 			{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}} button" data-opened-text="' . $atts['apply_now_cancel'] . '" data-closed-text="' . $atts['apply_now'] . '">' . $atts['apply_now'] . '</a></p>{{/ifeq}}
-			 			<p><a href="#" class="return">' . $atts['back'] . '</a></p>
-		 			</div>
-		 	</div>
-	</script>';
-			}
-		}
+		
 
 		// html container.
 		$ghjb_html .= '<div class="all_jobs" ';
@@ -442,7 +453,17 @@ class Greenhouse_Job_Board_Public {
 			$ghjb_html .= $ghjb_jobs;
 			$ghjb_html .= ';ghjb_json = ';
 			$ghjb_html .= $ghjb_json;
-			$ghjb_html .= ';';
+			$ghjb_html .= ';ghjb_text = {';
+			$ghjb_html .= "'hide_full_desc': '" . $atts['hide_full_desc'] . "', ";
+			$ghjb_html .= "'read_full_desc': '" . $atts['read_full_desc'] . "', ";
+			$ghjb_html .= "'location_label': '" . $atts['location_label'] . "', ";
+			$ghjb_html .= "'office_label': '" . $atts['office_label'] . "', ";
+			$ghjb_html .= "'department_label': '" . $atts['department_label'] . "', ";
+			$ghjb_html .= "'description_label': '" . $atts['description_label'] . "', ";
+			$ghjb_html .= "'apply_now_cancel': '" . $atts['apply_now_cancel'] . "', ";
+			$ghjb_html .= "'apply_now': '" . $atts['apply_now'] . "', ";
+			$ghjb_html .= "'back': '" . $atts['back'] . "', ";
+			$ghjb_html .= '}';
 			// $ghjb_html .= 'greenhouse_jobs( ghjb_json, "#greenhouse-job-board_' . $jbid . '" );';
 			$ghjb_html .= '</script>';
 		}
@@ -462,6 +483,16 @@ class Greenhouse_Job_Board_Public {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+
+	/**
+	 * Give the plugin accordion template.
+	 *
+	 * @since   2.8.0
+	 */
+	public function get_template_accordion() {
+		return $this->template_accordion;
 	}
 
 	/**
@@ -538,6 +569,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_type',
 			__( 'Type', 'greenhouse_job_board' ),
 			'greenhouse_job_board_type_render',
+			'greenhouse_settings',
+			'greenhouse_job_board_jobboard_settings_section'
+		);
+
+		add_settings_field(
+			'greenhouse_job_board_template',
+			__( 'Template', 'greenhouse_job_board' ),
+			'greenhouse_job_board_template_render',
 			'greenhouse_settings',
 			'greenhouse_job_board_jobboard_settings_section'
 		);

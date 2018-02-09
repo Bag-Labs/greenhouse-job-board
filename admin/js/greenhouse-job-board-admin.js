@@ -209,7 +209,36 @@
 				}
 			}
 		});
-		
-    });
+
+
+		// greenhouse settings page
+		if ( $('body').hasClass('settings_page_greenhouse_job_board') ) {
+
+			// toggle visibility for job board type option
+			$('#greenhouse_job_board_type').on('change', function(e){
+				//only show template when custom board type is selected.
+				if ( 'custom-accordion' === this.value ){
+					$('#greenhouse_job_board_template').parents('tr').show();
+				} else {
+					$('#greenhouse_job_board_template').parents('tr').hide();
+				}
+				//only show cycle fx when cycle board type is selected.
+				if ( 'cycle' === this.value ){
+					$('#greenhouse_job_cycle_fx').parents('tr').show();
+				} else {
+					$('#greenhouse_job_cycle_fx').parents('tr').hide();
+				}
+			});
+
+			// reset defaults for templates
+			$('a[data-reset]').on('click', function(e){
+				e.preventDefault();
+				$('#greenhouse_job_board_template').val('<div class="test"></div>');
+			});
+		}
+
+
+	});
+	
 
 })( jQuery );

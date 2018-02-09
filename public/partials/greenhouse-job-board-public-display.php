@@ -69,14 +69,16 @@ function greenhouse_job_board_type_render() {
 	}
 
 	$ghjb_option_values = array(
-		'Accordion' => 'accordion',
-		'Cycle'     => 'cycle',
+		'Accordion'        => 'accordion',
+		'Cycle'            => 'cycle',
+		'Custom Accordion' => 'custom-accordion',
 	);
 
 	?>
 	<select
 		name='greenhouse_job_board_settings[greenhouse_job_board_type]'
 		class='regular-text'
+		id="greenhouse_job_board_type"
 	>
 	<?php foreach ( $ghjb_option_values as $key => $value ) { ?>
 		<option value="<?php echo esc_attr( $value ); ?>"
@@ -117,6 +119,7 @@ function greenhouse_job_board_cycle_fx_render() {
 	<select
 		name='greenhouse_job_board_settings[greenhouse_job_cycle_fx]'
 		class='regular-text'
+		id='greenhouse_job_cycle_fx'
 	>
 	<?php foreach ( $ghjb_option_values as $key => $value ) { ?>
 		<option value="<?php echo esc_attr( $value ); ?>"
@@ -732,6 +735,34 @@ function greenhouse_job_board_thanks_body_render() {
 }
 
 /**
+ *  Options page field for custom template.
+ */
+function greenhouse_job_board_template_render() {
+	$plugin = new Greenhouse_Job_Board();
+	// echo "<pre>" . $plugin->get_template_accordion() . "</pre>";
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+	if ( isset( $options['greenhouse_job_board_template'] ) ) {
+		$ghjb_option_value = $options['greenhouse_job_board_template'];
+	} else {
+		$ghjb_option_value = ''; //set default here and allow to load in the accordion or cycle template for modifications.
+	}
+	?>
+	<textarea
+		name='greenhouse_job_board_settings[greenhouse_job_board_template]'
+		class="large-text"
+		rows="20"
+		id="greenhouse_job_board_template"
+	><?php echo $ghjb_option_value; ?></textarea>
+	<div class="helper">
+		Set the custom handlebars template for job board. 
+		<!--<a href="#" data-reset="accordion">Reset to default accordion template</a>.-->
+	</div>
+	<?php
+
+}
+
+/**
  *  Options page field for error headline.
  */
 function greenhouse_job_board_error_headline_render() {
@@ -877,27 +908,6 @@ function greenhouse_job_board_custom_css_render() {
 		rows="20"
 	><?php echo esc_attr( $ghjb_option_value ); ?></textarea>
 	<div class="helper">Place any custom CSS here.</div>
-	<?php
-
-}
-
-/**
- *  Options page field for inline form template.
- *  Not in use (yet).
- */
-function greenhouse_job_board_inline_form_template_render() {
-
-	$options = get_option( 'greenhouse_job_board_settings' );
-	if ( isset( $options['greenhouse_job_board_inline_form_template'] ) ) {
-		$ghjb_option_value = $options['greenhouse_job_board_inline_form_template'];
-	} else {
-		$ghjb_option_value = '';
-	}
-	?>
-	<textarea 
-		name='greenhouse_job_board_settings[greenhouse_job_board_inline_form_template]' 
-		class="large-text"
-	><?php echo esc_attr( $ghjb_option_value ); ?></textarea>
 	<?php
 
 }
