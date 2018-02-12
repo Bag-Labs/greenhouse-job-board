@@ -426,7 +426,17 @@
 	function interactive_filter_selection_apply(scope, val_dep, val_loc, show){
 		show = (typeof show === 'undefined') ? true : show;
 
-		//check each job and determine visibility based on interactive filtre vlues.
+		// control classes for group headers
+		if ( val_dep === '*' ) {
+			$(scope + '.group_headline').attr('data-state', 'open');
+		} else if ( show === false ) {
+			$(scope + '.group_headline').attr('data-state', 'close');
+		} else {
+			$(scope + '.group_headline').attr('data-state', 'close');
+			$(scope + '.group_headline[data-group-id="' + val_dep + '"]').attr('data-state', 'open');
+			$(scope + '.group_headline[data-department="' + val_dep + '"]').attr('data-state', 'open');
+		}
+		//check each job and determine visibility based on interactive filter values.
 		$(scope + '.all_jobs .jobs .job').each( function(){
 			//default to hide
 			var this_visible = false;
@@ -453,12 +463,12 @@
 	}
 	
 	// interactive departments filter
-	$('.all_jobs').on('change focus blur', '#interactive_filter_departments', function(){
+	$('.all_jobs').on('change blur', '#interactive_filter_departments', function(){
 		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
 		interactive_filter_selection( scope );
 	});
 	// interactive locations filter
-	$('.all_jobs').on('change focus blur', '#interactive_filter_locations', function(){
+	$('.all_jobs').on('change blur', '#interactive_filter_locations', function(){
 		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
 		interactive_filter_selection( scope );
 	});
@@ -471,15 +481,15 @@
 		var val = $(this).data(group);
 		var id = $(this).data('group-id');
 		// toggle displays
-		$(this).toggleClass('opened');
-		if ( $(this).hasClass('opened') ) {
-			interactive_filter_selection_apply( scope, val, '*');
+		if ( $(this).attr('data-state') === 'open' ) {
+			interactive_filter_selection_apply( scope, val, '*', false );
+		} else {
 			$('#interactive_filter_departments').val(id).prop('selected', true);
 			$('#interactive_filter_locations').val('*').prop('selected', true);
-		} else {
-			interactive_filter_selection_apply( scope, val, '*', false);
+			interactive_filter_selection_apply( scope, val, '*', true );
 		}
 	});
+
 
 	// navigation
 	$('.all_jobs').on('click', '.job_goto', function(e){
