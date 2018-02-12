@@ -229,6 +229,7 @@
 					$('#greenhouse_job_cycle_fx').parents('tr').hide();
 				}
 			});
+			$('#greenhouse_job_board_type').trigger('change');
 
 			// reset defaults for templates
 			$('a[data-reset]').on('click', function(e){
