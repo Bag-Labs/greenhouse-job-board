@@ -738,14 +738,19 @@ function greenhouse_job_board_thanks_body_render() {
  *  Options page field for custom template.
  */
 function greenhouse_job_board_template_render() {
+
 	$plugin = new Greenhouse_Job_Board();
-	// echo "<pre>" . $plugin->get_template_accordion() . "</pre>";
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 	if ( isset( $options['greenhouse_job_board_template'] ) ) {
 		$ghjb_option_value = $options['greenhouse_job_board_template'];
 	} else {
 		$ghjb_option_value = ''; //set default here and allow to load in the accordion or cycle template for modifications.
+		if ( isset( $options['greenhouse_job_board_type'] ) ) {
+			if ( 'custom-accordion' === $options['greenhouse_job_board_type'] ) {
+				$ghjb_option_value = $plugin->get_template_accordion();
+			}
+		}
 	}
 	?>
 	<textarea
@@ -756,7 +761,8 @@ function greenhouse_job_board_template_render() {
 	><?php echo $ghjb_option_value; ?></textarea>
 	<div class="helper">
 		Set the custom handlebars template for job board. 
-		<!--<a href="#" data-reset="accordion">Reset to default accordion template</a>.-->
+		<a href="#" data-reset="accordion">Reset to default accordion template</a>.
+		<script id="job-template-accordion" type="text/x-handlebars-template"><?php echo $plugin->get_template_accordion(); ?></script>
 	</div>
 	<?php
 

@@ -233,7 +233,7 @@
 			// reset defaults for templates
 			$('a[data-reset]').on('click', function(e){
 				e.preventDefault();
-				$('#greenhouse_job_board_template').val('<div class="test"></div>');
+				$('#greenhouse_job_board_template').val( $('#job-template-accordion').html() );
 			});
 		}
 
