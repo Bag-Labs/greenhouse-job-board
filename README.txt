@@ -4,7 +4,7 @@ Donate link: https://www.brownbagmarketing.com/
 Tags: greenhouse, job board, api, resume, careers, hr, recruiter, job, hire, hiring, wanted
 Requires at least: 3.0
 Tested up to: 4.8
-Stable tag: 2.8.0
+Stable tag: 2.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/Bag-Labs/greenhouse-job-board
@@ -119,9 +119,10 @@ e.g.
 = 2.8.0 =
 * Add interactive department and location filter.
 * Update messaging and description text to be more helpful.
-* Clean up codebase more in alignment with WordPress Coding Standards.
+* Clean up codebase to be more in alignment with WordPress Coding Standards.
 * Ensure sanitizing and escaping input and output from database and api for better security.
 * Add opt-in feature to track usage via anonymous analytics data.
+* Add custom accordion template option.
 
 = 2.7.2 =
 * Fix bug with department filter not firing properly when not in debug mode.

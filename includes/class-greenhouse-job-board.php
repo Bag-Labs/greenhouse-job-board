@@ -68,7 +68,7 @@ class Greenhouse_Job_Board {
 	public function __construct() {
 
 		$this->greenhouse_job_board = 'greenhouse-job-board';
-		$this->version              = '2.8.0';
+		$this->version              = '2.8.2';
 
 		$this->load_dependencies();
 		$this->set_locale();
