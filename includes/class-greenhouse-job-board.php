@@ -68,13 +68,29 @@ class Greenhouse_Job_Board {
 	public function __construct() {
 
 		$this->greenhouse_job_board = 'greenhouse-job-board';
-		$this->version              = '2.7.2';
+		$this->version              = '2.8.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		$this->template_accordion = '<div class="job job_{{id}} job_{{slug}}" 
+	data-id="{{id}}" 
+	id="{{slug}}" 
+	data-department="{{departments}}"
+	data-location="{{locations}}"
+>
+	<h2 class="job_title">{{title}}</h2>
+	<p><a href="#" class="job_read_full">{{text.read_full_desc}}</a></p>
+	<div class="job_description job_description_{{id}}">
+	{{#if display_location }}<div class="display_location"><span class="location_label">{{text.location_label}}</span>{{display_location}}</div>{{/if}}
+		{{#if display_office }}<div class="display_office"><span class="office_label">{{text.office_label}}</span>{{display_office}}</div>{{/if}}
+		{{#if display_department }}<div class="display_department"><span class="department_label">{{text.department_label}}</span>{{display_department}}</div>{{/if}}
+			{{#if display_description }}<div class="display_description"><span class="description_label">{{text.description_label}}</span>{{{content}}}</div>{{/if}}
+	</div>
+	{{#ifeq hide_forms "false"}}<p><a href="#" class="job_apply job_apply_{{id}}" data-opened-text="{{text.apply_now_cancel}}" data-closed-text="{{text.apply_now}}">{{text.apply_now}}</a></p>{{/ifeq}}
+</div>';
 	}
 
 	/**
@@ -219,6 +235,16 @@ class Greenhouse_Job_Board {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+
+	/**
+	 * Give the plugin accordion template.
+	 *
+	 * @since   2.8.0
+	 */
+	public function get_template_accordion() {
+		return $this->template_accordion;
 	}
 
 }
