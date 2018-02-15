@@ -1,15 +1,19 @@
 /**
  * @since      2.7.1
  */
- jQuery(document).ready(function($) {
+jQuery(document).ready(function($) {
 	'use strict';
 	
 	if ( $('.greenhouse-job-board').length ){
-		if (ghjb_d) { console.log('Greenhouse job board shortcode activated.'); }
+		if (ghjb_d) { console.log('Greenhouse job board shortcode found - beginning activation.'); }
 		// if (ghjb_d) { console.log('job board loading', ghjb_json); }
 		$('.greenhouse-job-board').each( function(){
 			greenhouse_jobs( ghjb_json, '#' + $(this).attr('id') );
 		});
+		if (ghjb_d) { console.log('Greenhouse job board shortcode activated.'); }
+		if (typeof ghjb_build_complete_callback == 'function') { 
+			ghjb_build_complete_callback();
+		}
 	} else {
 		if (ghjb_d) { console.log('no job board data found'); }
 	}
