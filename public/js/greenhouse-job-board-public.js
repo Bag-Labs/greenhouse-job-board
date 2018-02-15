@@ -801,18 +801,21 @@ function greenhouse_jobs(json, jbid){
 			for( var j = 0; j < json.jobs[i].departments.length; j++ ) {
 				var this_department= {
 					name: json.jobs[i].departments[j].name,
-					id: json.jobs[i].departments[j].id
+					id: json.jobs[i].departments[j].id,
+					count: 1,
 				};
 				// if unique, add to the list
 				var unique = true;
 				for ( var k = 0; k < all_departments.length; k++) {
 					if ( this_department.id === all_departments[k].id ) {
-						unique = false;
+						unique = k;
 					}
 				}
-				if ( unique ) {
+				if ( unique === true ) {
 					all_departments.push( this_department );
-				}	
+				} else { // if not unique, increment count
+					all_departments[unique].count++;
+				}
 			}
 			// console.log(all_departments);
 		}
@@ -1060,8 +1063,16 @@ function greenhouse_jobs(json, jbid){
      			//if new group print headline
      			if ( this_group != current_group ){
 					current_group = this_group;
-					current_group_id = this_group_id; 
-     				jQuery(jbid + ' .all_jobs .jobs').append( '<h2 class="group_headline" data-group="' + group + '" data-group-id="' + current_group_id + '" data-' + group + '="' + current_group + '">' + current_group + '</h2>' );
+					current_group_id = this_group_id;
+					if ( group === 'department' ) {
+						all_groups = all_departments.slice();
+					}
+					filter_groups = all_groups.filter(function(group){
+						if ( group.id === this_group_id ) {
+							return group;
+						}
+					});
+     				jQuery(jbid + ' .all_jobs .jobs').append( '<h2 class="group_headline" data-group="' + group + '" data-group-id="' + current_group_id + '" data-' + group + '="' + current_group + '" data-count="' + filter_groups[0].count + '">' + current_group + '</h2>' );
      			}
 		    }
 			
