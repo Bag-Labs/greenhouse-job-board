@@ -417,7 +417,7 @@ jQuery(document).ready(function($) {
 						var field_wrap = "<div class='field_wrap field_demographics_" + job_demographics.questions[i].id;
 						field_wrap += "'>";
 						
-						field_wrap += "<div>" + job_demographics.questions[i].label + "</div>";
+						field_wrap += "<p>" + job_demographics.questions[i].label + "</p>";
 
 						field_wrap += '<input type="hidden" name="demographic_answers[][question_id]"';
 						field_wrap += 'value="'+job_demographics.questions[i].id+'">';
