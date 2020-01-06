@@ -222,7 +222,7 @@ jQuery(document).ready(function($) {
 		var jobid = $('#hidden_id').val();
 		if (ghjb_d) { console.log('submission complete', textStatus, jobid, this_id); }
 
-		if (textStatus === 'error' ){
+		if ( textStatus === 'error' ) {
 			if (ghjb_d) { console.log('submission error', textStatus, jobid, this_id); }
 			if (ghjb_a) { ghjb_analytics('job', 'apply_error', jobid ); }
 			//toggle apply_ty div and apply_error divs
@@ -230,7 +230,7 @@ jQuery(document).ready(function($) {
 			$('.apply_error').show();
 
 		}
-		else if (textStatus === 'success'){
+		else if (textStatus === 'success') {
 			if (ghjb_d) { console.log('submission success', textStatus, jobid, this_id); }
 			if (ghjb_a) { ghjb_analytics('job', 'apply_thanks', jobid ); }
 			$('.apply_ty').show();
@@ -251,7 +251,7 @@ jQuery(document).ready(function($) {
 		}
 
 
-		if (typeof ghjb_after_thanks == 'function') { 
+		if ( typeof ghjb_after_thanks == 'function' ) { 
 			//if so use it
 			ghjb_after_thanks( formid, textStatus, jobid );
 		}
@@ -415,7 +415,7 @@ jQuery(document).ready(function($) {
 					//loop through questions and output html
 					for ( var i = 0; i < job_demographics.questions.length; i++ ) {
 						var field_wrap = "<div class='field_wrap field_demographics_" + job_demographics.questions[i].id;
-						field_wrap += "' >";
+						field_wrap += "'>";
 						
 						field_wrap += "<div>" + job_demographics.questions[i].label + "</div>";
 
@@ -549,19 +549,25 @@ jQuery(document).ready(function($) {
 	});
 
 	// interactive locations filter
-	$('.all_jobs').on('click', '.group_headline', function(){
-		// get values
-		var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
-		var group = $(this).data('group');
-		var val = $(this).data(group);
-		var id = $(this).data('group-id');
-		// toggle displays
-		if ( $(this).attr('data-state') === 'open' ) {
-			interactive_filter_selection_apply( scope, val, '*', false );
-		} else {
-			$('#interactive_filter_departments').val(id).prop('selected', true);
-			$('#interactive_filter_locations').val('*').prop('selected', true);
-			interactive_filter_selection_apply( scope, val, '*', true );
+	$('.all_jobs').on('click', '.group_headline', function() {
+		//set jbid to relevant job board
+		var jbid = $(this).parents('.greenhouse-job-board').attr('id');
+
+		//check if location filter is active
+		if ( jQuery(jbid).attr('data-interactive_filter') === 'location' ) {
+			// get values
+			var scope = '#' + $(this).parents('.greenhouse-job-board').attr('id') + ' ';
+			var group = $(this).data('group');
+			var val = $(this).data(group);
+			var id = $(this).data('group-id');
+			// toggle displays
+			if ( $(this).attr('data-state') === 'open' ) {
+				interactive_filter_selection_apply( scope, val, '*', false );
+			} else {
+				$('#interactive_filter_departments').val(id).prop('selected', true);
+				$('#interactive_filter_locations').val('*').prop('selected', true);
+				interactive_filter_selection_apply( scope, val, '*', true );
+			}
 		}
 	});
 
@@ -762,7 +768,7 @@ function slugme(slugit) {
  * @param {*} json JSON data from greenhouse api.
  * @param {*} jbid job board id - to scope any code to this board only.
  */
-function greenhouse_jobs(json, jbid){
+function greenhouse_jobs(json, jbid) {
  	if (ghjb_d) { console.log(json); }
  	if (ghjb_d) { console.log(jbid); }
  	
@@ -869,7 +875,7 @@ function greenhouse_jobs(json, jbid){
 	 * Departments - interactive filter
 	 */
 	//if enabled, display department filter
-	if ( jQuery(jbid).attr('data-interactive_filter').indexOf('department') >= 0 ) {
+	if ( ( jQuery(jbid).attr('data-interactive_filter').indexOf('department') >= 0 ) || ( typeof group !== "undefined" && group === 'department' ) ) {
 		//get all departments
 		var all_departments = [];
 		for (var i = 0; i < json.jobs.length; i++){
@@ -894,14 +900,15 @@ function greenhouse_jobs(json, jbid){
 			}
 			// if (ghjb_d) { console.log(all_departments); }
 		}
-		
-		//output a select list of departments
-		var departments_select = '<select id="interactive_filter_departments"><option value="*">All Departments</option>';
-		for ( var k = 0; k < all_departments.length; k++) {
-			departments_select += '<option value="' + all_departments[k].id + '">' + all_departments[k].name + '</option>';
+		if ( jQuery(jbid).attr('data-interactive_filter').indexOf('department') >= 0 ) {
+			//output a select list of departments
+			var departments_select = '<select id="interactive_filter_departments"><option value="*">All Departments</option>';
+			for ( var k = 0; k < all_departments.length; k++) {
+				departments_select += '<option value="' + all_departments[k].id + '">' + all_departments[k].name + '</option>';
+			}
+			departments_select += '</select>';
+			jQuery(jbid + ' .jobs').append(departments_select);
 		}
-		departments_select += '</select>';
-		jQuery(jbid + ' .jobs').append(departments_select);
 	}
 	
 	/**
