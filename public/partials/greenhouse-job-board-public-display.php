@@ -428,6 +428,54 @@ function greenhouse_job_board_form_type_render() {
 }
 
 /**
+ *  Options page field to render demographics setting.
+ */
+function greenhouse_job_board_demographics_render() {
+
+	$options = get_option( 'greenhouse_job_board_settings' );
+
+	if ( isset( $options['greenhouse_job_board_enable_demographics'] ) ) {
+		$ghjb_option_value = $options['greenhouse_job_board_enable_demographics'];
+	} else {
+		$ghjb_option_value = 'false';
+	}
+
+	$ghjb_option_values = array(
+		'True' => 'true',
+		'False' => 'false',
+	);
+
+	?>
+
+	<select
+		name='greenhouse_job_board_settings[greenhouse_job_board_enable_demographics]'
+		class='regular-text'
+	>
+	<?php foreach ( $ghjb_option_values as $key => $value ) { ?>
+		<option value="<?php echo esc_attr( $value ); ?>"
+		<?php
+			if ( $value === $ghjb_option_value ) {
+				echo 'selected';
+			}
+		?>
+		<?php 
+			if ( false === $allow_inline ) {
+				echo 'disabled';
+			}
+		?>
+		>
+		<?php 
+		echo esc_attr( $key );
+		?>
+		</option>
+	<?php } ?>
+	</select>
+	<div class="helper">Choose to allow demographic questions on Inline forms.</div>
+	<?php
+
+}
+
+/**
  *  Options page field to set form fields to render.
  */
 function greenhouse_job_board_form_fields_render() {

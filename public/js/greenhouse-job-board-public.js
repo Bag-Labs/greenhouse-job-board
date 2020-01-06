@@ -201,6 +201,16 @@ jQuery(document).ready(function($) {
 		
 	});
 
+	//add show/hide to free form demographic questions
+	$('.ghjb-free-form-question').live('change', function() {
+		if ( this.checked ) {
+			$(this).parent().next().show();
+		} else {
+			$(this).parent().next().children().val('');
+			$(this).parent().next().hide();
+		}
+	});
+
 	function reset_cycle_container_height(this_id){
 		$(this_id + ' .all_jobs').height( $(this_id + ' .cycle-slide-active').height() );
 	}
@@ -253,6 +263,7 @@ jQuery(document).ready(function($) {
 			return o.id == jobid;
 		});
 		var job_questions = this_job[0].questions;
+		var job_demographics = this_job[0].demographic_questions;
 		
 		//get form_fields from settings
 		var form_fields = $('.jobs').attr('data-form_fields');
@@ -280,17 +291,19 @@ jQuery(document).ready(function($) {
 		}
 		
 		if (ghjb_d) { console.log( job_questions ); }
+		if (ghjb_d) { console.log( job_demographics ); }
 
-		for ( var i = 0; i < job_questions.length; i++){
+		// Loop through job questions for field output
+		for ( var i = 0; i < job_questions.length; i++ ) {
 			
 			//check that the field is listed if form fields are specified
 			// if (ghjb_d) { console.log(form_fields, job_questions[i].fields[0].name, job_questions[i].label); }
 
 			if ( form_fields[0] === '*' ||
 				 jQuery.inArray( job_questions[i].fields[0].name, form_fields ) >= 0 ||
-				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0  ) {
+				 jQuery.inArray( job_questions[i].label, form_fields ) >= 0 ) {
 				
-				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name ;
+				var field_wrap = "<div class='field_wrap field_" + job_questions[i].fields[0].name;
 				field_wrap += ' field_' + job_questions[i].fields[0].type;
 				var required = '';
 				var hidden = false;
@@ -310,22 +323,27 @@ jQuery(document).ready(function($) {
 					field_wrap += "<label for='" + job_questions[i].fields[0].name + "'>" + job_questions[i].label  + "</label>";
 					field_wrap += "<div class='input_container'>";
 				}
+
 				//detect input type and write proper html for correct type
 				if ( job_questions[i].fields[0].type === 'input_text' ) {
 					field_wrap += "<input type='text' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
+
 				//textarea
 				else if ( job_questions[i].fields[0].type === 'textarea' ) {
 					field_wrap += "<textarea name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
+
 				//textarea
 				else if ( job_questions[i].fields[0].type === 'hidden' ) {
 					field_wrap += "<input type='hidden' name='" + job_questions[i].fields[0].name + "' value='" + job_questions[i].fields[0].values[0] + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
+
 				//file
 				else if ( job_questions[i].fields[0].type === 'input_file' ) {
 					field_wrap += "<input type='file' name='" + job_questions[i].fields[0].name + "' id='" + job_questions[i].fields[0].name + "' title='" + job_questions[i].label  + "' " + required;
 				}
+				
 				//select and Yes-No fields
 				else if ( job_questions[i].fields[0].type === 'multi_value_single_select' ) {
 					simple_field = false;
@@ -380,6 +398,59 @@ jQuery(document).ready(function($) {
 				$(jbid + " #apply_form").append(field_wrap);
 			}
 			
+		}
+		
+		//check if showing demographics is enabled
+		if ( $('#apply_form').attr('data-enable-demographics') === 'true' ) {
+			//check if there is a demographic section for this job
+			if ( typeof job_demographics !== "undefined" ) {
+				//output demographics section
+				var demographic_header = (typeof job_demographics.header !== "undefined") ? "<hr /><h3>" + job_demographics.header + "</h3>" : "";
+				var demographic_description = (typeof job_demographics.description !== "undefined") ? job_demographics.description : "";
+				$(jbid + " #apply_form").append(demographic_header);
+				$(jbid + " #apply_form").append(demographic_description);
+
+				//check if there are demographics questions
+				if ( typeof job_demographics.questions !== "undefined" && job_demographics.questions.length > 0 ) {
+					//loop through questions and output html
+					for ( var i = 0; i < job_demographics.questions.length; i++ ) {
+						var field_wrap = "<div class='field_wrap field_demographics_" + job_demographics.questions[i].id;
+						field_wrap += "' >";
+						
+						field_wrap += "<div>" + job_demographics.questions[i].label + "</div>";
+
+						field_wrap += '<input type="hidden" name="demographic_answers[][question_id]"';
+						field_wrap += 'value="'+job_demographics.questions[i].id+'">';
+
+						field_wrap += "<div class='input_container'>";
+						for ( var j = 0; j < job_demographics.questions[i].answer_options.length; j++ ) {
+							var is_free_form = job_demographics.questions[i].answer_options[j].free_form;
+
+							if ( true === is_free_form ) {
+								field_wrap += "<label>" + 
+									'<input type="checkbox" class="ghjb-free-form-question" name="demographic_answers[][answer_options][][answer_option_id]"' +
+									'value="'+job_demographics.questions[i].answer_options[j].id+'">' +
+									job_demographics.questions[i].answer_options[j].label + 
+								"</label>";
+
+								field_wrap += '<div class="ghjb-free-form-text" style="display: none;">';
+								field_wrap += '<input type="text" name="demographic_answers[][answer_options][][text]" maxlength="255" aria-label="'+job_demographics.questions[i].answer_options[j].label+'" value="">';
+								field_wrap += '</div>';
+							} else {
+								field_wrap += "<label>" + 
+									'<input type="checkbox" name="demographic_answers[][answer_options][][answer_option_id]"' +
+									'value="'+job_demographics.questions[i].answer_options[j].id+'">' +
+									job_demographics.questions[i].answer_options[j].label + 
+								"</label>";
+							}
+						}
+						field_wrap += "</div>";
+						field_wrap += "</div>";
+
+						$(jbid + " #apply_form").append(field_wrap);
+					}
+				}
+			}
 		}
 		
 		var submit_button = "<div class='field_wrap field_submit'><input type='button' class='submit button' value='Submit Application' /></div></div>";
@@ -821,7 +892,7 @@ function greenhouse_jobs(json, jbid){
 					all_departments[unique].count++;
 				}
 			}
-			// console.log(all_departments);
+			// if (ghjb_d) { console.log(all_departments); }
 		}
 		
 		//output a select list of departments

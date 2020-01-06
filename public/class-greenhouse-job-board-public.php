@@ -142,36 +142,37 @@ class Greenhouse_Job_Board_Public {
 
 		$atts = shortcode_atts(
 			array(
-				'id'                 => '',
-				'url_token'          => isset( $options['greenhouse_job_board_url_token'] ) ? $options['greenhouse_job_board_url_token'] : '',
-				'api_key'            => isset( $options['greenhouse_job_board_api_key'] ) ? $options['greenhouse_job_board_api_key'] : '',
-				'board_type'         => isset( $options['greenhouse_job_board_type'] ) ? $options['greenhouse_job_board_type'] : 'accordion',
-				'cycle_fx'           => isset( $options['greenhouse_job_cycle_fx'] ) ? $options['greenhouse_job_cycle_fx'] : 'fade',
-				'interactive_filter' => isset( $options['greenhouse_job_interactive_filter'] ) ? $options['greenhouse_job_interactive_filter'] : 'none',
-				'back'               => isset( $options['greenhouse_job_board_back'] ) ? $options['greenhouse_job_board_back'] : 'Back',
-				'apply_now'          => isset( $options['greenhouse_job_board_apply_now'] ) ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
-				'apply_now_cancel'   => isset( $options['greenhouse_job_board_apply_now_cancel'] ) ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
-				'read_full_desc'     => isset( $options['greenhouse_job_board_read_full_desc'] ) ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
-				'hide_full_desc'     => isset( $options['greenhouse_job_board_hide_full_desc'] ) ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
-				'hide_forms'         => 'false',
-				'form_type'          => isset( $options['greenhouse_job_board_form_type'] ) ? $options['greenhouse_job_board_form_type'] : 'iframe',
-				'form_fields'        => isset( $options['greenhouse_job_board_form_fields'] ) ? $options['greenhouse_job_board_form_fields'] : '',
-				'department_filter'  => '',
-				'job_filter'         => '',
-				'office_filter'      => '',
-				'location_filter'    => '',
-				'location_label'     => isset( $options['greenhouse_job_board_location_label'] ) ? $options['greenhouse_job_board_location_label'] : 'Location: ',
-				'office_label'       => isset( $options['greenhouse_job_board_office_label'] ) ? $options['greenhouse_job_board_office_label'] : 'Office: ',
-				'department_label'   => isset( $options['greenhouse_job_board_department_label'] ) ? $options['greenhouse_job_board_department_label'] : 'Department: ',
-				'description_label'  => isset( $options['greenhouse_job_board_description_label'] ) ? $options['greenhouse_job_board_description_label'] : '',
-				'sticky'             => isset( $options['greenhouse_job_board_sticky'] ) ? $options['greenhouse_job_board_sticky'] : '',
-				'orderby'            => isset( $options['greenhouse_job_board_orderby'] ) ? $options['greenhouse_job_board_orderby'] : '',
-				'order'              => isset( $options['greenhouse_job_board_order'] ) ? $options['greenhouse_job_board_order'] : 'DESC',
-				'group'              => isset( $options['greenhouse_job_board_group'] ) ? $options['greenhouse_job_board_group'] : '',
-				'group_headline'     => isset( $options['greenhouse_job_board_group_headline'] ) ? $options['greenhouse_job_board_group_headline'] : '',
-				'display'            => isset( $options['display'] ) ? $options['display'] : 'description',
-				'cache_expiry'       => isset( $options['greenhouse_job_board_cache_expiry'] ) ? $options['greenhouse_job_board_cache_expiry'] : 0,
-				'template'           => isset( $options['greenhouse_job_board_template'] ) ? $options['greenhouse_job_board_template'] : '',
+				'id'                  => '',
+				'url_token'           => isset( $options['greenhouse_job_board_url_token'] ) ? $options['greenhouse_job_board_url_token'] : '',
+				'api_key'             => isset( $options['greenhouse_job_board_api_key'] ) ? $options['greenhouse_job_board_api_key'] : '',
+				'board_type'          => isset( $options['greenhouse_job_board_type'] ) ? $options['greenhouse_job_board_type'] : 'accordion',
+				'cycle_fx'            => isset( $options['greenhouse_job_cycle_fx'] ) ? $options['greenhouse_job_cycle_fx'] : 'fade',
+				'interactive_filter'  => isset( $options['greenhouse_job_interactive_filter'] ) ? $options['greenhouse_job_interactive_filter'] : 'none',
+				'back'                => isset( $options['greenhouse_job_board_back'] ) ? $options['greenhouse_job_board_back'] : 'Back',
+				'apply_now'           => isset( $options['greenhouse_job_board_apply_now'] ) ? $options['greenhouse_job_board_apply_now'] : 'Apply Now',
+				'apply_now_cancel'    => isset( $options['greenhouse_job_board_apply_now_cancel'] ) ? $options['greenhouse_job_board_apply_now_cancel'] : 'Cancel',
+				'read_full_desc'      => isset( $options['greenhouse_job_board_read_full_desc'] ) ? $options['greenhouse_job_board_read_full_desc'] : 'Read Full Description',
+				'hide_full_desc'      => isset( $options['greenhouse_job_board_hide_full_desc'] ) ? $options['greenhouse_job_board_hide_full_desc'] : 'Hide Full Description',
+				'hide_forms'          => 'false',
+				'form_type'           => isset( $options['greenhouse_job_board_form_type'] ) ? $options['greenhouse_job_board_form_type'] : 'iframe',
+				'form_fields'         => isset( $options['greenhouse_job_board_form_fields'] ) ? $options['greenhouse_job_board_form_fields'] : '',
+				'department_filter'   => '',
+				'job_filter'          => '',
+				'office_filter'       => '',
+				'location_filter'     => '',
+				'location_label'      => isset( $options['greenhouse_job_board_location_label'] ) ? $options['greenhouse_job_board_location_label'] : 'Location: ',
+				'office_label'        => isset( $options['greenhouse_job_board_office_label'] ) ? $options['greenhouse_job_board_office_label'] : 'Office: ',
+				'department_label'    => isset( $options['greenhouse_job_board_department_label'] ) ? $options['greenhouse_job_board_department_label'] : 'Department: ',
+				'description_label'   => isset( $options['greenhouse_job_board_description_label'] ) ? $options['greenhouse_job_board_description_label'] : '',
+				'sticky'              => isset( $options['greenhouse_job_board_sticky'] ) ? $options['greenhouse_job_board_sticky'] : '',
+				'orderby'             => isset( $options['greenhouse_job_board_orderby'] ) ? $options['greenhouse_job_board_orderby'] : '',
+				'order'               => isset( $options['greenhouse_job_board_order'] ) ? $options['greenhouse_job_board_order'] : 'DESC',
+				'group'               => isset( $options['greenhouse_job_board_group'] ) ? $options['greenhouse_job_board_group'] : '',
+				'group_headline'      => isset( $options['greenhouse_job_board_group_headline'] ) ? $options['greenhouse_job_board_group_headline'] : '',
+				'display'             => isset( $options['display'] ) ? $options['display'] : 'description',
+				'cache_expiry'        => isset( $options['greenhouse_job_board_cache_expiry'] ) ? $options['greenhouse_job_board_cache_expiry'] : 0,
+				'template'            => isset( $options['greenhouse_job_board_template'] ) ? $options['greenhouse_job_board_template'] : '',
+				'enable_demographics' => isset( $options['greenhouse_job_board_enable_demographics'] ) ? $options['greenhouse_job_board_enable_demographics'] : 'false',
 			), $atts
 		);
 
@@ -348,7 +349,7 @@ class Greenhouse_Job_Board_Public {
 				$ghjb_html .= '<div id="grnhse_app"></div>';// script for loading iframe.
 			} // cycle inline.
 			elseif ( 'inline' === $atts['form_type'] ) {
-				$ghjb_html .= '<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data">
+				$ghjb_html .= '<form id="apply_form" method="POST" action="' . plugins_url( '/greenhouse-job-board/public/partials/greenhouse-job-board-apply-submit.php' ) . '" enctype="multipart/form-data" data-enable-demographics="' . $atts['enable_demographics'] .'">
 						</form>';
 			}
 					$ghjb_html .= '<p><a href="#" class="return">' . $atts['back'] . '</a></p>
@@ -614,6 +615,14 @@ class Greenhouse_Job_Board_Public {
 			'greenhouse_job_board_form_type',
 			__( 'Form Type', 'greenhouse_job_board' ),
 			'greenhouse_job_board_form_type_render',
+			'greenhouse_settings',
+			'greenhouse_job_board_jobboard_settings_section'
+		);
+
+		add_settings_field(
+			'greenhouse_job_board_demographics',
+			__( 'Enable Demographics', 'greenhouse_job_board' ),
+			'greenhouse_job_board_demographics_render',
 			'greenhouse_settings',
 			'greenhouse_job_board_jobboard_settings_section'
 		);
