@@ -434,6 +434,14 @@ function greenhouse_job_board_demographics_render() {
 
 	$options = get_option( 'greenhouse_job_board_settings' );
 
+	// ensure that the API key is in place before allowing enabling of demographics option.
+	$allow_inline = false;
+	if ( isset( $options['greenhouse_job_board_api_key'] ) &&
+		'' !== $options['greenhouse_job_board_api_key'] ) {
+		$allow_inline = true;
+	}
+	$inline_option_value = $options['greenhouse_job_board_form_type'];
+
 	if ( isset( $options['greenhouse_job_board_enable_demographics'] ) ) {
 		$ghjb_option_value = $options['greenhouse_job_board_enable_demographics'];
 	} else {
@@ -459,13 +467,16 @@ function greenhouse_job_board_demographics_render() {
 			}
 		?>
 		<?php 
-			if ( false === $allow_inline ) {
+			if ( 'inline' !== $inline_option_value && false === $allow_inline && $value === 'true' ) {
 				echo 'disabled';
 			}
 		?>
 		>
 		<?php 
 		echo esc_attr( $key );
+		if ( 'inline' !== $inline_option_value && false === $allow_inline && $value === 'true' ) {
+			echo ' (requires inline form)';
+		}
 		?>
 		</option>
 	<?php } ?>
