@@ -205,7 +205,9 @@ jQuery(document).ready(function($) {
 	$('.ghjb-free-form-question').live('change', function() {
 		if ( this.checked ) {
 			$(this).parent().next().show();
+			$(this).parent().next().children().attr('disabled', '');
 		} else {
+			$(this).parent().next().children().attr('disabled', 'disabled');
 			$(this).parent().next().children().val('');
 			$(this).parent().next().hide();
 		}
@@ -428,17 +430,17 @@ jQuery(document).ready(function($) {
 
 							if ( true === is_free_form ) {
 								field_wrap += "<label>" + 
-									'<input type="checkbox" class="ghjb-free-form-question" name="demographic_answers[][answer_options][][answer_option_id]"' +
+									'<input type="checkbox" class="ghjb-free-form-question" name="demographic_answers['+i+'][answer_options][][answer_option_id]"' +
 									'value="'+job_demographics.questions[i].answer_options[j].id+'">' +
 									job_demographics.questions[i].answer_options[j].label + 
 								"</label>";
 
 								field_wrap += '<div class="ghjb-free-form-text" style="display: none;">';
-								field_wrap += '<input type="text" name="demographic_answers[][answer_options][][text]" maxlength="255" aria-label="'+job_demographics.questions[i].answer_options[j].label+'" value="">';
+								field_wrap += '<input type="text" name="demographic_answers['+i+'][answer_options][][text]" maxlength="255" disabled="disabled" aria-label="'+job_demographics.questions[i].answer_options[j].label+'" value="">';
 								field_wrap += '</div>';
 							} else {
 								field_wrap += "<label>" + 
-									'<input type="checkbox" name="demographic_answers[][answer_options][][answer_option_id]"' +
+									'<input type="checkbox" name="demographic_answers['+i+'][answer_options][][answer_option_id]"' +
 									'value="'+job_demographics.questions[i].answer_options[j].id+'">' +
 									job_demographics.questions[i].answer_options[j].label + 
 								"</label>";
