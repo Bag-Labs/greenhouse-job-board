@@ -131,7 +131,7 @@ if ( $ghjb_d ) {
 	echo json_encode( $_POST, JSON_NUMERIC_CHECK );
 	print_r( $_POST );
 	
-	if ( ! is_wp_error( $send_application ) && $send_application['response']['code'] !== '200' ) {
+	if ( ! is_wp_error( $send_application ) ) {
 		$response = json_decode( wp_remote_retrieve_body($send_application), true );
 		print_r($response);
 	} else {
