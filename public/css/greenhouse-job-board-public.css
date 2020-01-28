@@ -40,3 +40,6 @@
 .cycle-slide-active .apply_ty {
 	display:block;
 }
+.greenhouse-job-board div[class*="field_demographics"] input[type="checkbox"] {
+	margin-right: 10px;
+}
