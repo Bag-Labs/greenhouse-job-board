@@ -369,9 +369,6 @@
 				// back to simple fields 
 				else {
 					field_wrap += " />";
-					if ( !hidden ) {
-						field_wrap += "</div>";
-					}
 				}
 				$(jbid + " #apply_form").append(field_wrap);
 			}
