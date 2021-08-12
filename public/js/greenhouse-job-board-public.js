@@ -438,6 +438,8 @@
 				$(this).hide();
 			}
 		});
+		
+		reset_cycle_container_height( scope );
 	
 	}
 	
