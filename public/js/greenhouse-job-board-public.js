@@ -536,7 +536,7 @@
 			    type: $(formid).attr('method'),
 			    url: $(formid).attr('action'),
 			    data: formData,
-			    async: false,
+			    async: true,
 		        cache: false,
 		        contentType: false,
 		        processData: false,
